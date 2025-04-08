@@ -1,6 +1,8 @@
-package ru.hogwarts.School_2.model;
+package ru.hogwarts.school_2.model;
 
+import jakarta.persistence.Entity;
 import java.util.Objects;
+
 
 public class Faculty {
 

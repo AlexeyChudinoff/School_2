@@ -1,9 +1,13 @@
-package ru.hogwarts.School_2.servise;
+package ru.hogwarts.school_2.servise;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import ru.hogwarts.School_2.model.Student;
+import org.springframework.stereotype.Service;
+import ru.hogwarts.school_2.model.Student;
 
+@Service
 public class StudentService {
 
   Map<Long, Student> studentsMap = new HashMap<>();
@@ -14,7 +18,7 @@ public class StudentService {
     studentsMap.put(3L, new Student("Hermione", 16, "f"));
   }
 
-  public Student getStudentByName (String name) {
+  public Student getStudentByName(String name) {
     for (Student student : studentsMap.values()) {
       if (student.getName().equals(name)) {
         return student;
@@ -23,7 +27,7 @@ public class StudentService {
     return null;
   }
 
-  public Student getStudentByAge (int age) {
+  public Student getStudentByAge(int age) {
     for (Student student : studentsMap.values()) {
       if (student.getAge() == age) {
         return student;
@@ -45,6 +49,15 @@ public class StudentService {
   public Student getStudent(long id) {
     return studentsMap.get(id);
   }
+
+  public List<Student> getAllStudents() {
+    if (studentsMap.isEmpty()) {
+      return null;
+    } else {
+      return new ArrayList<>(studentsMap.values());
+    }
+  }
+
 
   // U
   public Student updeteStudent(Student student) {

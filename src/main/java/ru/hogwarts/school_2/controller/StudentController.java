@@ -1,15 +1,21 @@
-package ru.hogwarts.School_2.controller;
+package ru.hogwarts.school_2.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.hogwarts.School_2.model.Student;
-import ru.hogwarts.School_2.servise.FacultyService;
-import ru.hogwarts.School_2.servise.StudentService;
+import org.springframework.web.bind.annotation.RestController;
+import ru.hogwarts.school_2.model.Student;
+import ru.hogwarts.school_2.servise.FacultyService;
+import ru.hogwarts.school_2.servise.StudentService;
 
+@RestController
+@Tag(name = "Student API", description = "Управление студентами")
 @RequestMapping("/student")
 public class StudentController {
 
@@ -30,6 +36,14 @@ public class StudentController {
   @GetMapping("/getStudentByAge")
   public Student getStudentByAge(@RequestParam int age) {
     return studentService.getStudentByAge(age);
+  }
+  @GetMapping("/getAllStudents")
+  public List< Student> getAllStudents() {
+    if (studentService.getAllStudents() != null) {
+      return studentService.getAllStudents();
+    } else {
+      return null;
+    }
   }
 
 
