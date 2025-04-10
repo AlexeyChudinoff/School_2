@@ -1,14 +1,28 @@
 package ru.hogwarts.school_2.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import java.util.Objects;
 
-
+@Entity
 public class Faculty {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
+  @NotBlank(message = "Название не может быть пустым")
+  @Size(min = 2, max = 50, message = "Название должно быть от 2 до 50 символов")
   private String name;
+
+  @NotBlank(message = "Цвет не может быть пустым")
+  @Size(min = 2, max = 30, message = "Цвет должен быть от 2 до 30 символов")
   private String color;
+
 
   public Faculty() {
   }

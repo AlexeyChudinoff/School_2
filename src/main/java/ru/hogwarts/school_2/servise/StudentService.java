@@ -1,73 +1,68 @@
 package ru.hogwarts.school_2.servise;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school_2.model.Student;
+import ru.hogwarts.school_2.repositories.FacultyRepositories;
+import ru.hogwarts.school_2.repositories.StudentRepositories;
 
 @Service
 public class StudentService {
 
-  Map<Long, Student> studentsMap = new HashMap<>();
+  private StudentRepositories studentRepositories;
+  private FacultyRepositories facultyRepositories;
 
-  public void initializeStudentsMap() {
-    studentsMap.put(1L, new Student("Harry", 17, "m"));
-    studentsMap.put(2L, new Student("Ron", 17, "m"));
-    studentsMap.put(3L, new Student("Hermione", 16, "f"));
+  public StudentService() {
   }
 
-  public Student getStudentByName(String name) {
-    for (Student student : studentsMap.values()) {
-      if (student.getName().equals(name)) {
-        return student;
-      }
-    }
-    return null;
+  @Autowired
+  public StudentService(StudentRepositories studentRepositories,
+      FacultyRepositories facultyRepositories) {
+    this.studentRepositories = studentRepositories;
+    this.facultyRepositories = facultyRepositories;
   }
 
-  public Student getStudentByAge(int age) {
-    for (Student student : studentsMap.values()) {
-      if (student.getAge() == age) {
-        return student;
-      }
-    }
-    return null;
+  // Создание/добавление студента
+  public Student addStudent(Student student) {
+    return studentRepositories.save(student);
   }
 
-  long idCounter = 0;
-
-  // С
-  public void addStudent(Student student) {
-    idCounter++;
-    student.setId(idCounter);
-    studentsMap.put(idCounter, student);
+//Поиск студента по части имени игнорируя регистр
+  public List<Student> findByNameContainingIgnoreCase(String name) {
+    return studentRepositories.findByNameContainingIgnoreCase(name);
   }
 
-  // R
-  public Student getStudent(long id) {
-    return studentsMap.get(id);
+  // Получение студентов по возрасту
+  public List<Student> getStudentByAge(int age) {
+    return studentRepositories.findByAge(age);
   }
 
+  // Получение студентов по id
+  public Optional<Student> getStudentById(Long id) {
+    return studentRepositories.findById(id);
+  }
+
+  // Получение студентов по возрастному диапазону
+  public List<Student> getStudentsByAgeRange(int minAge, int maxAge) {
+    return studentRepositories.findByAgeBetween(minAge, maxAge);
+  }
+
+  // Получение всех студентов
   public List<Student> getAllStudents() {
-    if (studentsMap.isEmpty()) {
-      return null;
-    } else {
-      return new ArrayList<>(studentsMap.values());
-    }
+    return studentRepositories.findAll();
   }
 
-
-  // U
-  public Student updeteStudent(Student student) {
-    return studentsMap.replace(student.getId(), student);
+  // Обновление студента
+  public Student updateStudent(Long id, Student student) {
+    student.setId(id); // Устанавливаем ID для обновления существующей записи
+    return studentRepositories.save(student);
   }
 
-  // D
-  public void deleteStudent(long id) {
-    studentsMap.remove(id);
+  // Удаление студента по ID
+  public void deleteStudent(Long id) {
+    studentRepositories.deleteById(id);
   }
-
-
 }//
