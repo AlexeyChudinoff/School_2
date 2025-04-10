@@ -1,11 +1,17 @@
 package ru.hogwarts.school_2.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -22,6 +28,9 @@ public class Faculty {
   @NotBlank(message = "Цвет не может быть пустым")
   @Size(min = 2, max = 30, message = "Цвет должен быть от 2 до 30 символов")
   private String color;
+
+  @OneToMany(mappedBy = "faculty", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  private List<Student> students = new ArrayList<>();  // Должно быть множественным числом и коллекцией
 
 
   public Faculty() {

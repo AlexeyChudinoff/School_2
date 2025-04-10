@@ -65,4 +65,10 @@ public class StudentService {
   public void deleteStudent(Long id) {
     studentRepositories.deleteById(id);
   }
+  //удалить всех студентов факультета
+  public void deleteAllStudentsFromFaculty(Long facultyId) {
+    if (facultyRepositories.existsById(facultyId)) {
+      studentRepositories.deleteAllByFaculty_Id(facultyId);
+  }}
+
 }//

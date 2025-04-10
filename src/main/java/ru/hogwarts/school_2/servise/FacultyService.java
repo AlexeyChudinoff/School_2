@@ -1,5 +1,6 @@
 package ru.hogwarts.school_2.servise;
 
+import jakarta.persistence.EntityNotFoundException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -39,6 +40,24 @@ public class FacultyService {
     }
   }
 
+  //изменение факультета
+  public Faculty updateFaculty(Faculty faculty) {
+    Long id = faculty.getId();
+    logger.debug("Попытка обновления факультета с ID: {}", id);
+
+    Faculty existingFaculty = facultyRepositories.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException("Факультет с ID " + id + " не существует"));
+
+    if (!existingFaculty.getName().equals(faculty.getName())) {
+      if (facultyRepositories.findByNameIgnoreCase(faculty.getName()) != null) {
+        throw new IllegalStateException("Факультет с названием " + faculty.getName() +
+            " уже существует");
+      }
+    }
+
+    return facultyRepositories.save(faculty);
+  }
+
   // Поиск по имени или цвету
   public List<Faculty> findByNameOrColor(String name, String color) {
     logger.debug("Поиск факультетов по имени: {} или цвету: {}", name, color);
@@ -76,6 +95,21 @@ public class FacultyService {
     } else {
       throw new IllegalStateException("Факультет с таким названием"
           + " не существует");
+    }
+  }
+
+  //получение всех факультетов
+  public List<Faculty> getAllFaculties() {
+    return facultyRepositories.findAll();
+  }
+
+  //удаление факультета
+  public void deleteFacultyById(long id) {
+    if (facultyRepositories.findById(id).isPresent()) {
+      studentService.deleteAllStudentsFromFaculty(id);
+      facultyRepositories.deleteById(id);
+    } else {
+      throw new IllegalStateException("Факультет с таким id не существует");
     }
   }
 

@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,6 +51,15 @@ public class FacultyController {
     return ResponseEntity.status(HttpStatus.CREATED).body(createdFaculty);
   }
 
+  @Operation(summary = "Обновление факультета")
+  @PutMapping("/updateFaculty")
+  public ResponseEntity<Faculty> updateFaculty(@Valid @RequestBody Faculty faculty) {
+    logger.info("Запрос на обновление факультета: {}", faculty.getId());
+    Faculty updatedFaculty = facultyService.updateFaculty(faculty);
+    logger.info("Факультет успешно обновлен: {}", updatedFaculty.getName());
+    return ResponseEntity.ok(updatedFaculty);
+  }
+
   @Operation(summary = "Получение факультета по цвету")
   @GetMapping("/getFacultyByColor")
   public ResponseEntity<Faculty> getFacultyByColor(
@@ -62,9 +73,24 @@ public class FacultyController {
     return ResponseEntity.ok(faculty);
   }
 
+  @Operation(summary = "Получение факультета по имени")
+  @GetMapping("/getFacultyByName")
+  public ResponseEntity <Optional<Faculty>> getFacultyByName(
+      @RequestParam("name") @NotBlank String name) {
+    logger.info("Запрос на получение факультета по имени: {}", name);
+    Optional<Faculty> faculty = Optional.ofNullable(facultyService.getFacultyByName(name));
+       if (faculty.isEmpty()){
+      logger.warn("Факультет с именем {} не найден", name);
+      return ResponseEntity.notFound().build();
+    } else {
+      logger.info("Запрос на получение факультета по имени: {}", name);
+      return ResponseEntity.ok(faculty);
+    }
+  }
+
   @Operation(summary = "Получение факультета по ID")
   @GetMapping("/getFacultyById")
-  public ResponseEntity<Optional<Faculty>> getFacultyById(@RequestParam Long id) {
+  public ResponseEntity<Optional<Faculty>> getFacultyById(@RequestParam @NotNull Long id) {
     logger.info("Запрос на получение факультета по ID: {}", id);
     Optional<Faculty> faculty = facultyService.getFacultyById(id);
     if (faculty.isEmpty()) {
@@ -76,7 +102,7 @@ public class FacultyController {
 
   @Operation(summary = "Получение факультета по имени или цвету")
   @GetMapping("/searchByNameOrColor")
-  public ResponseEntity<List<Faculty>> searchFaculties(
+  public ResponseEntity<List<Faculty>> searchFaculties(@Valid
       @RequestParam(required = false) String name,// требовать не обязательно
       @RequestParam(required = false) String color) {
     logger.info("Запрос на поиск факультетов по имени: {} или цвету: {}", name, color);
@@ -86,6 +112,31 @@ public class FacultyController {
       return ResponseEntity.noContent().build();
     }
     return ResponseEntity.ok(faculties);
+  }
+
+  @Operation(summary = "Получение всех факультетов")
+  @GetMapping("/getAllFaculties")
+  public ResponseEntity<List<Faculty>> getAllFaculties() {
+    if (facultyService.getAllFaculties().isEmpty()) {
+      logger.warn("Факультеты не найдены");
+      return ResponseEntity.noContent().build();
+    } else {
+      logger.info("Запрос на получение всех факультетов");
+      return ResponseEntity.ok(facultyService.getAllFaculties());
+    }
+  }
+
+  @Operation(summary = "Удаление факультета по ID")
+  @GetMapping("/deleteFacultyById")
+  public ResponseEntity<String> deleteFacultyById(@NotNull@RequestParam Long id) {
+    if (facultyService.getFacultyById(id).isEmpty()) {
+      logger.warn("Факультет с ID {} не найден", id);
+      return ResponseEntity.notFound().build();
+    } else {
+      facultyService.deleteFacultyById(id);
+      logger.info("Факультет с ID {} успешно удален", id);
+    }
+    return ResponseEntity.ok("Факультет успешно удален");
   }
 
   @ExceptionHandler(IllegalStateException.class)
