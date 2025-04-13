@@ -47,7 +47,7 @@ public class StudentController {
 
   @Operation(summary = "Получение студента по ID")
   @GetMapping("/{id}")
-  public ResponseEntity <Optional<Student>> getStudent(@PathVariable Long id) {
+  public ResponseEntity <Optional<Student>>  getStudentById(@PathVariable("id") Long id) {
     if (studentService.getStudentById(id).isEmpty()) {
       return ResponseEntity.notFound().build();
     }

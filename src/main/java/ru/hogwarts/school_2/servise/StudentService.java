@@ -64,7 +64,7 @@ public class StudentService {
     return studentRepositories.findByAge(age);
   }
 
-  // Получение студентов по id
+  // Получение студента по id
   public Optional<Student> getStudentById(Long id) {
     return studentRepositories.findById(id);
   }
