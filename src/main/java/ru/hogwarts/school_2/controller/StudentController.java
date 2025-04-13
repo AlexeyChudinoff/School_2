@@ -75,7 +75,7 @@ public class StudentController {
 
   @Operation(summary = "Получить студентов по возрасту")
   @GetMapping("/by-age/{age}")
-    public ResponseEntity<List<StudentDTO>> getStudentsByAge
+  public ResponseEntity<List<StudentDTO>> getStudentsByAge
       (@PathVariable int age) {
     if (age < 0) {
       return ResponseEntity.badRequest().build();
@@ -115,10 +115,24 @@ public class StudentController {
 
   @Operation(summary = "Получить студентов в возрастном диапазоне от и до")
   @GetMapping("/age-range")
-  public List<Student> getStudentsByAgeRange(
+  public ResponseEntity<List<StudentDTO>> getStudentsByAgeRange(
       @RequestParam int minAge,
       @RequestParam int maxAge) {
-    return studentService.getStudentsByAgeRange(minAge, maxAge);
+    if (minAge < 0 || maxAge < 0) {
+      throw new IllegalArgumentException("Возраст не может быть отрицательным");
+    }
+    if (minAge > maxAge) {
+      throw new IllegalArgumentException("Минимальный возраст не может превышать максимальный");
+    }
+    if (studentService.getStudentsByAgeRange(minAge, maxAge).isEmpty()) {
+      return ResponseEntity.noContent().build();
+    } else {
+      List<Student> students = studentService.getStudentsByAgeRange(minAge, maxAge);
+      List<StudentDTO> studentDTOS = students.stream()
+          .map(student -> StudentDTO.StudentDtoFromStudent(student))
+          .collect(Collectors.toList());
+      return ResponseEntity.ok(studentDTOS);
+    }
   }
 
   @Operation(summary = "Удаление студента по id")

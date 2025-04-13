@@ -1,7 +1,5 @@
 package ru.hogwarts.school_2.servise;
 
-import static ru.hogwarts.school_2.dto.StudentDTO.StudentDtoFromStudent;
-
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +32,8 @@ public class StudentService {
   // Создание/добавление студента
   public Student addStudent(StudentDTO studentDTO) {
     if (studentRepositories.findByNameIgnoreCase(studentDTO.getName()).isEmpty()) {
-      Student student = new Student(studentDTO.getName(), studentDTO.getAge(), studentDTO.getGender());
+      Student student = new Student(studentDTO.getName(), studentDTO.getAge(),
+          studentDTO.getGender());
       if (studentDTO.getFacultyId() != null) {
         facultyRepositories.findById(studentDTO.getFacultyId()).ifPresent(student::setFaculty);
       }
@@ -46,13 +45,14 @@ public class StudentService {
 
   // Обновление студента
   public Student updateStudent(Long id, StudentDTO studentDTO) {
-   studentRepositories.findById(id).orElseThrow(() -> new IllegalStateException("Студент не найден"));
-   Student student = studentRepositories.findById(id).orElse(null);
-   student.setName(studentDTO.getName());
-   student.setAge(studentDTO.getAge());
-   student.setGender(studentDTO.getGender());
-   student.setFaculty(facultyRepositories.findById(studentDTO.getFacultyId()).orElse(null));
-   return studentRepositories.save(student);
+    studentRepositories.findById(id)
+        .orElseThrow(() -> new IllegalStateException("Студент не найден"));
+    Student student = studentRepositories.findById(id).orElse(null);
+    student.setName(studentDTO.getName());
+    student.setAge(studentDTO.getAge());
+    student.setGender(studentDTO.getGender());
+    student.setFaculty(facultyRepositories.findById(studentDTO.getFacultyId()).orElse(null));
+    return studentRepositories.save(student);
 
   }
 
@@ -81,6 +81,7 @@ public class StudentService {
   public List<Student> getStudentsByAgeRange(int minAge, int maxAge) {
     return studentRepositories.findByAgeBetween(minAge, maxAge);
   }
+
 
   // Получение всех студентов
   public List<StudentDTO> getAllStudents() {
