@@ -103,16 +103,6 @@ public class StudentController {
     return ResponseEntity.ok(studentService.getAllStudents());
   }
 
-  @Operation(summary = "Получить студентов по ID факультета")
-  @GetMapping("/getStudentsByFacultyID")
-  public List<Student> getStudentsByFacultyID(@RequestParam Long facultyID) {
-    if (studentService.getStudentsByFaculty(facultyID) != null) {
-      return studentService.getStudentsByFaculty(facultyID);
-    } else {
-      return null;
-    }
-  }
-
   @Operation(summary = "Получить студентов в возрастном диапазоне от и до")
   @GetMapping("/age-range")
   public ResponseEntity<List<StudentDTO>> getStudentsByAgeRange(
@@ -134,6 +124,22 @@ public class StudentController {
       return ResponseEntity.ok(studentDTOS);
     }
   }
+
+  @Operation(summary = "Получить студентов по ID факультета")
+  @GetMapping("/getStudentsByFacultyID")
+  ResponseEntity<List<StudentDTO>> getStudentsByFacultyID(
+      @RequestParam Long facultyID) {
+    if (facultyService.getFacultyById(facultyID).isEmpty()) {
+      return ResponseEntity.notFound().build();
+    } else {
+      List<Student> students = studentService.getStudentsByFaculty(facultyID);
+      List<StudentDTO> studentDTOS = students.stream()
+          .map(student -> StudentDTO.StudentDtoFromStudent(student))
+          .collect(Collectors.toList());
+      return ResponseEntity.ok(studentDTOS);
+    }
+  }
+
 
   @Operation(summary = "Удаление студента по id")
   @DeleteMapping("/{id}")
