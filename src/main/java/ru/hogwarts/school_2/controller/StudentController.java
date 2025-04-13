@@ -1,5 +1,7 @@
 package ru.hogwarts.school_2.controller;
 
+import static ru.hogwarts.school_2.dto.StudentDTO.StudentDtoFromStudent;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,12 +49,17 @@ public class StudentController {
 
   @Operation(summary = "Получение студента по ID")
   @GetMapping("/{id}")
-  public ResponseEntity <Optional<Student>>  getStudentById(@PathVariable("id") Long id) {
-    if (studentService.getStudentById(id).isEmpty()) {
-      return ResponseEntity.notFound().build();
+  public ResponseEntity <StudentDTO> getStudentById
+      (@PathVariable Long id) {
+    Optional<Student> student = studentService.getStudentById(id);
+    if (student.isEmpty()) {
+      return ResponseEntity.notFound().build(); // Возвращаем 404 Not Found
     }
-    return ResponseEntity.ok(studentService.getStudentById(id));
+    Student student1 = student.get();
+    StudentDTO studentDTO = StudentDtoFromStudent(student1);
+    return ResponseEntity.ok(studentDTO);
   }
+
 
   @Operation(summary = "Получить студентов по возрасту")
   @GetMapping("/getStudentByAge")
