@@ -11,30 +11,42 @@ public class StudentDTO {
   private String gender;
   private Long facultyId; // только ID факультета
 
-//  public StudentDTO(Long id, String name, int age, String gender, Long facultyId) {
-//    this.age = age;
-//    this.facultyId = facultyId;
-//    this.id = id;
-//    this.name = name;
-//    if (gender.equals("м") || gender.equals("ж")) {
-//      this.gender = gender;
-//    } else {
-//      throw new IllegalArgumentException("Gender must be м - male or ж - female");
-//    }
-//  }
+  public StudentDTO(Long id, String name, int age, String gender, Long facultyId) {
+    this.age = age;
+    this.facultyId = facultyId;
+    this.id = id;
+    this.name = name;
+    if (gender.equals("м") || gender.equals("ж")) {
+      this.gender = gender;
+    } else {
+      throw new IllegalArgumentException("Gender must be м - male or ж - female");
+    }
+  }
+
+  public StudentDTO() {
+  }
 
   public static StudentDTO StudentDtoFromStudent(Student student) {
     if (student == null) {
       return null;
     }
-    StudentDTO studentDTO = new StudentDTO();
-    studentDTO.setId(student.getId());
-    studentDTO.setName(student.getName());
-    studentDTO.setAge(student.getAge());
-    studentDTO.setGender(student.getGender());
-    studentDTO.setFacultyId(student.getFaculty().getId());
- return studentDTO;
+    return new StudentDTO(
+        student.getId(),
+        student.getName(),
+        student.getAge(),
+        student.getGender(),
+        student.getFaculty() != null ? student.getFaculty().getId() : null
+    );
   }
+//    StudentDTO studentDTO = new StudentDTO();
+//
+//    studentDTO.setId(student.getId());
+//    studentDTO.setName(student.getName());
+//    studentDTO.setAge(student.getAge());
+//    studentDTO.setGender(student.getGender());
+//    studentDTO.setFacultyId(student.getFaculty().getId());
+//    return studentDTO;
+//  }
 
   public Long getId() {
     return id;
