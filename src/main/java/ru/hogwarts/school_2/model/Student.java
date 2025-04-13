@@ -22,6 +22,7 @@ public class Student {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "faculty_id")
+  //@JsonIgnore // не будет включать faculty в JSON
   private Faculty faculty;
 
   public void setFaculty(Faculty faculty) {
@@ -32,18 +33,17 @@ public class Student {
   }
 
   public Student(String name, int age, String gender) {
-    this.id = id;
     this.name = name;
     this.age = age;
-    if (gender.equals("m") || gender.equals("f")) {
-      this.gender = gender;
-    } else {
-      throw new IllegalArgumentException("Gender must be m - male or f - female");
-    }
+    this.gender = gender;
   }
 
-  public Faculty getFaculty() {return faculty;}
-  public void setFaculty(long facultyId) {}
+  public Faculty getFaculty() {
+    return faculty;
+  }
+
+  public void setFaculty(long facultyId) {
+  }
 
   public void setGender(String gender) {
     this.gender = gender;

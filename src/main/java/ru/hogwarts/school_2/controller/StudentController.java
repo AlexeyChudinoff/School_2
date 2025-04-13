@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.hogwarts.school_2.dto.StudentDTO;
 import ru.hogwarts.school_2.model.Student;
 import ru.hogwarts.school_2.servise.FacultyService;
 import ru.hogwarts.school_2.servise.StudentService;
@@ -26,19 +27,31 @@ public class StudentController {
 
   @Operation(summary = "Добавление/создание студента")
   @PostMapping("/addStudent")
-  public void addStudent(@RequestBody Student student) {
-    studentService.addStudent(student);
+  public ResponseEntity<Student> addStudent(@RequestBody StudentDTO studentDTO) {
+    try {
+      Student student = studentService.addStudent(studentDTO);
+      return ResponseEntity.ok(student);
+    } catch (IllegalStateException e) {
+      return ResponseEntity.badRequest().build();
+    }
   }
+
   @Operation(summary = "Обновление данных студента")
   @PutMapping("/updateStudent{id}")
-  public Student updateStudent(@PathVariable Long id, @RequestBody Student student) {
-    return studentService.updateStudent(id, student);
+  public ResponseEntity<Student> updateStudent(@PathVariable Long id, @RequestBody StudentDTO studentDTO) {
+    if (studentService.getStudentById(id).isEmpty()) {
+      return ResponseEntity.notFound().build();
+    }
+    return ResponseEntity.ok(studentService.updateStudent(id, studentDTO));
   }
 
   @Operation(summary = "Получение студента по ID")
   @GetMapping("/{id}")
-  public Optional<Student> getStudent(@PathVariable Long id) {
-    return studentService.getStudentById(id);
+  public ResponseEntity <Optional<Student>> getStudent(@PathVariable Long id) {
+    if (studentService.getStudentById(id).isEmpty()) {
+      return ResponseEntity.notFound().build();
+    }
+    return ResponseEntity.ok(studentService.getStudentById(id));
   }
 
   @Operation(summary = "Получить студентов по возрасту")
@@ -49,7 +62,7 @@ public class StudentController {
 
   @Operation(summary = "Получить всех студентов")
   @GetMapping("/getAllStudents")
-  public ResponseEntity <List<Student>> getAllStudents() {
+  public ResponseEntity <List<StudentDTO>> getAllStudents() {
     if (studentService.getAllStudents().isEmpty()) {
       return ResponseEntity.noContent().build();
     }

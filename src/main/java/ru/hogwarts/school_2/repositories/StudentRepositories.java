@@ -14,7 +14,7 @@ public interface StudentRepositories extends JpaRepository<Student, Long> {
   Optional<Student> findByNameAndAge(String name, int age);
 
   // Для не уникальных запросов (возвращает List)
-  List<Student> findByName(String name);
+  List<Student> findByNameIgnoreCase(String name);
 
   List<Student> findByAge(int age);
 

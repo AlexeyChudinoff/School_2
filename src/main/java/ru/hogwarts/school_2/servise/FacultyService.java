@@ -1,6 +1,7 @@
 package ru.hogwarts.school_2.servise;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -12,6 +13,7 @@ import ru.hogwarts.school_2.model.Faculty;
 import ru.hogwarts.school_2.repositories.FacultyRepositories;
 
 @Service
+@Transactional
 public class FacultyService {
 
   private FacultyRepositories facultyRepositories;
