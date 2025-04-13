@@ -32,7 +32,7 @@ public class FacultyService {
   //Добавить/создать факультет
   public Faculty addFaculty(Faculty faculty) {
     if (facultyRepositories.findByNameIgnoreCase
-        (faculty.getName()) == null) {
+        (faculty.getName()).isEmpty()) {
       return facultyRepositories.save(faculty);
     } else {
       throw new IllegalStateException("Факультет с таким названием"
@@ -79,8 +79,8 @@ public class FacultyService {
   }
 
   //поиск по имени
-  public Faculty getFacultyByName(String name) {
-    if (facultyRepositories.findByNameIgnoreCase(name) != null) {
+  public Optional<Faculty> getFacultyByName(String name) {
+    if (facultyRepositories.findByNameIgnoreCase(name).isPresent()) {
       return facultyRepositories.findByNameIgnoreCase(name);
     } else {
       throw new IllegalStateException("Факультет с таким названием"

@@ -3,6 +3,7 @@ package ru.hogwarts.school_2.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school_2.model.Student;
 import ru.hogwarts.school_2.servise.FacultyService;
@@ -48,9 +49,18 @@ public class StudentController {
 
   @Operation(summary = "Получить всех студентов")
   @GetMapping("/getAllStudents")
-  public List<Student> getAllStudents() {
-    if (studentService.getAllStudents() != null) {
-      return studentService.getAllStudents();
+  public ResponseEntity <List<Student>> getAllStudents() {
+    if (studentService.getAllStudents().isEmpty()) {
+      return ResponseEntity.noContent().build();
+    }
+       return ResponseEntity.ok(studentService.getAllStudents());
+  }
+
+  @Operation(summary = "Получить студентов по ID факультета")
+  @GetMapping("/getStudentsByFacultyID")
+  public List<Student> getStudentsByFacultyID(@RequestParam Long facultyID) {
+    if (studentService.getStudentsByFaculty(facultyID) != null) {
+      return studentService.getStudentsByFaculty(facultyID);
     } else {
       return null;
     }

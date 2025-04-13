@@ -79,7 +79,7 @@ public class FacultyController {
   public ResponseEntity <Optional<Faculty>> getFacultyByName(
       @RequestParam("name") @NotBlank String name) {
     logger.info("Запрос на получение факультета по имени: {}", name);
-    Optional<Faculty> faculty = Optional.ofNullable(facultyService.getFacultyByName(name));
+    Optional<Faculty> faculty = facultyService.getFacultyByName(name);
        if (faculty.isEmpty()){
       logger.warn("Факультет с именем {} не найден", name);
       return ResponseEntity.notFound().build();

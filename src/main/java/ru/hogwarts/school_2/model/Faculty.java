@@ -25,6 +25,8 @@ public class Faculty {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Setter
+  @Getter
   @NotBlank(message = "Название не может быть пустым")
   @Size(min = 2, max = 50, message = "Название должно быть от 2 до 50 символов")
   private String name;
@@ -44,14 +46,6 @@ public class Faculty {
   public Faculty(String name, String color) {
     this.name = name;
     this.color = color;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
   }
 
   @Override

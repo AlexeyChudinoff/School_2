@@ -26,6 +26,8 @@ public interface StudentRepositories extends JpaRepository<Student, Long> {
 
   List<Student> getAllByFaculty_Id(Long facultyId);
 
+//  List<Student> findAll ();
+
   // Стандартные методы JpaRepository:
   // save(), deleteById(), findAll() и другие уже включены автоматически
 }
