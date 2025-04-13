@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -114,6 +115,20 @@ public class FacultyController {
     return ResponseEntity.ok(faculties);
   }
 
+  @Operation(summary = "Получение факультета по ID студента")
+  @GetMapping("/getFacultyByStudentId")
+  public ResponseEntity<Faculty> getFacultyByStudentId(@RequestParam @NotNull Long id) {
+    logger.info("Запрос на получение факультета по ID студента: {}", id);
+    if (studentService.getStudentById(id).isEmpty()) {
+      logger.warn("Студент с ID {} не найден", id);
+      return ResponseEntity.notFound().build();
+    } else {
+      Faculty faculty = facultyService.getFacultyByStudentId(id);
+      logger.info("Факультет студента с ID {} получен: {}", id, faculty.getName());
+      return ResponseEntity.ok(faculty);
+    }
+  }
+
   @Operation(summary = "Получение всех факультетов")
   @GetMapping("/getAllFaculties")
   public ResponseEntity<List<Faculty>> getAllFaculties() {
@@ -127,7 +142,7 @@ public class FacultyController {
   }
 
   @Operation(summary = "Удаление факультета по ID")
-  @GetMapping("/deleteFacultyById")
+  @DeleteMapping("/deleteFacultyById")
   public ResponseEntity<String> deleteFacultyById(@NotNull@RequestParam Long id) {
     if (facultyService.getFacultyById(id).isEmpty()) {
       logger.warn("Факультет с ID {} не найден", id);

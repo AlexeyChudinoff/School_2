@@ -88,7 +88,7 @@ public class FacultyService {
     }
   }
 
-  //поиск поиск цвету
+  //поиск цвету
   public Faculty getFacultyByColor(String color) {
     if (facultyRepositories.findByColorIgnoreCase(color) != null) {
       return facultyRepositories.findByColorIgnoreCase(color);
@@ -96,6 +96,15 @@ public class FacultyService {
       throw new IllegalStateException("Факультет с таким названием"
           + " не существует");
     }
+  }
+
+  public Faculty getFacultyByStudentId(long id) {
+    if (studentService.getStudentById(id).isPresent()) {
+      return facultyRepositories.findById(studentService.getStudentById(id)
+          .get().getFaculty().getId()).get();
+    } else {
+      throw new IllegalStateException("Студент с таким id не существует");
+  }
   }
 
   //получение всех факультетов

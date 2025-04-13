@@ -1,6 +1,5 @@
 package ru.hogwarts.school_2.servise;
 
-import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +29,7 @@ public class StudentService {
     return studentRepositories.save(student);
   }
 
-//Поиск студента по части имени игнорируя регистр
+  //Поиск студента по части имени игнорируя регистр
   public List<Student> findByNameContainingIgnoreCase(String name) {
     return studentRepositories.findByNameContainingIgnoreCase(name);
   }
@@ -44,6 +43,12 @@ public class StudentService {
   public Optional<Student> getStudentById(Long id) {
     return studentRepositories.findById(id);
   }
+
+  //получение всех студентов по ID факульта
+  public List<Student> getStudentsByFaculty(Long facultyId) {
+    return studentRepositories.getAllByFaculty_Id(facultyId);
+  }
+
 
   // Получение студентов по возрастному диапазону
   public List<Student> getStudentsByAgeRange(int minAge, int maxAge) {
@@ -65,10 +70,12 @@ public class StudentService {
   public void deleteStudent(Long id) {
     studentRepositories.deleteById(id);
   }
+
   //удалить всех студентов факультета
   public void deleteAllStudentsFromFaculty(Long facultyId) {
     if (facultyRepositories.existsById(facultyId)) {
       studentRepositories.deleteAllByFaculty_Id(facultyId);
-  }}
+    }
+  }
 
 }//

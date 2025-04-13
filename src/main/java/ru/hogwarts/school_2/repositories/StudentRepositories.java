@@ -22,8 +22,9 @@ public interface StudentRepositories extends JpaRepository<Student, Long> {
 
   List<Student> findByNameContainingIgnoreCase(String name);
 
-  List<Student> deleteAllByFaculty_Id(Long facultyId); // О(Long facultyId);
+  List<Student> deleteAllByFaculty_Id(Long facultyId);
 
+  List<Student> getAllByFaculty_Id(Long facultyId);
 
   // Стандартные методы JpaRepository:
   // save(), deleteById(), findAll() и другие уже включены автоматически

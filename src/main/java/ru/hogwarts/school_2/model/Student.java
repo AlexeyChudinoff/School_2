@@ -22,7 +22,11 @@ public class Student {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "faculty_id")
-  private Faculty faculty;  // Ссылка на факультет
+  private Faculty faculty;
+
+  public void setFaculty(Faculty faculty) {
+    this.faculty = faculty;
+  }
 
   public Student() {
   }
@@ -38,7 +42,8 @@ public class Student {
     }
   }
 
-
+  public Faculty getFaculty() {return faculty;}
+  public void setFaculty(long facultyId) {}
 
   public void setGender(String gender) {
     this.gender = gender;
@@ -100,5 +105,6 @@ public class Student {
         '}';
 
   }
+
 
 }//class

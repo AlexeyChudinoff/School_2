@@ -13,10 +13,14 @@ import jakarta.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 public class Faculty {
 
+  @Setter //что бы не писать сеттеры , lombok
+  @Getter//что бы не писать геттеры, lombok
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -25,6 +29,8 @@ public class Faculty {
   @Size(min = 2, max = 50, message = "Название должно быть от 2 до 50 символов")
   private String name;
 
+  @Setter
+  @Getter
   @NotBlank(message = "Цвет не может быть пустым")
   @Size(min = 2, max = 30, message = "Цвет должен быть от 2 до 30 символов")
   private String color;
@@ -32,29 +38,12 @@ public class Faculty {
   @OneToMany(mappedBy = "faculty", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private List<Student> students = new ArrayList<>();  // Должно быть множественным числом и коллекцией
 
-
   public Faculty() {
   }
 
   public Faculty(String name, String color) {
     this.name = name;
     this.color = color;
-  }
-
-  public String getColor() {
-    return color;
-  }
-
-  public void setColor(String color) {
-    this.color = color;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
   }
 
   public String getName() {
