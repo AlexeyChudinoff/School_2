@@ -2,6 +2,8 @@ package ru.hogwarts.school_2.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.hogwarts.school_2.dto.FacultyDTO;
 import ru.hogwarts.school_2.model.Faculty;
 import ru.hogwarts.school_2.servise.FacultyService;
 import ru.hogwarts.school_2.servise.StudentService;
@@ -30,6 +33,7 @@ import ru.hogwarts.school_2.servise.StudentService;
 @Tag(name = "Faculty API", description = "Управление факультетами")
 @RequestMapping("/faculty")
 @Validated
+@Transactional(readOnly = true)
 public class FacultyController {
 
   private final FacultyService facultyService;
@@ -117,15 +121,19 @@ public class FacultyController {
 
   @Operation(summary = "Получение факультета по ID студента")
   @GetMapping("/getFacultyByStudentId")
-  public ResponseEntity<Faculty> getFacultyByStudentId(@RequestParam @NotNull Long id) {
+  public ResponseEntity<FacultyDTO> getFacultyByStudentId(
+      @RequestParam @NotNull Long id) {
     logger.info("Запрос на получение факультета по ID студента: {}", id);
-    if (studentService.getStudentById(id).isEmpty()) {
+    try {
+      FacultyDTO facultyDTO = facultyService.getFacultyByStudentId(id);
+      logger.info("Факультет студента с ID {} получен: {}", id, facultyDTO.getName());
+      return ResponseEntity.ok(facultyDTO);
+    } catch (EntityNotFoundException e) {
       logger.warn("Студент с ID {} не найден", id);
       return ResponseEntity.notFound().build();
-    } else {
-      Faculty faculty = facultyService.getFacultyByStudentId(id);
-      logger.info("Факультет студента с ID {} получен: {}", id, faculty.getName());
-      return ResponseEntity.ok(faculty);
+    } catch (IllegalStateException e) {
+      logger.warn("У студента с ID {} нет факультета", id);
+      return ResponseEntity.badRequest().body(new FacultyDTO(null, "N/A", "N/A"));
     }
   }
 

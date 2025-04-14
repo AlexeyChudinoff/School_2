@@ -12,6 +12,8 @@ public class Avatar {
   public Long id;
   public String url;
 
+  public Avatar() {}
+
   public Avatar(String url) {}
 
 

@@ -40,7 +40,7 @@ public class Faculty {
   @OneToMany(mappedBy = "faculty", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private List<Student> students = new ArrayList<>();  // Должно быть множественным числом и коллекцией
 
-  public Faculty() {
+  public Faculty() {//хибернет умеет работать только через пустой конструктор
   }
 
   public Faculty(String name, String color) {

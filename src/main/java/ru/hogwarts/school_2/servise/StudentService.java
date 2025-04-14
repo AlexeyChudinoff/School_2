@@ -1,6 +1,6 @@
 package ru.hogwarts.school_2.servise;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -12,7 +12,7 @@ import ru.hogwarts.school_2.repositories.FacultyRepositories;
 import ru.hogwarts.school_2.repositories.StudentRepositories;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class StudentService {
 
   private StudentRepositories studentRepositories;

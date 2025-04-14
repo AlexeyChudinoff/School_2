@@ -4,6 +4,7 @@ import static ru.hogwarts.school_2.dto.StudentDTO.StudentDtoFromStudent;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,6 +27,7 @@ import ru.hogwarts.school_2.servise.StudentService;
 @RestController
 @Tag(name = "Student API", description = "Управление студентами")
 @RequestMapping("/student")
+@Transactional(readOnly = true)
 public class StudentController {
 
   StudentService studentService;
