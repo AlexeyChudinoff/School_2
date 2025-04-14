@@ -1,13 +1,12 @@
 
-package ru.hogwarts.school_2.repositories;
+package ru.hogwarts.school_2.repository;
 
-import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import ru.hogwarts.school_2.model.Student;
 
-public interface StudentRepositories extends JpaRepository<Student, Long> {
+public interface StudentRepository extends JpaRepository<Student, Long> {
 
   // Для уникальных запросов (возвращает Optional)
   Optional<Student> findById(Long id);
@@ -25,7 +24,7 @@ public interface StudentRepositories extends JpaRepository<Student, Long> {
 
   List<Student> deleteAllByFaculty_Id(Long facultyId);
 
-  List<Student> getAllByFaculty_Id(Long facultyId);
+  List<Student> findAllByFaculty_Id(Long facultyId);
 
 //  List<Student> findAll ();
 
