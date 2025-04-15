@@ -1,5 +1,6 @@
 package ru.hogwarts.school_2.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -12,8 +13,6 @@ import java.util.Objects;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @ToString(exclude = "students")
 public class Faculty {
 
@@ -32,7 +31,15 @@ public class Faculty {
   private String color;
 
   @OneToMany(mappedBy = "faculty", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+  @JsonIgnore
   private List<Student> students = new ArrayList<>();
+
+  public Faculty() {//хибернет умеет работать только через пустой конструктор
+  }
+  public Faculty(String name, String color) {
+    this.name = name;
+    this.color = color;
+  }
 
   @Override
   public boolean equals(Object o) {

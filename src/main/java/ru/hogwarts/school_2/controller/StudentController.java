@@ -3,6 +3,7 @@ package ru.hogwarts.school_2.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school_2.dto.StudentDTO;
 import ru.hogwarts.school_2.service.StudentService;
@@ -12,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/students")
 @Tag(name = "Student API", description = "Управление студентами")
+@Transactional
 public class StudentController {
 
   private final StudentService studentService;

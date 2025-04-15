@@ -1,15 +1,15 @@
 package ru.hogwarts.school_2.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Objects;
+import ru.hogwarts.school_2.repository.FacultyRepository;
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @ToString(exclude = "faculty")
 public class Student {
 
@@ -28,7 +28,17 @@ public class Student {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "faculty_id")
-  private Faculty faculty;
+   private Faculty faculty;
+
+  public Student() {
+  }
+
+  public Student(String name, Integer age, String gender) {
+    this.name = name;
+    this.age = age;
+    this.gender = gender;
+
+  }
 
   @Override
   public boolean equals(Object o) {

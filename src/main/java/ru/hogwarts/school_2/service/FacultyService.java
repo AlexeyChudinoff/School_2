@@ -31,6 +31,7 @@ public class FacultyService {
     return facultyRepository.save(faculty);
   }
 
+
   //обновление факультета
   @Transactional
   public Faculty updateFaculty(Faculty faculty) {
@@ -80,6 +81,10 @@ public class FacultyService {
   public List<Faculty> getAllFaculties() {
     return facultyRepository.findAll();
   }
+  //  //получение всех факультетов
+//  public List<Faculty> getAllFaculties() {
+//    return facultyRepositories.findAll();
+//  }
 
   //получение факультета по ID студента
   public FacultyDTO getFacultyByStudentId(Long id) {
