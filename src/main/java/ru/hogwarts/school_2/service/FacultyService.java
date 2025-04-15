@@ -12,14 +12,17 @@ import ru.hogwarts.school_2.dto.FacultyDTO;
 import ru.hogwarts.school_2.dto.StudentDTO;
 import ru.hogwarts.school_2.model.Faculty;
 import ru.hogwarts.school_2.repository.FacultyRepository;
+import ru.hogwarts.school_2.repository.StudentRepository;
 
 @Service
 @RequiredArgsConstructor
 public class FacultyService {
 
   private final FacultyRepository facultyRepository;
-  private final StudentService studentService;
+  private final StudentRepository studentRepository;
   private static final Logger logger = LoggerFactory.getLogger(FacultyService.class);
+  private StudentService studentService;
+
 
   //добавление факультета
   @Transactional
@@ -91,8 +94,8 @@ public class FacultyService {
     logger.debug("Получение факультета по ID студента: {}", id);
 
     // Получаем StudentDTO через сервис
-    StudentDTO studentDTO = studentService.getStudentById(id)
-        .orElseThrow(() -> new EntityNotFoundException("Студент с ID " + id + " не найден"));
+    StudentDTO studentDTO = StudentDTO.fromStudent(studentService.getStudentById(id)
+        .orElseThrow(() -> new EntityNotFoundException("Студент с ID " + id + " не найден")));
 
     // Проверяем, что у студента есть факультет
     if (studentDTO.getFacultyId() == null) {

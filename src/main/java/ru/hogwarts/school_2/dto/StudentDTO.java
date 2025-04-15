@@ -33,23 +33,24 @@ public class StudentDTO {
   @Schema(description = "ID факультета", example = "1")
   private Long facultyId;
 
+
+
   public static StudentDTO fromStudent(Student student) {
     if (student == null) {
       return null;
     }
-
     StudentDTO dto = new StudentDTO();
     dto.setId(student.getId());
     dto.setName(student.getName());
     dto.setAge(student.getAge());
     dto.setGender(student.getGender());
-
     if (student.getFaculty() != null) {
       dto.setFacultyId(student.getFaculty().getId());
     }
-
     return dto;
   }
+
+
 
 
 }

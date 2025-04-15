@@ -2,10 +2,13 @@ package ru.hogwarts.school_2.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school_2.dto.StudentDTO;
+import ru.hogwarts.school_2.model.Student;
 import ru.hogwarts.school_2.service.StudentService;
 
 import java.util.List;
@@ -24,33 +27,26 @@ public class StudentController {
 
   @PostMapping
   @Operation(summary = "Добавить нового студента")
-  public ResponseEntity<StudentDTO> addStudent(@RequestBody StudentDTO studentDTO) {
-    return ResponseEntity.ok(studentService.addStudent(studentDTO));
+  public ResponseEntity<StudentDTO> addStudent
+      (@RequestBody StudentDTO studentDTO, @RequestParam Long facultyId) {
+    if (studentService.getFacultyById(facultyId).isEmpty()) {
+      return ResponseEntity.notFound().build();//"Факультет с таким ID не найден."
+    }
+    StudentDTO savedStudent = StudentDTO.fromStudent(
+        studentService.addStudent(studentDTO, facultyId));
+    return ResponseEntity.ok(savedStudent);
   }
 
   @PutMapping("/{id}")
   @Operation(summary = "Обновить данные студента")
-  public ResponseEntity<StudentDTO> updateStudent(
-      @PathVariable Long id,
-      @RequestBody StudentDTO studentDTO) {
-    return ResponseEntity.ok(studentService.updateStudent(id, studentDTO));
-  }
-
-  @GetMapping("/{id}")
-  @Operation(summary = "Получить студента по ID")
-  public ResponseEntity<StudentDTO> getStudent(@PathVariable Long id) {
-    return studentService.getStudentById(id)
-        .map(ResponseEntity::ok)
-        .orElse(ResponseEntity.notFound().build());
-  }
-
-  @GetMapping("/age/{age}")
-  @Operation(summary = "Получить студентов по возрасту")
-  public ResponseEntity<List<StudentDTO>> getStudentsByAge(@PathVariable int age) {
-    List<StudentDTO> students = studentService.getStudentByAge(age);
-    return students.isEmpty() ?
-        ResponseEntity.noContent().build() :
-        ResponseEntity.ok(students);
+  public ResponseEntity<StudentDTO> updateStudent
+      (@PathVariable Long id, @RequestBody StudentDTO studentDTO) {
+    if (studentService.getStudentById(id).isEmpty()) {
+      return ResponseEntity.notFound().build();//"Студент с таким ID не найден."
+    }
+    StudentDTO updateStudent = StudentDTO.fromStudent(
+        studentService.updateStudent(studentDTO));
+    return ResponseEntity.ok(updateStudent);
   }
 
   @GetMapping
@@ -62,35 +58,103 @@ public class StudentController {
         ResponseEntity.ok(students);
   }
 
-  @GetMapping("/age-range")
-  @Operation(summary = "Получить студентов по возрастному диапазону")
-  public ResponseEntity<List<StudentDTO>> getStudentsByAgeRange(
-      @RequestParam int minAge,
-      @RequestParam int maxAge) {
-    List<StudentDTO> students = studentService.getStudentsByAgeRange(minAge, maxAge);
-    return students.isEmpty() ?
-        ResponseEntity.noContent().build() :
-        ResponseEntity.ok(students);
+  @GetMapping("/{id}")
+  @Operation(summary = "Получить студента по ID")
+  public ResponseEntity<StudentDTO> getStudentById
+      (@PathVariable Long id) {
+    if (studentService.getStudentById(id).isEmpty()) {
+      return ResponseEntity.notFound().build();//"Студент с таким ID не найден."
+    }
+    StudentDTO findStudent = StudentDTO.fromStudent(studentService.getStudentById(id).get());
+    return ResponseEntity.ok(findStudent);
   }
 
-  @GetMapping("/faculty/{facultyId}")
-  @Operation(summary = "Получить студентов факультета")
-  public ResponseEntity<List<StudentDTO>> getStudentsByFaculty(
-      @PathVariable Long facultyId) {
-    List<StudentDTO> students = studentService.getStudentsByFaculty(facultyId);
-    return students.isEmpty() ?
-        ResponseEntity.noContent().build() :
-        ResponseEntity.ok(students);
+  @Operation(summary = "Получить студента по имени")
+  @GetMapping("/by-name/{name}")
+  public ResponseEntity<StudentDTO> getStudentByName(
+      @PathVariable String name) {
+    if (studentService.findByNameContainingIgnoreCase(name).isEmpty()) {
+      return ResponseEntity.notFound().build();//"Студент с таким именем не найден."
+    }
+    StudentDTO findStudent = StudentDTO.fromStudent(
+        (Student) studentService.findByNameContainingIgnoreCase(name));
+    return ResponseEntity.ok(findStudent);
   }
 
-  @DeleteMapping("/{id}")
-  @Operation(summary = "Удалить студента")
-  public ResponseEntity<Void> deleteStudent(@PathVariable Long id) {
-    studentService.deleteStudent(id);
-    return ResponseEntity.noContent().build();
+  @GetMapping("/by-age/{age}")
+  @Operation(summary = "Получить список студентов одного возраста")
+  public ResponseEntity<List<StudentDTO>> getStudentsByAge
+      (@PathVariable int age) {
+    if (age < 0) {
+      return ResponseEntity.badRequest().build();
+    }
+    if (age > 100) {
+      return ResponseEntity.badRequest().build();
+    }
+    List<Student> students = studentService.getStudentByAge(age);
+    if (students.isEmpty()) {
+      return ResponseEntity.noContent().build();
+    } else {
+      List<StudentDTO> studentDTOS = students.stream()
+          .map(student -> StudentDTO.fromStudent(student))
+          .collect(Collectors.toList());
+      return ResponseEntity.ok(studentDTOS);
+    }
   }
-}
 
+  @Operation(summary = "Получить средний возраст студентов")
+  @GetMapping("/average-age")
+  public ResponseEntity<Double> getAverageAge() {
+    Double averageAge = studentService.findAverageAge();
+    return ResponseEntity.ok(averageAge);
+  }
+
+  @Operation(summary = "Получить количество студентов факультета по ID факультета")
+  @GetMapping("/count/{id}")
+  public ResponseEntity<Integer> getCountStudents
+      (@PathVariable Long facultyId) {
+    if (studentService.getFacultyById(facultyId).isEmpty()) {
+      return ResponseEntity.notFound().build();//"Факультет с таким ID не найден."
+    }
+    Integer countStudents = studentService.getCountStudents(facultyId);
+    if (countStudents == null) {
+      return ResponseEntity.notFound()
+          .build();//"не найдены студенты в Факультете с таким ID не найден."
+    } else {
+      return ResponseEntity.ok(countStudents);
+    }
+
+  }
+
+  @Operation(summary = "Получить студентов факультета по ID факультета")
+  @GetMapping("/faculty/{Id}")
+  public ResponseEntity<List<StudentDTO>> getStudentsByFacultyId
+      (@PathVariable Long Id) {
+    if (studentService.getFacultyById(Id).isEmpty()) {
+      return ResponseEntity.notFound().build();//"Факультет с таким ID не найден."
+    }
+    List<Student> students = studentService.findAllByFaculty_Id(Id);
+    if (students.isEmpty()) {
+      return ResponseEntity.noContent().build();
+    } else {
+      List<StudentDTO> studentDTOS = students.stream()
+          .map(student -> StudentDTO.fromStudent(student))
+          .collect(Collectors.toList());
+      return ResponseEntity.ok(studentDTOS);
+    }
+  }
+
+  @Operation(summary = "Удалить студента по ID")
+  @DeleteMapping("/delete/{id}")
+  public ResponseEntity<Optional<Student>> deleteStudentById
+      (@PathVariable Long id) {
+    if (studentService.getStudentById(id).isEmpty()) {
+      return ResponseEntity.notFound().build();//"Студент с таким ID не найден."
+    }
+return ResponseEntity.ok(studentService.deleteStudentById(id));
+  }
+
+}//
 
 //package ru.hogwarts.school_2.controller;
 //

@@ -4,6 +4,7 @@ package ru.hogwarts.school_2.repository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import ru.hogwarts.school_2.model.Student;
 
 public interface StudentRepository extends JpaRepository<Student, Long> {
@@ -12,6 +13,8 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
   Optional<Student> findById(Long id);
 
   Optional<Student> findByNameAndAge(String name, int age);
+
+  Optional<Student> deleteStudentById(Long id);
 
   // Для не уникальных запросов (возвращает List)
   List<Student> findByNameIgnoreCase(String name);
@@ -25,6 +28,11 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
   List<Student> deleteAllByFaculty_Id(Long facultyId);
 
   List<Student> findAllByFaculty_Id(Long facultyId);
+
+  @Query("SELECT AVG(s.age) FROM Student s")
+  Double findAverageAge();;// средний возраст студентов
+
+  int countByFaculty_Id(Long facultyId);// количество студентов факультета
 
 //  List<Student> findAll ();
 

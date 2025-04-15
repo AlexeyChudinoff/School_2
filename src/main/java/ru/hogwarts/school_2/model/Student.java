@@ -26,8 +26,9 @@ public class Student {
   @Column(nullable = false, length = 1)
   private String gender;
 
+  //@Getter
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "faculty_id")
+  @JoinColumn(name = "faculty_id")//через что связаны студенты и факультеты
    private Faculty faculty;
 
   public Student() {
