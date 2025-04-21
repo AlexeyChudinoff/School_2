@@ -34,8 +34,8 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
   int countByFaculty_Id(Long facultyId);// количество студентов факультета
 
-//  List<Student> findAll ();
 
-  // Стандартные методы JpaRepository:
-  // save(), deleteById(), findAll() и другие уже включены автоматически
-}
+}//
+
+// Стандартные методы JpaRepository:
+// save(), deleteById(), findAll() и другие уже включены автоматически

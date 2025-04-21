@@ -84,29 +84,25 @@ public class FacultyService {
   public List<Faculty> getAllFaculties() {
     return facultyRepository.findAll();
   }
-  //  //получение всех факультетов
-//  public List<Faculty> getAllFaculties() {
-//    return facultyRepositories.findAll();
-//  }
 
-  //получение факультета по ID студента
+  //Получение факультета по ID студента
   public FacultyDTO getFacultyByStudentId(Long id) {
     logger.debug("Получение факультета по ID студента: {}", id);
 
-    // Получаем StudentDTO через сервис
+    // _Получаем StudentDTO через сервис
     StudentDTO studentDTO = StudentDTO.fromStudent(studentService.getStudentById(id)
         .orElseThrow(() -> new EntityNotFoundException("Студент с ID " + id + " не найден")));
 
-    // Проверяем, что у студента есть факультет
+    // _Проверяем, что у студента есть факультет
     if (studentDTO.getFacultyId() == null) {
       throw new IllegalStateException("У студента с ID " + id + " нет назначенного факультета");
     }
 
-    // Получаем факультет из репозитория
+    // _Получаем факультет из репозитория
     Faculty faculty = facultyRepository.findById(studentDTO.getFacultyId())
         .orElseThrow(() -> new EntityNotFoundException("Факультет не найден"));
 
-    // Создаем FacultyDTO
+    // _создаем FacultyDTO
     return new FacultyDTO(faculty.getId(), faculty.getName(), faculty.getColor());
   }
 
@@ -120,24 +116,8 @@ public class FacultyService {
     studentService.deleteAllStudentsFromFaculty(id);
     facultyRepository.deleteById(id);
   }
-}
+}//
 
-//package ru.hogwarts.school_2.service;
-//
-//import jakarta.persistence.EntityNotFoundException;
-//import java.util.Collections;
-//import java.util.List;
-//import java.util.Optional;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
-//import org.springframework.transaction.annotation.Transactional;
-//import ru.hogwarts.school_2.dto.FacultyDTO;
-//import ru.hogwarts.school_2.model.Faculty;
-//import ru.hogwarts.school_2.model.Student;
-//import ru.hogwarts.school_2.repository.FacultyRepository;
-//
 //@Service
 //@Transactional(readOnly = true)
 //public class FacultyService {

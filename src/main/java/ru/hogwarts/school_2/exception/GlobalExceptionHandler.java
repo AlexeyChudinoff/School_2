@@ -39,6 +39,14 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
   }
 
+  @ExceptionHandler(AvatarProcessingException.class)
+  public ResponseEntity<String> handleAvatarProcessingException(AvatarProcessingException ex) {
+    logger.error("Ошибка обработки аватара: {}", ex.getMessage());
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .body(ex.getMessage());
+  }
+
+
   @ExceptionHandler(Exception.class)
   public ResponseEntity<String> handleAllExceptions(Exception ex) {
     logger.error("Внутренняя ошибка сервера: {}", ex.getMessage(), ex);
