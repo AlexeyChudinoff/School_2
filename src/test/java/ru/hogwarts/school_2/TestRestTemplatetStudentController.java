@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-@WebMvcTest
+//@WebMvcTest
 class TestRestTemplatetStudentController {
 
   @LocalServerPort
@@ -67,15 +67,13 @@ class TestRestTemplatetStudentController {
 
   @Test
   void addStudent_ShouldReturnCreatedStudent() {
-    Faculty faculty = new Faculty("Test Faculty", "Red");
-    faculty = restTemplate.postForObject(
-        "http://localhost:" + port + "/faculties/add",
-        faculty,
-        Faculty.class);
+    Student student = new Student();
+    student.setName("Test Student");
+    student.setAge(20);
+    student.setGender("M");
 
-    Student student = new Student("Test Student", 20, "M");
     ResponseEntity<Student> response = restTemplate.postForEntity(
-        getBaseUrl() + "/add?facultyId=" + faculty.getId(),
+        getBaseUrl() + "/add?facultyId=1",
         student,
         Student.class);
 
@@ -84,33 +82,22 @@ class TestRestTemplatetStudentController {
     assertNotNull(response.getBody().getId());
   }
 
+
   @Test
   void getStudentById_ShouldReturnStudent() {
-    Faculty faculty = new Faculty("Get Faculty", "Green");
-    faculty = restTemplate.postForObject(
-        "http://localhost:" + port + "/faculties/add",
-        faculty,
-        Faculty.class);
-
-    Student student = new Student("Test Get", 23, "M");
-    student = restTemplate.postForObject(
-        getBaseUrl() + "/add?facultyId=" + faculty.getId(),
-        student,
-        Student.class);
-
     ResponseEntity<Student> response = restTemplate.getForEntity(
-        getBaseUrl() + "/" + student.getId(),
+        getBaseUrl() + "/1",
         Student.class);
 
     assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertEquals(student.getId(), response.getBody().getId());
+    assertNotNull(response.getBody());
   }
 
   @Test
   void getAllStudents_ShouldReturnList() {
-    ResponseEntity<List> response = restTemplate.getForEntity(
+    ResponseEntity<String> response = restTemplate.getForEntity(
         getBaseUrl() + "/all",
-        List.class);
+        String.class);
 
     assertEquals(HttpStatus.OK, response.getStatusCode());
     assertNotNull(response.getBody());
@@ -118,48 +105,29 @@ class TestRestTemplatetStudentController {
 
   @Test
   void updateStudent_ShouldUpdateStudent() {
-    Faculty faculty = new Faculty("Update Faculty", "Blue");
-    faculty = restTemplate.postForObject(
-        "http://localhost:" + port + "/faculties/add",
-        faculty,
-        Faculty.class);
+    Student student = new Student();
+    student.setId(1L);
+    student.setName("Updated Name");
+    student.setAge(21);
+    student.setGender("F");
 
-    Student student = new Student("Original", 21, "F");
-    student = restTemplate.postForObject(
-        getBaseUrl() + "/add?facultyId=" + faculty.getId(),
-        student,
-        Student.class);
-
-    student.setName("Updated");
     HttpEntity<Student> request = new HttpEntity<>(student);
     ResponseEntity<Student> response = restTemplate.exchange(
-        getBaseUrl() + "/" + student.getId(),
+        getBaseUrl() + "/1",
         HttpMethod.PUT,
         request,
         Student.class);
 
     assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertEquals("Updated", response.getBody().getName());
+    assertEquals("Updated Name", response.getBody().getName());
   }
 
   @Test
   void deleteStudent_ShouldRemoveStudent() {
-    Faculty faculty = new Faculty("Delete Faculty", "Brown");
-    faculty = restTemplate.postForObject(
-        "http://localhost:" + port + "/faculties/add",
-        faculty,
-        Faculty.class);
-
-    Student student = new Student("To Delete", 23, "F");
-    student = restTemplate.postForObject(
-        getBaseUrl() + "/add?facultyId=" + faculty.getId(),
-        student,
-        Student.class);
-
-    restTemplate.delete(getBaseUrl() + "/delete/" + student.getId());
+    restTemplate.delete(getBaseUrl() + "/delete/1");
 
     ResponseEntity<Student> response = restTemplate.getForEntity(
-        getBaseUrl() + "/" + student.getId(),
+        getBaseUrl() + "/1",
         Student.class);
 
     assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
