@@ -2,12 +2,15 @@ package ru.hogwarts.school_2.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import java.net.URI;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.hogwarts.school_2.dto.StudentDTO;
 import ru.hogwarts.school_2.model.Student;
 import ru.hogwarts.school_2.service.StudentService;
@@ -29,27 +32,66 @@ public class StudentController {
 
   @Operation(summary = "Добавить нового студента")
   @PostMapping("/add")
-  public ResponseEntity<StudentDTO> addStudent
-      (@RequestBody StudentDTO studentDTO, @RequestParam Long facultyId) {
+  public ResponseEntity<StudentDTO> addStudent(
+      @Valid @RequestBody StudentDTO studentDTO,
+      @RequestParam Long facultyId) {
+
     if (studentService.getFacultyById(facultyId).isEmpty()) {
-      return ResponseEntity.notFound().build();//"Факультет с таким ID не найден."
+      return ResponseEntity.notFound().build(); // 404 NOT FOUND, если факультет не найден
     }
-    StudentDTO savedStudent = StudentDTO.fromStudent(
-        studentService.addStudent(studentDTO, facultyId));
-    return ResponseEntity.ok(savedStudent);
+
+    StudentDTO savedStudent = StudentDTO.fromStudent(studentService.addStudent(studentDTO, facultyId));
+
+    // Устанавливаем статус 201 CREATED и формируем Location для новой сущности
+    URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+        .path("/{id}")
+        .buildAndExpand(savedStudent.getId())
+        .toUri();
+
+    return ResponseEntity.created(location).body(savedStudent); // возвращает 201 CREATED
   }
+
+//  @Operation(summary = "Добавить нового студента")
+//  @PostMapping("/add")
+//  public ResponseEntity<StudentDTO> addStudent
+//      (@Valid @RequestBody StudentDTO studentDTO, @RequestParam Long facultyId) {
+//    if (studentService.getFacultyById(facultyId).isEmpty()) {
+//      return ResponseEntity.notFound().build();//"Факультет с таким ID не найден."
+//    }
+//    StudentDTO savedStudent = StudentDTO.fromStudent(
+//        studentService.addStudent(studentDTO, facultyId));
+//    return ResponseEntity.ok(savedStudent);
+//  }
 
   @Operation(summary = "Обновить данные студента")
   @PutMapping("/{id}")
-  public ResponseEntity<StudentDTO> updateStudent
-      (@PathVariable Long id, @RequestBody StudentDTO studentDTO) {
+  public ResponseEntity<StudentDTO> updateStudent(
+      @PathVariable Long id, @Valid @RequestBody StudentDTO studentDTO) {
     if (studentService.getStudentById(id).isEmpty()) {
-      return ResponseEntity.notFound().build();//"Студент с таким ID не найден."
+      return ResponseEntity.notFound().build(); // "Студент с таким ID не найден."
     }
-    StudentDTO updateStudent = StudentDTO.fromStudent(
-        studentService.updateStudent(studentDTO));
-    return ResponseEntity.ok(updateStudent);
+    studentDTO.setId(id); // Устанавливаем ID в DTO из PathVariable
+    Student updatedStudent = studentService.updateStudent(id, studentDTO);
+    if (updatedStudent == null) {
+      return ResponseEntity.notFound().build(); // Или вернуть другой ответ, если обновление не удалось
+    }
+    StudentDTO updateStudentDTO = StudentDTO.fromStudent(updatedStudent);
+    return ResponseEntity.ok(updateStudentDTO);
   }
+
+
+
+//  @Operation(summary = "Обновить данные студента")
+//  @PutMapping("/{id}")
+//  public ResponseEntity<StudentDTO> updateStudent
+//      (@PathVariable Long id, @Valid @RequestBody StudentDTO studentDTO) {
+//    if (studentService.getStudentById(id).isEmpty()) {
+//      return ResponseEntity.notFound().build();//"Студент с таким ID не найден."
+//    }
+//    StudentDTO updateStudent = StudentDTO.fromStudent(
+//        studentService.updateStudent(studentDTO));
+//    return ResponseEntity.ok(updateStudent);
+//  }
 
 
   @Operation(summary = "Получить всех студентов")
@@ -57,8 +99,8 @@ public class StudentController {
   public ResponseEntity<List<StudentDTO>> getAllStudents() {
     List<StudentDTO> students = studentService.getAllStudents();
     return students.isEmpty() ?
-        ResponseEntity.noContent().build() :
-        ResponseEntity.ok(students);
+        ResponseEntity.noContent().build() : // если студентов нет, возврат HTTP-код 204 (NO CONTENT)
+        ResponseEntity.ok(students); // если есть студенты, возврат HTTP-код 200 OK
   }
 
   @Operation(summary = "Получить студента по ID")

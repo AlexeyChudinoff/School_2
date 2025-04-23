@@ -43,15 +43,33 @@ public class StudentService {
     throw new IllegalStateException("Студент с таким именем уже существует!");
   }
 
-  // Обновление студента
-  public Student updateStudent(StudentDTO studentDTO) {
-    Student student = studentRepository.findById(studentDTO.getId()).orElse(null);
-    student.setName(studentDTO.getName());
-    student.setAge(studentDTO.getAge());
-    student.setGender(studentDTO.getGender());
-    student.setFaculty(facultyRepository.findById(studentDTO.getFacultyId()).orElse(null));
-    return studentRepository.save(student);
+  @Transactional
+  public Student updateStudent(Long id, StudentDTO studentDTO) {
+    Student student = studentRepository.findById(id).orElse(null);
+    if (student != null) {
+      student.setName(studentDTO.getName());
+      student.setAge(studentDTO.getAge());
+      student.setGender(studentDTO.getGender());
+      if(studentDTO.getFacultyId() != null) {
+        student.setFaculty(facultyRepository.findById(studentDTO.getFacultyId()).orElse(null));
+      }
+      return studentRepository.save(student);
+    }
+    return null; // Или выбросить исключение, если студент не найден
   }
+
+
+
+//  // Обновление студента
+//  @Transactional
+//  public Student updateStudent(StudentDTO studentDTO) {
+//    Student student = studentRepository.findById(studentDTO.getId()).orElse(null);
+//    student.setName(studentDTO.getName());
+//    student.setAge(studentDTO.getAge());
+//    student.setGender(studentDTO.getGender());
+//    student.setFaculty(facultyRepository.findById(studentDTO.getFacultyId()).orElse(null));
+//    return studentRepository.save(student);
+//  }
 
   // Получение всех студентов
   public List<StudentDTO> getAllStudents() {

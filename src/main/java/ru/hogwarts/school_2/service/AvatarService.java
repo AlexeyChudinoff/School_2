@@ -17,7 +17,6 @@ import java.nio.file.Path;
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
 @Service
-@Transactional
 public class AvatarService {
 
   @Value("${avatars.storage.path}")
@@ -31,6 +30,7 @@ public class AvatarService {
     this.avatarRepository = avatarRepository;
   }
 
+  @Transactional
   public void uploadAvatar(Long studentId, MultipartFile file) throws IOException {
     Student student = studentService.getStudentById(studentId)
         .orElseThrow(() -> new StudentNotFoundException(studentId));
@@ -86,4 +86,4 @@ public class AvatarService {
       throw new AvatarProcessingException("Ошибка при чтении файла аватара с диска", e);
     }
   }
-}
+}//class
