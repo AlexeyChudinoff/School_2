@@ -6,6 +6,7 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.hogwarts.school_2.dto.FacultyDTO;
@@ -22,6 +23,15 @@ public class FacultyService {
   private final StudentRepository studentRepository;
   private static final Logger logger = LoggerFactory.getLogger(FacultyService.class);
   private StudentService studentService;
+
+  @Autowired
+  public FacultyService(FacultyRepository facultyRepository,
+      StudentRepository studentRepository,
+      StudentService studentService) {
+    this.facultyRepository = facultyRepository;
+    this.studentRepository = studentRepository;
+    this.studentService = studentService;
+  }
 
 
   //добавление факультета
