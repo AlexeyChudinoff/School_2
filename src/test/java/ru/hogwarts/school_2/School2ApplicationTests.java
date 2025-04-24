@@ -11,29 +11,3 @@ class School2ApplicationTests {
 	@Test
 	void contextLoads() {}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-//package ru.hogwarts.school_2;
-//
-//import org.junit.jupiter.api.Test;
-//import org.springframework.boot.test.context.SpringBootTest;
-//
-//@SpringBootTest
-//public class School2ApplicationTests {
-//
-//	@Test
-//public	void contextLoads() {
-//	}
-//
-//}

@@ -51,18 +51,6 @@ public class StudentController {
     return ResponseEntity.created(location).body(savedStudent); // возвращает 201 CREATED
   }
 
-//  @Operation(summary = "Добавить нового студента")
-//  @PostMapping("/add")
-//  public ResponseEntity<StudentDTO> addStudent
-//      (@Valid @RequestBody StudentDTO studentDTO, @RequestParam Long facultyId) {
-//    if (studentService.getFacultyById(facultyId).isEmpty()) {
-//      return ResponseEntity.notFound().build();//"Факультет с таким ID не найден."
-//    }
-//    StudentDTO savedStudent = StudentDTO.fromStudent(
-//        studentService.addStudent(studentDTO, facultyId));
-//    return ResponseEntity.ok(savedStudent);
-//  }
-
   @Operation(summary = "Обновить данные студента")
   @PutMapping("/{id}")
   public ResponseEntity<StudentDTO> updateStudent(
@@ -78,21 +66,6 @@ public class StudentController {
     StudentDTO updateStudentDTO = StudentDTO.fromStudent(updatedStudent);
     return ResponseEntity.ok(updateStudentDTO);
   }
-
-
-
-//  @Operation(summary = "Обновить данные студента")
-//  @PutMapping("/{id}")
-//  public ResponseEntity<StudentDTO> updateStudent
-//      (@PathVariable Long id, @Valid @RequestBody StudentDTO studentDTO) {
-//    if (studentService.getStudentById(id).isEmpty()) {
-//      return ResponseEntity.notFound().build();//"Студент с таким ID не найден."
-//    }
-//    StudentDTO updateStudent = StudentDTO.fromStudent(
-//        studentService.updateStudent(studentDTO));
-//    return ResponseEntity.ok(updateStudent);
-//  }
-
 
   @Operation(summary = "Получить всех студентов")
   @GetMapping("/all")
