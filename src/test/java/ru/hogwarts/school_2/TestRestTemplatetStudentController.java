@@ -52,7 +52,7 @@ public class TestRestTemplatetStudentController {
   }
 
   /**
-   * Простой тест на создание студента.
+   * тест на создание студента.
    */
   @Test
   public void createStudentTest() {
@@ -65,12 +65,12 @@ public class TestRestTemplatetStudentController {
   }
 
   /**
-   * Простой тест на получение всех студентов.
+   * тест на получение всех студентов.
    */
   @Test
   public void getAllStudentsTest() {
     // Подготавливаем данные перед тестом
-    prepareData();// можно так а можно сохдавать в каждом методе нового
+    prepareData();// можно так а можно создавать в каждом методе нового
 
     URI uri = URI.create("http://localhost:" + port + "/students/all");
     ResponseEntity<Object[]> response = restTemplate.getForEntity(uri, Object[].class);
@@ -80,7 +80,7 @@ public class TestRestTemplatetStudentController {
   }
 
   /**
-   * Простой тест на удаление студента.
+   *  тест на удаление студента.
    */
   @Test
   public void deleteStudentTest() {
@@ -89,14 +89,14 @@ public class TestRestTemplatetStudentController {
     studentRepository.save(student);
 
     URI uri = URI.create("http://localhost:" + port + "/students/delete/" + student.getId());
-    restTemplate.delete(uri); // правильно используется метод delete
+    restTemplate.delete(uri);
 
     // Проверяем, что студента больше нет
     assertThat(studentRepository.findById(student.getId())).isEmpty();
   }
 
   /**
-   * Простой тест на получение студента по ID.
+   *  тест на получение студента по ID.
    */
   @Test
   public void getStudentByIdTest() {
@@ -111,7 +111,7 @@ public class TestRestTemplatetStudentController {
   }
 
   /**
-   * Простой тест на обновление студента.
+   *  тест на обновление студента.
    */
   @Test
   public void updateStudentTest() {
@@ -126,7 +126,7 @@ public class TestRestTemplatetStudentController {
 
     URI uri = URI.create("http://localhost:" + port + "/students/"
         + savedStudent.getId()); // Используем ID из сохраненного объекта
-    restTemplate.put(uri, savedStudent); // правильно используется put
+    restTemplate.put(uri, savedStudent);
 
     // Проверяем изменение
     Student updatedStudent = studentRepository.findById(savedStudent.getId()).get();

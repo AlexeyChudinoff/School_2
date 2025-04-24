@@ -1,7 +1,12 @@
 //TestRestTemplatetFacultyController
 package ru.hogwarts.school_2;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,14 +21,7 @@ import org.springframework.test.context.ActiveProfiles;
 import ru.hogwarts.school_2.model.Faculty;
 import ru.hogwarts.school_2.model.Student;
 import ru.hogwarts.school_2.repository.FacultyRepository;
-
-
-import java.net.URI;
 import ru.hogwarts.school_2.repository.StudentRepository;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -73,7 +71,7 @@ public class TestRestTemplatetFacultyController {
     faculty.setColor("Голубой");
 
     URI uri = URI.create("http://localhost:" + port + "/faculty/" + faculty.getId());
-    restTemplate.put(uri, faculty); // фикс: метод put не принимает второй аргумент
+    restTemplate.put(uri, faculty);
 
     // Проверяем изменения
     Faculty updatedFaculty = facultyRepository.findById(faculty.getId()).get();
@@ -90,7 +88,8 @@ public class TestRestTemplatetFacultyController {
     Faculty faculty = new Faculty("Математика", "Белый");
     facultyRepository.save(faculty);
 
-    URI uri = URI.create("http://localhost:" + port + "/faculty/getFacultyById?id=" + faculty.getId());
+    URI uri = URI.create(
+        "http://localhost:" + port + "/faculty/getFacultyById?id=" + faculty.getId());
     ResponseEntity<Faculty> response = restTemplate.getForEntity(uri, Faculty.class);
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThat(response.getBody().getName()).isEqualTo("Математика");
@@ -109,7 +108,8 @@ public class TestRestTemplatetFacultyController {
     String encodedColor = URLEncoder.encode("Бирюзовый", "UTF-8");
 
     // Формируем URL с закодированным цветом
-    URI uri = URI.create("http://localhost:" + port + "/faculty/getFacultyByColor?color=" + encodedColor);
+    URI uri = URI.create(
+        "http://localhost:" + port + "/faculty/getFacultyByColor?color=" + encodedColor);
 
     // Отправляем запрос и принимаем ответ в виде строки
     ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
@@ -137,7 +137,8 @@ public class TestRestTemplatetFacultyController {
     String encodedName = URLEncoder.encode("Биология", "UTF-8");
 
     // Формируем URL с закодированным названием
-    URI uri = URI.create("http://localhost:" + port + "/faculty/getFacultyByName?name=" + encodedName);
+    URI uri = URI.create(
+        "http://localhost:" + port + "/faculty/getFacultyByName?name=" + encodedName);
 
     // Отправляем запрос и принимаем ответ в виде строки
     ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
@@ -151,6 +152,7 @@ public class TestRestTemplatetFacultyController {
     // Если надо проверить, что ответ содержит нужную информацию
     assertTrue(response.getBody().contains("Биология")); // или другое условие проверки
   }
+
   /**
    * Тест на получение всех факультетов.
    */
@@ -175,7 +177,8 @@ public class TestRestTemplatetFacultyController {
     Faculty faculty = new Faculty("Экология", "Зелёный");
     facultyRepository.save(faculty);
 
-    URI uri = URI.create("http://localhost:" + port + "/faculty/deleteFacultyById?id=" + faculty.getId());
+    URI uri = URI.create(
+        "http://localhost:" + port + "/faculty/deleteFacultyById?id=" + faculty.getId());
     restTemplate.delete(uri); // фикс: метод delete не принимает второй аргумент
 
     // Проверяем, что факультет удалился
@@ -196,7 +199,9 @@ public class TestRestTemplatetFacultyController {
     // Формируем URL с русским текстом, закодированным для передачи
     String encodedName = URLEncoder.encode("инф", StandardCharsets.UTF_8);
     String encodedColor = URLEncoder.encode("желт", StandardCharsets.UTF_8);
-    URI uri = URI.create("http://localhost:" + port + "/faculty/searchByNameOrColor?name=" + encodedName + "&color=" + encodedColor);
+    URI uri = URI.create(
+        "http://localhost:" + port + "/faculty/searchByNameOrColor?name=" + encodedName + "&color="
+            + encodedColor);
 
     // Получаем ответ в правильном формате (массив факультетов)
     ResponseEntity<Faculty[]> response = restTemplate.getForEntity(uri, Faculty[].class);
@@ -228,7 +233,8 @@ public class TestRestTemplatetFacultyController {
     long studentId = student.getId();
 
     // Формируем URL с ID студента
-    URI uri = URI.create("http://localhost:" + port + "/faculty/getFacultyByStudentId?id=" + studentId);
+    URI uri = URI.create(
+        "http://localhost:" + port + "/faculty/getFacultyByStudentId?id=" + studentId);
 
     // Отправляем запрос и обрабатываем ответ
     ResponseEntity<Faculty> response = restTemplate.getForEntity(uri, Faculty.class);
