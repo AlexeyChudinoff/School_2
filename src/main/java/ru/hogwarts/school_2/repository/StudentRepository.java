@@ -27,6 +27,8 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
   List<Student> deleteAllByFaculty_Id(Long facultyId);
 
+  List<Student> findByGenderIgnoreCase (String gender);
+
   List<Student> findAllByFaculty_Id(Long facultyId);
 
   @Query("SELECT AVG(s.age) FROM Student s")

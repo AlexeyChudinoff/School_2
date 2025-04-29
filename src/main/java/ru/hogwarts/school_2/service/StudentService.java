@@ -94,6 +94,11 @@ public class StudentService {
     return studentRepository.findByNameContainingIgnoreCase(name);
   }
 
+  // Получение студентов одного пола
+  public List<Student> findByGender(String gender) {
+    return studentRepository.findByGenderIgnoreCase(gender);
+  }
+
   // Получение студентов одного возраста
   public List<Student> getStudentByAge(int age) {
     return studentRepository.findByAge(age);

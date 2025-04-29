@@ -101,6 +101,20 @@ public class StudentController {
     return ResponseEntity.ok(studentDTOS); // Возвращаем список студентов
   }
 
+  @Operation(summary = "Получить студентов одного пола")
+  @GetMapping("/by-gender/{gender}")
+  public ResponseEntity<List<StudentDTO>> getStudentsByGender
+      (@PathVariable String gender) {
+    List<Student> students = studentService.findByGender(gender);
+    if (students.isEmpty()) {
+      return ResponseEntity.noContent().build();//"Студентов с таким полом не найдено."
+    }
+    List<StudentDTO> studentDTOS = students.stream()
+        .map(StudentDTO::fromStudent)
+        .collect(Collectors.toList());
+    return ResponseEntity.ok(studentDTOS);// Возвращаем список студентов
+    }
+
     @Operation(summary = "Получить студентов в возрастном диапазоне от и до")
   @GetMapping("/age-range")
   public ResponseEntity<List<StudentDTO>> getStudentsByAgeRange(
