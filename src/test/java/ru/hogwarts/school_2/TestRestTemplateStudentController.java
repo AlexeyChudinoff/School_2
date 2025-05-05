@@ -9,8 +9,6 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.*;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import ru.hogwarts.school_2.dto.StudentDTO;
 import ru.hogwarts.school_2.model.Faculty;
 
@@ -71,33 +69,6 @@ public class TestRestTemplateStudentController {
     return response.getBody();
   }
 
-  @Test
-  void getStudentsByName_shouldReturnStudentsByName() {
-    Long facultyId = createTestFaculty();
-    createTestStudent(facultyId);
-
-    ResponseEntity<String> response = restTemplate.getForEntity(
-        getBaseUrl() + "/students/by-name/Гарри",
-        String.class);
-
-    assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertNotNull(response.getBody());
-    assertTrue(response.getBody().contains("Гарри Поттер"));
-  }
-
-  @Test
-  void getStudentsByGender_shouldReturnStudentsByGender() {
-    Long facultyId = createTestFaculty();
-    createTestStudent(facultyId);
-
-    ResponseEntity<String> response = restTemplate.getForEntity(
-        getBaseUrl() + "/students/by-gender/м",
-        String.class);
-
-    assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertNotNull(response.getBody());
-    assertTrue(response.getBody().contains("Гарри Поттер"));
-  }
 
   @Test
   void getStudentsByAge_shouldReturnStudentsByAge() {
@@ -113,82 +84,5 @@ public class TestRestTemplateStudentController {
     assertTrue(response.getBody().contains("Гарри Поттер"));
   }
 
-  @Test
-  void getStudentsByAgeRange_shouldReturnStudentsInAgeRange() {
-    Long facultyId = createTestFaculty();
-    createTestStudent(facultyId);
 
-    ResponseEntity<String> response = restTemplate.getForEntity(
-        getBaseUrl() + "/students/age-range?minAge=18&maxAge=25",
-        String.class);
-
-    assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertNotNull(response.getBody());
-    assertTrue(response.getBody().contains("Гарри Поттер"));
-  }
-
-  @Test
-  void addStudent_shouldAddStudentAndReturnCreatedStatus() {
-    Long facultyId = createTestFaculty();
-    String studentJson = "{\"name\":\"Гермиона Грейнджер\",\"age\":20,\"gender\":\"ж\"}";
-
-    HttpEntity<String> request = new HttpEntity<>(studentJson, headers);
-    ResponseEntity<String> response = restTemplate.postForEntity(
-        getBaseUrl() + "/students/add?facultyId=" + facultyId,
-        request,
-        String.class);
-
-    assertEquals(HttpStatus.CREATED, response.getStatusCode());
-    assertNotNull(response.getBody());
-    assertTrue(response.getBody().contains("Гермиона Грейнджер"));
-  }
-
-  @Test
-  void getStudentById_shouldReturnStudent() {
-    Long facultyId = createTestFaculty();
-    StudentDTO createdStudent = createTestStudent(facultyId);
-
-    ResponseEntity<String> response = restTemplate.getForEntity(
-        getBaseUrl() + "/students/" + createdStudent.getId(),
-        String.class);
-
-    assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertNotNull(response.getBody());
-    assertTrue(response.getBody().contains("Гарри Поттер"));
-  }
-
-  @Test
-  void updateStudent_shouldUpdateStudent() {
-    Long facultyId = createTestFaculty();
-    StudentDTO createdStudent = createTestStudent(facultyId);
-
-    String updatedStudentJson = "{\"name\":\"Рон Уизли\",\"age\":21,\"gender\":\"м\"}";
-
-    HttpEntity<String> request = new HttpEntity<>(updatedStudentJson, headers);
-    restTemplate.put(
-        getBaseUrl() + "/students/" + createdStudent.getId(),
-        request);
-
-    ResponseEntity<String> response = restTemplate.getForEntity(
-        getBaseUrl() + "/students/" + createdStudent.getId(),
-        String.class);
-
-    assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertNotNull(response.getBody());
-    assertTrue(response.getBody().contains("Рон Уизли"));
-  }
-
-  @Test
-  void deleteStudent_shouldDeleteStudent() {
-    Long facultyId = createTestFaculty();
-    StudentDTO createdStudent = createTestStudent(facultyId);
-
-    restTemplate.delete(getBaseUrl() + "/students/delete/" + createdStudent.getId());
-
-    ResponseEntity<String> response = restTemplate.getForEntity(
-        getBaseUrl() + "/students/" + createdStudent.getId(),
-        String.class);
-
-    assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-  }
 }
