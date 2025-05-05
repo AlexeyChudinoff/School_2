@@ -1,0 +1,59 @@
+package ru.hogwarts.school_2.model;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.util.Objects;
+import ru.hogwarts.school_2.repository.FacultyRepository;
+
+@Entity
+@Getter
+@Setter
+@ToString(exclude = "faculty")
+public class Student {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+
+  @Column(nullable = false)
+  private String name;
+
+  @Column(nullable = false)
+  private Integer age;
+
+  @Column(nullable = false, length = 1)
+  private String gender;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "faculty_id")//через что связаны студенты и факультеты
+   private Faculty faculty;
+
+  public Student() {
+  }
+
+  public Student(String name, Integer age, String gender) {
+    this.name = name;
+    this.age = age;
+    this.gender = gender;
+
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Student student = (Student) o;
+    return Objects.equals(id, student.id) &&
+        Objects.equals(name, student.name) &&
+        Objects.equals(age, student.age) &&
+        Objects.equals(gender, student.gender);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, name, age, gender);
+  }
+
+}//class
