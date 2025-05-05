@@ -44,27 +44,66 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	testImplementation 'org.springframework.boot:spring-boot-configuration-processor'
+	testImplementation 'org.springframework.boot:spring-boot-starter-webflux'
 	testImplementation 'org.springframework.security:spring-security-test'
-
+// Для корректной работы TestRestTemplate
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	runtimeOnly 'com.h2database:h2'// Встроенная база данных H2 для тестов
-	runtimeOnly 'org.postgresql:postgresql'// Продуктивная база данных PostgreSQL
+	runtimeOnly 'org.postgresql:postgresql'// Рабочая база данных PostgreSQL
 }
-
-//dependencies {
-//	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-//	implementation 'org.springframework.boot:spring-boot-starter-validation'
-//	implementation 'org.springframework.boot:spring-boot-starter-web'
-//	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
-//	compileOnly 'org.projectlombok:lombok'
-//	annotationProcessor 'org.projectlombok:lombok'
-//	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-//	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-//	testImplementation 'org.springframework.boot:spring-boot-configuration-processor'
-//	testImplementation 'org.springframework.security:spring-security-test'
-//	runtimeOnly 'com.h2database:h2'
-//	runtimeOnly 'org.postgresql:postgresql'
-//}
+test {
+	useJUnitPlatform()
+	systemProperty "spring.profiles.active", "test" // Важно: форсируем test-профиль
+}
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+
+//plugins {
+//	id 'java'
+//	id 'org.springframework.boot' version '3.2.2'
+//	id 'io.spring.dependency-management' version '1.1.7'
+//}
+//
+//group = 'ru.hogwarts'
+//version = '0.0.1-SNAPSHOT'
+//
+//java {
+//	toolchain {
+//		languageVersion = JavaLanguageVersion.of(17)
+//	}
+//}
+//
+//configurations {
+//	compileOnly {
+//		extendsFrom annotationProcessor
+//	}
+//}
+//
+//repositories {
+//	mavenCentral()
+//}
+//
+//dependencies {
+//	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+//	implementation 'org.springframework.boot:spring-boot-starter-web'
+//	implementation 'org.springframework.boot:spring-boot-starter-validation'
+//	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+//	compileOnly 'org.projectlombok:lombok'
+//	annotationProcessor 'org.projectlombok:lombok'
+//
+//	// Рабочая БД
+//	runtimeOnly 'org.postgresql:postgresql'
+//
+//	// Тестовые зависимости
+//	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+//	testImplementation 'org.springframework.boot:spring-boot-starter-webflux'
+//	testRuntimeOnly 'com.h2database:h2'
+//}
+//
+//test {
+//	useJUnitPlatform()
+//	systemProperty "spring.profiles.active", "test"
+//}
