@@ -217,13 +217,24 @@ public class StudentController {
 
   @Operation(summary = "удалить всех студентов факультета")
   @DeleteMapping("/delete/all/{facultyId}")
-  public ResponseEntity<List<Student>> deleteStudentsByFacultyId(@PathVariable Long facultyId) {
+  public ResponseEntity<String> deleteStudentsByFacultyId(@PathVariable Long facultyId) {
     if (studentService.getFacultyById(facultyId).isEmpty()) {
-      return ResponseEntity.notFound().build();//"Факультет с таким ID не найден."
+      return ResponseEntity.notFound().build();
     } else {
-      return ResponseEntity.ok(studentService.deleteAllStudentsFromFaculty(facultyId));
-
+      studentService.deleteAllStudentsFromFaculty(facultyId);
+      return ResponseEntity.ok("Все студенты факультета удалены");
     }
   }
+
+//  @Operation(summary = "удалить всех студентов факультета")
+//  @DeleteMapping("/delete/all/{facultyId}")
+//  public ResponseEntity<List<Student>> deleteStudentsByFacultyId(@PathVariable Long facultyId) {
+//    if (studentService.getFacultyById(facultyId).isEmpty()) {
+//      return ResponseEntity.notFound().build();//"Факультет с таким ID не найден."
+//    } else {
+//      return ResponseEntity.ok(studentService.deleteAllStudentsFromFaculty(facultyId));
+//
+//    }
+//  }
 
 }//class

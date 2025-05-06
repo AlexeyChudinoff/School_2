@@ -289,18 +289,16 @@ public class WebMvcTestStudentController {
 
     // Тест для удаления всех студентов факультета
     @Test
-    void deleteStudentsByFacultyId_shouldReturnDeletedList() {
+    void deleteStudentsByFacultyId_shouldReturnSuccessMessage() {
       Long facultyId = 1L;
-      Student student = new Student("Гарри Поттер", 11, "М");
-      student.setId(1L);
 
       when(studentService.getFacultyById(facultyId)).thenReturn(Optional.of(new Faculty()));
-      when(studentService.deleteAllStudentsFromFaculty(facultyId)).thenReturn(List.of(student));
+      when(studentService.deleteAllStudentsFromFaculty(facultyId)).thenReturn(List.of(new Student()));
 
-      ResponseEntity<List<Student>> response = studentController.deleteStudentsByFacultyId(facultyId);
+      ResponseEntity<String> response = studentController.deleteStudentsByFacultyId(facultyId);
 
       assertEquals(HttpStatus.OK, response.getStatusCode());
-      assertEquals(1, response.getBody().size());
-      assertEquals("М", response.getBody().get(0).getGender());
+      assertEquals("Все студенты факультета удалены", response.getBody());
     }
+
   }//

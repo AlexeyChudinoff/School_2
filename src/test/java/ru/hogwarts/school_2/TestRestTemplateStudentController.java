@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-@Transactional
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class TestRestTemplateStudentController {
 
@@ -65,57 +64,75 @@ public class TestRestTemplateStudentController {
     return response.getBody();
   }
 
-
-
   @Test
   @Transactional
   void testDeleteStudentById() throws Exception {
     Long facultyId = createTestFaculty();
     StudentDTO student = createTestStudent(facultyId);
 
-    // Сначала проверяем, что студент существует
+    // Проверяем, что студент существует
     ResponseEntity<String> getResponse = restTemplate.getForEntity(
         getBaseUrl() + "/students/" + student.getId(),
         String.class);
     assertEquals(HttpStatus.OK, getResponse.getStatusCode());
 
     // Удаляем студента
-    restTemplate.delete(getBaseUrl() + "/students/delete/" + student.getId());
+    ResponseEntity<Void> deleteResponse = restTemplate.exchange(
+        getBaseUrl() + "/students/delete/" + student.getId(),
+        HttpMethod.DELETE,
+        null,
+        Void.class);
+    assertEquals(HttpStatus.OK, deleteResponse.getStatusCode());
 
     // Проверяем, что студент больше не существует
     ResponseEntity<String> getAfterDeleteResponse = restTemplate.getForEntity(
         getBaseUrl() + "/students/" + student.getId(),
         String.class);
     assertEquals(HttpStatus.NOT_FOUND, getAfterDeleteResponse.getStatusCode());
-
   }
 
   @Test
   @Transactional
   void testDeleteAllStudentsOfFaculty() throws Exception {
+    // 1. Создаем тестовые данные
     Long facultyId = createTestFaculty();
-    createTestStudent(facultyId);
+    StudentDTO student = createTestStudent(facultyId);
 
-    // Проверяем, что студенты факультета существуют
+    // 2. Проверяем, что студенты факультета существуют
     ResponseEntity<String> getResponse = restTemplate.getForEntity(
         getBaseUrl() + "/students/faculty/" + facultyId,
         String.class);
     assertEquals(HttpStatus.OK, getResponse.getStatusCode());
-    assertTrue(getResponse.getBody().contains("Гарри Поттер"));
+    assertTrue(getResponse.getBody().contains(student.getName()));
 
-    // Удаляем всех студентов факультета
-    restTemplate.delete(getBaseUrl() + "/students/delete/all/" + facultyId);
+    // 3. Удаляем всех студентов факультета
+    ResponseEntity<String> deleteResponse = restTemplate.exchange(
+        getBaseUrl() + "/students/delete/all/" + facultyId,
+        HttpMethod.DELETE,
+        null,
+        String.class);
 
-    // Проверяем, что студентов больше нет
+    // 4. Проверяем ответ
+    if (deleteResponse.getStatusCode() != HttpStatus.OK) {
+      System.err.println("Ошибка при удалении: " + deleteResponse.getBody());
+    }
+    assertEquals(HttpStatus.OK, deleteResponse.getStatusCode());
+
+    // 5. Проверяем, что студентов больше нет
     ResponseEntity<String> getAfterDeleteResponse = restTemplate.getForEntity(
         getBaseUrl() + "/students/faculty/" + facultyId,
         String.class);
     assertEquals(HttpStatus.NO_CONTENT, getAfterDeleteResponse.getStatusCode());
   }
 
+
+  // Остальные тесты остаются без изменений
+  // ...
+
+
   @Test
   @Transactional
-  void testGetAllStudents() throws Exception {
+   void testGetAllStudents() throws Exception {
     Long facultyId = createTestFaculty();
     createTestStudent(facultyId);
 
@@ -127,6 +144,7 @@ public class TestRestTemplateStudentController {
     assertNotNull(response.getBody());
     assertTrue(response.getBody().contains("Гарри Поттер"));
   }
+
 
   @Test
   @Transactional
