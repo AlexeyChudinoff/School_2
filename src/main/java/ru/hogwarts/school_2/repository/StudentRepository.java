@@ -4,7 +4,9 @@ package ru.hogwarts.school_2.repository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import ru.hogwarts.school_2.model.Student;
 
 public interface StudentRepository extends JpaRepository<Student, Long> {
@@ -25,7 +27,9 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
   List<Student> findByNameContainingIgnoreCase(String name);
 
-  List<Student> deleteAllByFaculty_Id(Long facultyId);
+  @Modifying
+  @Query("DELETE FROM Student s WHERE s.faculty.id = :facultyId")
+  List<Student> deleteAllByFaculty_Id(@Param("facultyId") Long facultyId);
 
   List<Student> findByGenderIgnoreCase (String gender);
 

@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.hogwarts.school_2.dto.StudentDTO;
 import ru.hogwarts.school_2.model.Faculty;
 import ru.hogwarts.school_2.model.Student;
+import ru.hogwarts.school_2.repository.AvatarRepository;
 import ru.hogwarts.school_2.repository.FacultyRepository;
 import ru.hogwarts.school_2.repository.StudentRepository;
 
@@ -18,15 +19,20 @@ public class StudentService {
 
   private FacultyRepository facultyRepository;
   private StudentRepository studentRepository;
+  private AvatarRepository avatarRepository;
   // private StudentDTO studentDTO;
 
   public StudentService() {
   }
 
   @Autowired
-  public StudentService(StudentRepository studentRepository, FacultyRepository facultyRepository) {
+  public StudentService(
+      StudentRepository studentRepository,
+      FacultyRepository facultyRepository,
+      AvatarRepository avatarRepository) {
     this.studentRepository = studentRepository;
     this.facultyRepository = facultyRepository;
+    this.avatarRepository = avatarRepository;
 
   }
 
@@ -50,15 +56,13 @@ public class StudentService {
       student.setName(studentDTO.getName());
       student.setAge(studentDTO.getAge());
       student.setGender(studentDTO.getGender());
-      if(studentDTO.getFacultyId() != null) {
+      if (studentDTO.getFacultyId() != null) {
         student.setFaculty(facultyRepository.findById(studentDTO.getFacultyId()).orElse(null));
       }
       return studentRepository.save(student);
     }
     return null; // Или выбросить исключение, если студент не найден
   }
-
-
 
 //  // Обновление студента
 //  @Transactional
@@ -125,16 +129,28 @@ public class StudentService {
   }
 
   //удалить студента по ID
+  @Transactional
   public Optional<Student> deleteStudentById(Long id) {
+    if (!studentRepository.existsById(id)) {
+      return Optional.empty();
+    } else {
+      avatarRepository.deleteByStudentId(id);
+    }
     return studentRepository.deleteStudentById(id);
   }
 
   //удалить всех студентов факультета
+  @Transactional
   public List<Student> deleteAllStudentsFromFaculty(Long facultyId) {
-    if (facultyRepository.existsById(facultyId)) {
-      studentRepository.deleteAllByFaculty_Id(facultyId);
+    List<Student> students = studentRepository.findAllByFaculty_Id(facultyId);
+    if (students.isEmpty()) {
+      return null;
+    } else {
+      for (Student student : students) {
+        avatarRepository.deleteByStudentId(student.getId());
+      }
+      return studentRepository.deleteAllByFaculty_Id(facultyId);
     }
-    return studentRepository.findAllByFaculty_Id(facultyId);
   }
 
   //получить факультет по ID
