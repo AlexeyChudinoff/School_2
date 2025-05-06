@@ -115,4 +115,5 @@ public class TestRestTemplateFacultyController {
 
     assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
   }
+
 }//
