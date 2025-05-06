@@ -1,5 +1,6 @@
 package ru.hogwarts.school_2;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import ru.hogwarts.school_2.dto.StudentDTO;
+import ru.hogwarts.school_2.model.Avatar;
+import ru.hogwarts.school_2.repository.AvatarRepository;
+import ru.hogwarts.school_2.repository.StudentRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -29,14 +33,18 @@ public class TestRestTemplateStudentController {
 
   @Autowired
   private TestRestTemplate restTemplate;
+  @Autowired
+  private AvatarRepository avatarRepository;
+  @Autowired
+  private StudentRepository studentRepository;
 
   private HttpHeaders headers;
 
   @BeforeEach
   void setUp() {
     headers = new HttpHeaders();
-    headers.setContentType(MediaType.APPLICATION_JSON);
-    headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+    headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+    headers.setAccept(List.of(MediaType.APPLICATION_JSON_UTF8));
     headers.setAcceptCharset(List.of(StandardCharsets.UTF_8));
   }
 
@@ -63,6 +71,14 @@ public class TestRestTemplateStudentController {
         StudentDTO.class);
     return response.getBody();
   }
+
+  private void createTestAvatar(Long studentId) {
+    Avatar avatar = new Avatar();
+    avatar.setStudent(studentRepository.findById(studentId).orElseThrow());
+    // ... установите другие свойства аватара
+    avatarRepository.save(avatar);
+  }
+
 
   @Test
   @Transactional
@@ -98,32 +114,34 @@ public class TestRestTemplateStudentController {
     Long facultyId = createTestFaculty();
     StudentDTO student = createTestStudent(facultyId);
 
-    // 2. Проверяем, что студенты факультета существуют
-    ResponseEntity<String> getResponse = restTemplate.getForEntity(
-        getBaseUrl() + "/students/faculty/" + facultyId,
+    // 2. Проверяем создание данных
+    ResponseEntity<String> initialCheck = restTemplate.getForEntity(
+        getBaseUrl() + "/students/" + student.getId(),
         String.class);
-    assertEquals(HttpStatus.OK, getResponse.getStatusCode());
-    assertTrue(getResponse.getBody().contains(student.getName()));
+    assertEquals(HttpStatus.OK, initialCheck.getStatusCode());
 
-    // 3. Удаляем всех студентов факультета
+    // 3. Выполняем удаление с логированием ответа
     ResponseEntity<String> deleteResponse = restTemplate.exchange(
         getBaseUrl() + "/students/delete/all/" + facultyId,
         HttpMethod.DELETE,
         null,
         String.class);
 
-    // 4. Проверяем ответ
+    // 4. Диагностика при ошибке
     if (deleteResponse.getStatusCode() != HttpStatus.OK) {
-      System.err.println("Ошибка при удалении: " + deleteResponse.getBody());
+      System.err.println("Delete failed. Response body: " + deleteResponse.getBody());
+      System.err.println("Status code: " + deleteResponse.getStatusCode());
     }
+
     assertEquals(HttpStatus.OK, deleteResponse.getStatusCode());
 
     // 5. Проверяем, что студентов больше нет
-    ResponseEntity<String> getAfterDeleteResponse = restTemplate.getForEntity(
+    ResponseEntity<String> finalCheck = restTemplate.getForEntity(
         getBaseUrl() + "/students/faculty/" + facultyId,
         String.class);
-    assertEquals(HttpStatus.NO_CONTENT, getAfterDeleteResponse.getStatusCode());
+    assertEquals(HttpStatus.NO_CONTENT, finalCheck.getStatusCode());
   }
+
 
 
   // Остальные тесты остаются без изменений

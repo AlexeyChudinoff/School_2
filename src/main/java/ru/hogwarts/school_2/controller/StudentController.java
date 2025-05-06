@@ -226,15 +226,5 @@ public class StudentController {
     }
   }
 
-//  @Operation(summary = "удалить всех студентов факультета")
-//  @DeleteMapping("/delete/all/{facultyId}")
-//  public ResponseEntity<List<Student>> deleteStudentsByFacultyId(@PathVariable Long facultyId) {
-//    if (studentService.getFacultyById(facultyId).isEmpty()) {
-//      return ResponseEntity.notFound().build();//"Факультет с таким ID не найден."
-//    } else {
-//      return ResponseEntity.ok(studentService.deleteAllStudentsFromFaculty(facultyId));
-//
-//    }
-//  }
 
 }//class
