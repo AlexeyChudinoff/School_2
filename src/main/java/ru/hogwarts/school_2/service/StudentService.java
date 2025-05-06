@@ -29,8 +29,7 @@ public class StudentService {
   public StudentService(
       StudentRepository studentRepository,
       FacultyRepository facultyRepository,
-      AvatarRepository avatarRepository)
-  {
+      AvatarRepository avatarRepository) {
     this.studentRepository = studentRepository;
     this.facultyRepository = facultyRepository;
     this.avatarRepository = avatarRepository;
@@ -57,15 +56,13 @@ public class StudentService {
       student.setName(studentDTO.getName());
       student.setAge(studentDTO.getAge());
       student.setGender(studentDTO.getGender());
-      if(studentDTO.getFacultyId() != null) {
+      if (studentDTO.getFacultyId() != null) {
         student.setFaculty(facultyRepository.findById(studentDTO.getFacultyId()).orElse(null));
       }
       return studentRepository.save(student);
     }
     return null; // Или выбросить исключение, если студент не найден
   }
-
-
 
 //  // Обновление студента
 //  @Transactional
@@ -136,7 +133,7 @@ public class StudentService {
   public Optional<Student> deleteStudentById(Long id) {
     if (!studentRepository.existsById(id)) {
       return Optional.empty();
-    }else {
+    } else {
       avatarRepository.deleteByStudentId(id);
     }
     return studentRepository.deleteStudentById(id);
@@ -155,19 +152,6 @@ public class StudentService {
       return studentRepository.deleteAllByFaculty_Id(facultyId);
     }
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   //получить факультет по ID
   public Optional<Faculty> getFacultyById(Long facultyId) {

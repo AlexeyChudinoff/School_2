@@ -1,5 +1,12 @@
 package ru.hogwarts.school_2;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
+
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,12 +23,6 @@ import ru.hogwarts.school_2.dto.StudentDTO;
 import ru.hogwarts.school_2.model.Faculty;
 import ru.hogwarts.school_2.model.Student;
 import ru.hogwarts.school_2.service.StudentService;
-
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class WebMvcTestStudentController {
@@ -65,240 +66,241 @@ public class WebMvcTestStudentController {
   }
 
 
-    @Test
-    void addStudent_shouldReturnNotFoundWhenFacultyNotExists() {
-      StudentDTO inputDTO = new StudentDTO(null, "Гарри Поттер", 11, "М", null);
-      Long facultyId = 999L;
+  @Test
+  void addStudent_shouldReturnNotFoundWhenFacultyNotExists() {
+    StudentDTO inputDTO = new StudentDTO(null, "Гарри Поттер", 11, "М", null);
+    Long facultyId = 999L;
 
-      when(studentService.getFacultyById(facultyId)).thenReturn(Optional.empty());
+    when(studentService.getFacultyById(facultyId)).thenReturn(Optional.empty());
 
-      ResponseEntity<StudentDTO> response = studentController.addStudent(inputDTO, facultyId);
+    ResponseEntity<StudentDTO> response = studentController.addStudent(inputDTO, facultyId);
 
-      assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-    }
+    assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+  }
 
-    // Тест для обновления студента
-    @Test
-    void updateStudent_shouldReturnUpdatedStudent() {
-      Long id = 1L;
-      StudentDTO inputDTO = new StudentDTO(id, "Гарри Поттер", 12, "М", 1L);
-      Student updatedStudent = new Student("Гарри Поттер", 12, "М");
-      updatedStudent.setId(id);
+  // Тест для обновления студента
+  @Test
+  void updateStudent_shouldReturnUpdatedStudent() {
+    Long id = 1L;
+    StudentDTO inputDTO = new StudentDTO(id, "Гарри Поттер", 12, "М", 1L);
+    Student updatedStudent = new Student("Гарри Поттер", 12, "М");
+    updatedStudent.setId(id);
 
-      when(studentService.getStudentById(id)).thenReturn(Optional.of(updatedStudent));
-      when(studentService.updateStudent(id, inputDTO)).thenReturn(updatedStudent);
+    when(studentService.getStudentById(id)).thenReturn(Optional.of(updatedStudent));
+    when(studentService.updateStudent(id, inputDTO)).thenReturn(updatedStudent);
 
-      ResponseEntity<StudentDTO> response = studentController.updateStudent(id, inputDTO);
+    ResponseEntity<StudentDTO> response = studentController.updateStudent(id, inputDTO);
 
-      assertEquals(HttpStatus.OK, response.getStatusCode());
-      assertEquals(StudentDTO.fromStudent(updatedStudent), response.getBody());
-      assertEquals("М", response.getBody().getGender());
-    }
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertEquals(StudentDTO.fromStudent(updatedStudent), response.getBody());
+    assertEquals("М", response.getBody().getGender());
+  }
 
-    @Test
-    void updateStudent_shouldReturnNotFoundWhenStudentNotExists() {
-      Long id = 999L;
-      StudentDTO inputDTO = new StudentDTO(id, "Несуществующий", 12, "М", 1L);
+  @Test
+  void updateStudent_shouldReturnNotFoundWhenStudentNotExists() {
+    Long id = 999L;
+    StudentDTO inputDTO = new StudentDTO(id, "Несуществующий", 12, "М", 1L);
 
-      when(studentService.getStudentById(id)).thenReturn(Optional.empty());
+    when(studentService.getStudentById(id)).thenReturn(Optional.empty());
 
-      ResponseEntity<StudentDTO> response = studentController.updateStudent(id, inputDTO);
+    ResponseEntity<StudentDTO> response = studentController.updateStudent(id, inputDTO);
 
-      assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-    }
+    assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+  }
 
-    // Тест для получения всех студентов
-    @Test
-    void getAllStudents_shouldReturnListOfStudents() {
-      Student student1 = new Student("Гарри Поттер", 11, "М");
-      student1.setId(1L);
-      Student student2 = new Student("Гермиона Грейнджер", 11, "Ж");
-      student2.setId(2L);
+  // Тест для получения всех студентов
+  @Test
+  void getAllStudents_shouldReturnListOfStudents() {
+    Student student1 = new Student("Гарри Поттер", 11, "М");
+    student1.setId(1L);
+    Student student2 = new Student("Гермиона Грейнджер", 11, "Ж");
+    student2.setId(2L);
 
-      when(studentService.getAllStudents()).thenReturn(List.of(
-          StudentDTO.fromStudent(student1),
-          StudentDTO.fromStudent(student2)
-      ));
+    when(studentService.getAllStudents()).thenReturn(List.of(
+        StudentDTO.fromStudent(student1),
+        StudentDTO.fromStudent(student2)
+    ));
 
-      ResponseEntity<List<StudentDTO>> response = studentController.getAllStudents();
+    ResponseEntity<List<StudentDTO>> response = studentController.getAllStudents();
 
-      assertEquals(HttpStatus.OK, response.getStatusCode());
-      assertEquals(2, response.getBody().size());
-      assertEquals("М", response.getBody().get(0).getGender());
-      assertEquals("Ж", response.getBody().get(1).getGender());
-    }
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertEquals(2, response.getBody().size());
+    assertEquals("М", response.getBody().get(0).getGender());
+    assertEquals("Ж", response.getBody().get(1).getGender());
+  }
 
-    @Test
-    void getAllStudents_shouldReturnNoContentWhenEmpty() {
-      when(studentService.getAllStudents()).thenReturn(List.of());
+  @Test
+  void getAllStudents_shouldReturnNoContentWhenEmpty() {
+    when(studentService.getAllStudents()).thenReturn(List.of());
 
-      ResponseEntity<List<StudentDTO>> response = studentController.getAllStudents();
+    ResponseEntity<List<StudentDTO>> response = studentController.getAllStudents();
 
-      assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
-    }
+    assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+  }
 
-    // Тест для получения студента по ID
-    @Test
-    void getStudentById_shouldReturnStudent() {
-      Long id = 1L;
-      Student student = new Student("Гарри Поттер", 11, "М");
-      student.setId(id);
+  // Тест для получения студента по ID
+  @Test
+  void getStudentById_shouldReturnStudent() {
+    Long id = 1L;
+    Student student = new Student("Гарри Поттер", 11, "М");
+    student.setId(id);
 
-      when(studentService.getStudentById(id)).thenReturn(Optional.of(student));
+    when(studentService.getStudentById(id)).thenReturn(Optional.of(student));
 
-      ResponseEntity<StudentDTO> response = studentController.getStudentById(id);
+    ResponseEntity<StudentDTO> response = studentController.getStudentById(id);
 
-      assertEquals(HttpStatus.OK, response.getStatusCode());
-      assertEquals(StudentDTO.fromStudent(student), response.getBody());
-      assertEquals("М", response.getBody().getGender());
-    }
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertEquals(StudentDTO.fromStudent(student), response.getBody());
+    assertEquals("М", response.getBody().getGender());
+  }
 
-    @Test
-    void getStudentById_shouldReturnNotFound() {
-      Long id = 999L;
-      when(studentService.getStudentById(id)).thenReturn(Optional.empty());
+  @Test
+  void getStudentById_shouldReturnNotFound() {
+    Long id = 999L;
+    when(studentService.getStudentById(id)).thenReturn(Optional.empty());
 
-      ResponseEntity<StudentDTO> response = studentController.getStudentById(id);
+    ResponseEntity<StudentDTO> response = studentController.getStudentById(id);
 
-      assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-    }
+    assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+  }
 
-    // Тест для получения студентов по имени
-    @Test
-    void getStudentsByName_shouldReturnFilteredList() {
-      String name = "Гарри";
-      Student student = new Student("Гарри Поттер", 11, "М");
-      student.setId(1L);
+  // Тест для получения студентов по имени
+  @Test
+  void getStudentsByName_shouldReturnFilteredList() {
+    String name = "Гарри";
+    Student student = new Student("Гарри Поттер", 11, "М");
+    student.setId(1L);
 
-      when(studentService.findByNameContainingIgnoreCase(name)).thenReturn(List.of(student));
+    when(studentService.findByNameContainingIgnoreCase(name)).thenReturn(List.of(student));
 
-      ResponseEntity<List<StudentDTO>> response = studentController.getStudentsByName(name);
+    ResponseEntity<List<StudentDTO>> response = studentController.getStudentsByName(name);
 
-      assertEquals(HttpStatus.OK, response.getStatusCode());
-      assertEquals(1, response.getBody().size());
-      assertEquals("Гарри Поттер", response.getBody().get(0).getName());
-      assertEquals("М", response.getBody().get(0).getGender());
-    }
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertEquals(1, response.getBody().size());
+    assertEquals("Гарри Поттер", response.getBody().get(0).getName());
+    assertEquals("М", response.getBody().get(0).getGender());
+  }
 
-    @Test
-    void getStudentsByName_shouldReturnNoContent() {
-      String name = "Несуществующий";
-      when(studentService.findByNameContainingIgnoreCase(name)).thenReturn(List.of());
+  @Test
+  void getStudentsByName_shouldReturnNoContent() {
+    String name = "Несуществующий";
+    when(studentService.findByNameContainingIgnoreCase(name)).thenReturn(List.of());
 
-      ResponseEntity<List<StudentDTO>> response = studentController.getStudentsByName(name);
+    ResponseEntity<List<StudentDTO>> response = studentController.getStudentsByName(name);
 
-      assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
-    }
+    assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+  }
 
-    // Тест для получения студентов по возрастному диапазону
-    @Test
-    void getStudentsByAgeRange_shouldReturnFilteredList() {
-      int minAge = 10;
-      int maxAge = 12;
-      Student student = new Student("Гарри Поттер", 11, "М");
-      student.setId(1L);
+  // Тест для получения студентов по возрастному диапазону
+  @Test
+  void getStudentsByAgeRange_shouldReturnFilteredList() {
+    int minAge = 10;
+    int maxAge = 12;
+    Student student = new Student("Гарри Поттер", 11, "М");
+    student.setId(1L);
 
-      when(studentService.getStudentsByAgeRange(minAge, maxAge)).thenReturn(List.of(student));
+    when(studentService.getStudentsByAgeRange(minAge, maxAge)).thenReturn(List.of(student));
 
-      ResponseEntity<List<StudentDTO>> response = studentController.getStudentsByAgeRange(minAge, maxAge);
+    ResponseEntity<List<StudentDTO>> response = studentController.getStudentsByAgeRange(minAge,
+        maxAge);
 
-      assertEquals(HttpStatus.OK, response.getStatusCode());
-      assertEquals(1, response.getBody().size());
-      assertEquals(11, response.getBody().get(0).getAge());
-      assertEquals("М", response.getBody().get(0).getGender());
-    }
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertEquals(1, response.getBody().size());
+    assertEquals(11, response.getBody().get(0).getAge());
+    assertEquals("М", response.getBody().get(0).getGender());
+  }
 
-    // Тест для получения студентов по возрасту
-    @Test
-    void getStudentsByAge_shouldReturnFilteredList() {
-      int age = 11;
-      Student student = new Student("Гарри Поттер", age, "М");
-      student.setId(1L);
+  // Тест для получения студентов по возрасту
+  @Test
+  void getStudentsByAge_shouldReturnFilteredList() {
+    int age = 11;
+    Student student = new Student("Гарри Поттер", age, "М");
+    student.setId(1L);
 
-      when(studentService.getStudentByAge(age)).thenReturn(List.of(student));
+    when(studentService.getStudentByAge(age)).thenReturn(List.of(student));
 
-      ResponseEntity<List<StudentDTO>> response = studentController.getStudentsByAge(age);
+    ResponseEntity<List<StudentDTO>> response = studentController.getStudentsByAge(age);
 
-      assertEquals(HttpStatus.OK, response.getStatusCode());
-      assertEquals(1, response.getBody().size());
-      assertEquals(age, response.getBody().get(0).getAge());
-      assertEquals("М", response.getBody().get(0).getGender());
-    }
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertEquals(1, response.getBody().size());
+    assertEquals(age, response.getBody().get(0).getAge());
+    assertEquals("М", response.getBody().get(0).getGender());
+  }
 
-    // Тест для получения среднего возраста
-    @Test
-    void getAverageAge_shouldReturnValue() {
-      double averageAge = 11.5;
-      when(studentService.findAverageAge()).thenReturn(averageAge);
+  // Тест для получения среднего возраста
+  @Test
+  void getAverageAge_shouldReturnValue() {
+    double averageAge = 11.5;
+    when(studentService.findAverageAge()).thenReturn(averageAge);
 
-      ResponseEntity<Double> response = studentController.getAverageAge();
+    ResponseEntity<Double> response = studentController.getAverageAge();
 
-      assertEquals(HttpStatus.OK, response.getStatusCode());
-      assertEquals(averageAge, response.getBody());
-    }
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertEquals(averageAge, response.getBody());
+  }
 
-    // Тест для получения количества студентов факультета
-    @Test
-    void getCountStudents_shouldReturnCount() {
-      Long facultyId = 1L;
-      int count = 5;
+  // Тест для получения количества студентов факультета
+  @Test
+  void getCountStudents_shouldReturnCount() {
+    Long facultyId = 1L;
+    int count = 5;
 
-      when(studentService.getFacultyById(facultyId)).thenReturn(Optional.of(new Faculty()));
-      when(studentService.getCountStudents(facultyId)).thenReturn(count);
+    when(studentService.getFacultyById(facultyId)).thenReturn(Optional.of(new Faculty()));
+    when(studentService.getCountStudents(facultyId)).thenReturn(count);
 
-      ResponseEntity<Integer> response = studentController.getCountStudents(facultyId);
+    ResponseEntity<Integer> response = studentController.getCountStudents(facultyId);
 
-      assertEquals(HttpStatus.OK, response.getStatusCode());
-      assertEquals(count, response.getBody());
-    }
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertEquals(count, response.getBody());
+  }
 
-    // Тест для получения студентов факультета
-    @Test
-    void getStudentsByFacultyId_shouldReturnList() {
-      Long facultyId = 1L;
-      Student student = new Student("Гарри Поттер", 11, "М");
-      student.setId(1L);
+  // Тест для получения студентов факультета
+  @Test
+  void getStudentsByFacultyId_shouldReturnList() {
+    Long facultyId = 1L;
+    Student student = new Student("Гарри Поттер", 11, "М");
+    student.setId(1L);
 
-      when(studentService.getFacultyById(facultyId)).thenReturn(Optional.of(new Faculty()));
-      when(studentService.findAllByFaculty_Id(facultyId)).thenReturn(List.of(student));
+    when(studentService.getFacultyById(facultyId)).thenReturn(Optional.of(new Faculty()));
+    when(studentService.findAllByFaculty_Id(facultyId)).thenReturn(List.of(student));
 
-      ResponseEntity<List<StudentDTO>> response = studentController.getStudentsByFacultyId(facultyId);
+    ResponseEntity<List<StudentDTO>> response = studentController.getStudentsByFacultyId(facultyId);
 
-      assertEquals(HttpStatus.OK, response.getStatusCode());
-      assertEquals(1, response.getBody().size());
-      assertEquals("М", response.getBody().get(0).getGender());
-    }
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertEquals(1, response.getBody().size());
+    assertEquals("М", response.getBody().get(0).getGender());
+  }
 
-    // Тест для удаления студента
-    @Test
-    void deleteStudentById_shouldReturnDeletedStudent() {
-      Long id = 1L;
-      Student student = new Student("Гарри Поттер", 11, "М");
-      student.setId(id);
+  // Тест для удаления студента
+  @Test
+  void deleteStudentById_shouldReturnDeletedStudent() {
+    Long id = 1L;
+    Student student = new Student("Гарри Поттер", 11, "М");
+    student.setId(id);
 
-      when(studentService.getStudentById(id)).thenReturn(Optional.of(student));
-      when(studentService.deleteStudentById(id)).thenReturn(Optional.of(student));
+    when(studentService.getStudentById(id)).thenReturn(Optional.of(student));
+    when(studentService.deleteStudentById(id)).thenReturn(Optional.of(student));
 
-      ResponseEntity<Optional<Student>> response = studentController.deleteStudentById(id);
+    ResponseEntity<Optional<Student>> response = studentController.deleteStudentById(id);
 
-      assertEquals(HttpStatus.OK, response.getStatusCode());
-      assertTrue(response.getBody().isPresent());
-      assertEquals("Гарри Поттер", response.getBody().get().getName());
-      assertEquals("М", response.getBody().get().getGender());
-    }
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertTrue(response.getBody().isPresent());
+    assertEquals("Гарри Поттер", response.getBody().get().getName());
+    assertEquals("М", response.getBody().get().getGender());
+  }
 
-    // Тест для удаления всех студентов факультета
-    @Test
-    void deleteStudentsByFacultyId_shouldReturnSuccessMessage() {
-      Long facultyId = 1L;
+  // Тест для удаления всех студентов факультета
+  @Test
+  void deleteStudentsByFacultyId_shouldReturnSuccessMessage() {
+    Long facultyId = 1L;
 
-      when(studentService.getFacultyById(facultyId)).thenReturn(Optional.of(new Faculty()));
-      when(studentService.deleteAllStudentsFromFaculty(facultyId)).thenReturn(List.of(new Student()));
+    when(studentService.getFacultyById(facultyId)).thenReturn(Optional.of(new Faculty()));
+    when(studentService.deleteAllStudentsFromFaculty(facultyId)).thenReturn(List.of(new Student()));
 
-      ResponseEntity<String> response = studentController.deleteStudentsByFacultyId(facultyId);
+    ResponseEntity<String> response = studentController.deleteStudentsByFacultyId(facultyId);
 
-      assertEquals(HttpStatus.OK, response.getStatusCode());
-      assertEquals("Все студенты факультета удалены", response.getBody());
-    }
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertEquals("Все студенты факультета удалены", response.getBody());
+  }
 
-  }//
+}//

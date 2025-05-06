@@ -6,6 +6,8 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import java.util.List;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +16,19 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import ru.hogwarts.school_2.dto.FacultyDTO;
 import ru.hogwarts.school_2.model.Faculty;
 import ru.hogwarts.school_2.service.FacultyService;
-
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @Tag(name = "Faculty API", description = "Управление факультетами")
@@ -61,7 +69,8 @@ public class FacultyController {
    */
   @Operation(summary = "Обновление факультета по ID")
   @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  public ResponseEntity<Faculty> updateFaculty(@PathVariable Long id, @Valid @RequestBody Faculty faculty) {
+  public ResponseEntity<Faculty> updateFaculty(@PathVariable Long id,
+      @Valid @RequestBody Faculty faculty) {
     logger.info("Запрос на обновление факультета с ID: {}", id);
     faculty.setId(id);
     Faculty updatedFaculty = facultyService.updateFaculty(faculty);
@@ -76,7 +85,8 @@ public class FacultyController {
    */
   @Operation(summary = "Получение факультета по цвету")
   @GetMapping(value = "/getFacultyByColor", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  public ResponseEntity<Optional<Faculty>> getFacultyByColor(@RequestParam("color") @NotBlank String color) {
+  public ResponseEntity<Optional<Faculty>> getFacultyByColor(
+      @RequestParam("color") @NotBlank String color) {
     logger.info("Запрос на получение факультета по цвету: {}", color);
     Optional<Faculty> faculty = facultyService.getFacultyByColor(color);
     if (faculty.isEmpty()) {
@@ -94,7 +104,8 @@ public class FacultyController {
    */
   @Operation(summary = "Получение факультета по имени")
   @GetMapping(value = "/getFacultyByName", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  public ResponseEntity<Optional<Faculty>> getFacultyByName(@RequestParam("name") @NotBlank String name) {
+  public ResponseEntity<Optional<Faculty>> getFacultyByName(
+      @RequestParam("name") @NotBlank String name) {
     logger.info("Запрос на получение факультета по имени: {}", name);
     Optional<Faculty> faculty = facultyService.getFacultyByName(name);
     if (faculty.isEmpty()) {
@@ -125,7 +136,7 @@ public class FacultyController {
   /**
    * Метод поиска факультетов по имени или цвету.
    *
-   * @param name имя факультета (необязательно)
+   * @param name  имя факультета (необязательно)
    * @param color цвет факультета (необязательно)
    * @return список соответствующих факультетов
    */
