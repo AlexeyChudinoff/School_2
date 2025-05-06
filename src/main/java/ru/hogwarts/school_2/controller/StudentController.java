@@ -4,18 +4,25 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.hogwarts.school_2.dto.StudentDTO;
 import ru.hogwarts.school_2.model.Student;
 import ru.hogwarts.school_2.service.StudentService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/students")
@@ -40,7 +47,8 @@ public class StudentController {
       return ResponseEntity.notFound().build(); // 404 NOT FOUND, если факультет не найден
     }
 
-    StudentDTO savedStudent = StudentDTO.fromStudent(studentService.addStudent(studentDTO, facultyId));
+    StudentDTO savedStudent = StudentDTO.fromStudent(
+        studentService.addStudent(studentDTO, facultyId));
 
     // Устанавливаем статус 201 CREATED и формируем Location для новой сущности
     URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -61,7 +69,8 @@ public class StudentController {
     studentDTO.setId(id); // Устанавливаем ID в DTO из PathVariable
     Student updatedStudent = studentService.updateStudent(id, studentDTO);
     if (updatedStudent == null) {
-      return ResponseEntity.notFound().build(); // Или вернуть другой ответ, если обновление не удалось
+      return ResponseEntity.notFound()
+          .build(); // Или вернуть другой ответ, если обновление не удалось
     }
     StudentDTO updateStudentDTO = StudentDTO.fromStudent(updatedStudent);
     return ResponseEntity.ok(updateStudentDTO);
@@ -72,7 +81,8 @@ public class StudentController {
   public ResponseEntity<List<StudentDTO>> getAllStudents() {
     List<StudentDTO> students = studentService.getAllStudents();
     return students.isEmpty() ?
-        ResponseEntity.noContent().build() : // если студентов нет, возврат HTTP-код 204 (NO CONTENT)
+        ResponseEntity.noContent().build() :
+        // если студентов нет, возврат HTTP-код 204 (NO CONTENT)
         ResponseEntity.ok(students); // если есть студенты, возврат HTTP-код 200 OK
   }
 
@@ -113,9 +123,9 @@ public class StudentController {
         .map(StudentDTO::fromStudent)
         .collect(Collectors.toList());
     return ResponseEntity.ok(studentDTOS);// Возвращаем список студентов
-    }
+  }
 
-    @Operation(summary = "Получить студентов в возрастном диапазоне от и до")
+  @Operation(summary = "Получить студентов в возрастном диапазоне от и до")
   @GetMapping("/age-range")
   public ResponseEntity<List<StudentDTO>> getStudentsByAgeRange(
       @RequestParam int minAge,
@@ -202,7 +212,7 @@ public class StudentController {
     if (studentService.getStudentById(id).isEmpty()) {
       return ResponseEntity.notFound().build();//"Студент с таким ID не найден."
     }
-return ResponseEntity.ok(studentService.deleteStudentById(id));
+    return ResponseEntity.ok(studentService.deleteStudentById(id));
   }
 
   @Operation(summary = "удалить всех студентов факультета")
