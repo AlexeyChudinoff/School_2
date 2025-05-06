@@ -33,8 +33,8 @@ public class TestRestTemplateFacultyController {
   @Test
   void createFaculty_shouldReturnCreatedFaculty() {
     Faculty faculty = new Faculty();
-    faculty.setName("Test Faculty");
-    faculty.setColor("Red");
+    faculty.setName("Тестовый факультет");
+    faculty.setColor("Красный");
 
     ResponseEntity<Faculty> response = restTemplate.postForEntity(
         getBaseUrl() + "/addFaculty",
@@ -43,15 +43,15 @@ public class TestRestTemplateFacultyController {
 
     assertEquals(HttpStatus.CREATED, response.getStatusCode());
     assertNotNull(response.getBody());
-    assertEquals("Test Faculty", response.getBody().getName());
+    assertEquals("Тестовый факультет", response.getBody().getName());
   }
 
   @Test
   void getFacultyById_shouldReturnFacultyWhenExists() {
     // Сначала создаем факультет
     Faculty faculty = new Faculty();
-    faculty.setName("Gryffindor");
-    faculty.setColor("Scarlet");
+    faculty.setName("Гриффиндор");
+    faculty.setColor("Алый");
     Faculty createdFaculty = restTemplate.postForObject(
         getBaseUrl() + "/addFaculty", faculty, Faculty.class);
 
@@ -62,7 +62,7 @@ public class TestRestTemplateFacultyController {
 
     assertEquals(HttpStatus.OK, response.getStatusCode());
     assertNotNull(response.getBody());
-    assertEquals("Gryffindor", response.getBody().getName());
+    assertEquals("Гриффиндор", response.getBody().getName());
   }
 
   @Test
@@ -78,13 +78,13 @@ public class TestRestTemplateFacultyController {
   void getAllFaculties_shouldReturnListOfFaculties() {
     // Создаем несколько факультетов
     Faculty faculty1 = new Faculty();
-    faculty1.setName("Ravenclaw");
-    faculty1.setColor("Blue");
+    faculty1.setName("Когтевран");
+    faculty1.setColor("Синий");
     restTemplate.postForEntity(getBaseUrl() + "/addFaculty", faculty1, Faculty.class);
 
     Faculty faculty2 = new Faculty();
-    faculty2.setName("Hufflepuff");
-    faculty2.setColor("Yellow");
+    faculty2.setName("Пуффендуй");
+    faculty2.setColor("Желтый");
     restTemplate.postForEntity(getBaseUrl() + "/addFaculty", faculty2, Faculty.class);
 
     // Получаем все факультеты
@@ -100,8 +100,8 @@ public class TestRestTemplateFacultyController {
   void deleteFacultyById_shouldDeleteFaculty() {
     // Создаем факультет для удаления
     Faculty faculty = new Faculty();
-    faculty.setName("Slytherin");
-    faculty.setColor("Green");
+    faculty.setName("Слизерин");
+    faculty.setColor("Зеленый");
     Faculty createdFaculty = restTemplate.postForObject(
         getBaseUrl() + "/addFaculty", faculty, Faculty.class);
 
@@ -115,5 +115,4 @@ public class TestRestTemplateFacultyController {
 
     assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
   }
-
 }//
