@@ -45,22 +45,88 @@ public class TestRestTemplateStudentController {
     return "http://localhost:" + port;
   }
 
-  private Long createTestFaculty()
+  private Long createTestFaculty() {
+    String facultyJson = "{\"name\":\"Гриффиндор\",\"color\":\"красный\"}";
+    HttpEntity<String> request = new HttpEntity<>(facultyJson, headers);
+    ResponseEntity<Map> response = restTemplate.postForEntity(
+        getBaseUrl() + "/faculty/addFaculty",
+        request,
+        Map.class);
+    return Long.valueOf(response.getBody().get("id").toString());
+  }
 
-  private Long createTestStudent(Long facultyId)
+  private StudentDTO createTestStudent(Long facultyId) {
+    String studentJson = "{\"name\":\"Гарри Поттер\",\"age\":17,\"gender\":\"м\"}";
+    HttpEntity<String> request = new HttpEntity<>(studentJson, headers);
+    ResponseEntity<StudentDTO> response = restTemplate.postForEntity(
+        getBaseUrl() + "/students/add?facultyId=" + facultyId,
+        request,
+        StudentDTO.class);
+    return response.getBody();
+  }
+
+
 
   @Test
-  void testGetAllStudents() {}
+  @Transactional
+  void testDeleteStudentById() throws Exception {
+    Long facultyId = createTestFaculty();
+    StudentDTO student = createTestStudent(facultyId);
 
+    // Сначала проверяем, что студент существует
+    ResponseEntity<String> getResponse = restTemplate.getForEntity(
+        getBaseUrl() + "/students/" + student.getId(),
+        String.class);
+    assertEquals(HttpStatus.OK, getResponse.getStatusCode());
+
+    // Удаляем студента
+    restTemplate.delete(getBaseUrl() + "/students/delete/" + student.getId());
+
+    // Проверяем, что студент больше не существует
+    ResponseEntity<String> getAfterDeleteResponse = restTemplate.getForEntity(
+        getBaseUrl() + "/students/" + student.getId(),
+        String.class);
+    assertEquals(HttpStatus.NOT_FOUND, getAfterDeleteResponse.getStatusCode());
+
+  }
 
   @Test
-  void testDeleteStudentById() {}
+  @Transactional
+  void testDeleteAllStudentsOfFaculty() throws Exception {
+    Long facultyId = createTestFaculty();
+    createTestStudent(facultyId);
 
+    // Проверяем, что студенты факультета существуют
+    ResponseEntity<String> getResponse = restTemplate.getForEntity(
+        getBaseUrl() + "/students/faculty/" + facultyId,
+        String.class);
+    assertEquals(HttpStatus.OK, getResponse.getStatusCode());
+    assertTrue(getResponse.getBody().contains("Гарри Поттер"));
+
+    // Удаляем всех студентов факультета
+    restTemplate.delete(getBaseUrl() + "/students/delete/all/" + facultyId);
+
+    // Проверяем, что студентов больше нет
+    ResponseEntity<String> getAfterDeleteResponse = restTemplate.getForEntity(
+        getBaseUrl() + "/students/faculty/" + facultyId,
+        String.class);
+    assertEquals(HttpStatus.NO_CONTENT, getAfterDeleteResponse.getStatusCode());
+  }
 
   @Test
-  void testDeleteAllStudentsOfFaculty() {}
+  @Transactional
+  void testGetAllStudents() throws Exception {
+    Long facultyId = createTestFaculty();
+    createTestStudent(facultyId);
 
+    ResponseEntity<String> response = restTemplate.getForEntity(
+        getBaseUrl() + "/students/all",
+        String.class);
 
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertNotNull(response.getBody());
+    assertTrue(response.getBody().contains("Гарри Поттер"));
+  }
 
   @Test
   @Transactional
@@ -76,7 +142,6 @@ public class TestRestTemplateStudentController {
     assertNotNull(response.getBody());
     assertTrue(response.getBody().contains("Гарри Поттер"));
   }
-
 
   @Test
   @Transactional
@@ -115,8 +180,6 @@ public class TestRestTemplateStudentController {
     assertNotNull(response.getBody(), "Проверка наличия тела ответа");
     assertEquals("Рон Уизли", response.getBody().getName(), "Проверка изменения имени студента");
   }
-
-
 
   @Test
   @Transactional
@@ -177,5 +240,4 @@ public class TestRestTemplateStudentController {
     assertNotNull(response.getBody(), "Проверка наличия тела ответа");
     assertTrue(response.getBody().contains("Гарри Поттер"), "Проверка возврата студентов по факультету");
   }
-
 }//
