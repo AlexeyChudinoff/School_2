@@ -1,4 +1,3 @@
-
 package ru.hogwarts.school_2.repository;
 
 import java.util.List;
@@ -16,7 +15,8 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
   Optional<Student> findByNameAndAge(String name, int age);
 
-  Optional<Student> deleteStudentById(Long id);
+  // ! Удаляю этот метод, так как он некорректен
+  // Optional<Student> deleteStudentById(Long id); <-- НЕТ, удаляем
 
   // Для не уникальных запросов (возвращает List)
   List<Student> findByNameIgnoreCase(String name);
@@ -29,19 +29,18 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
   @Modifying
   @Query("DELETE FROM Student s WHERE s.faculty.id = :facultyId")
-  List<Student> deleteAllByFaculty_Id(@Param("facultyId") Long facultyId);
+  void deleteAllByFaculty_Id(@Param("facultyId") Long facultyId); // Здесь тоже ставим void
 
-  List<Student> findByGenderIgnoreCase (String gender);
+  List<Student> findByGenderIgnoreCase(String gender);
 
   List<Student> findAllByFaculty_Id(Long facultyId);
 
   @Query("SELECT AVG(s.age) FROM Student s")
-  Double findAverageAge();;// средний возраст студентов
+  Double findAverageAge(); // Средний возраст студентов
 
-  int countByFaculty_Id(Long facultyId);// количество студентов факультета
+  long countByFaculty_Id(Long facultyId); // Кол-во студентов по факультету (изменил на long)
 
-
-}//
+}
 
 // Стандартные методы JpaRepository:
 // save(), deleteById(), findAll() и другие уже включены автоматически

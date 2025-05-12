@@ -10,7 +10,7 @@ import ru.hogwarts.school_2.repository.FacultyRepository;
 @Entity
 @Getter
 @Setter
-@ToString(exclude = "faculty")
+
 public class Student {
 
   @Id

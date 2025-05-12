@@ -119,7 +119,7 @@ public class StudentService {
   }
 
   //Получить количество студентов по ID факультета
-  public int getCountStudents(Long facultyId) {
+  public long getCountStudents(Long facultyId) {
     return studentRepository.countByFaculty_Id(facultyId);
   }
 
@@ -128,28 +128,31 @@ public class StudentService {
     return studentRepository.findAllByFaculty_Id(facultyId);
   }
 
-  //удалить студента по ID
-  @Transactional
-  public Optional<Student> deleteStudentById(Long id) {
+  // Удалить студента по ID
+   @Transactional
+  public boolean deleteStudentById(Long id) {
     if (!studentRepository.existsById(id)) {
-      return Optional.empty();
-    } else {
-      avatarRepository.deleteByStudentId(id);
+      return false; // Студент не найден
     }
-    return studentRepository.deleteStudentById(id);
+
+    // Удаляем связанный аватар
+    avatarRepository.deleteByStudentId(id);
+
+    // Удаляем студента
+    studentRepository.deleteById(id);
+
+    return true; // Студент успешно удалён
   }
 
   //удалить всех студентов факультета
   @Transactional
-  public List<Student> deleteAllStudentsFromFaculty(Long facultyId) {
+  public void deleteAllStudentsFromFaculty(Long facultyId) {
     List<Student> students = studentRepository.findAllByFaculty_Id(facultyId);
-    if (students.isEmpty()) {
-      return null;
-    } else {
+    if (!students.isEmpty()) {
       for (Student student : students) {
         avatarRepository.deleteByStudentId(student.getId());
       }
-      return studentRepository.deleteAllByFaculty_Id(facultyId);
+      studentRepository.deleteAllByFaculty_Id(facultyId);
     }
   }
 
