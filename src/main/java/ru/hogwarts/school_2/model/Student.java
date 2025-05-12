@@ -30,6 +30,8 @@ public class Student {
   @JoinColumn(name = "faculty_id")//через что связаны студенты и факультеты мы активная сторона
    private Faculty faculty;
   //mappedBy - это поле в другой стороне, мы пассивная сторона
+  //Используя cascade = CascadeType.REMOVE, мы гарантируем, что
+  // при удалении студента соответствующий аватар будет удалён автоматически.
   @OneToOne(mappedBy = "student", cascade = CascadeType.REMOVE, orphanRemoval = true)
   private Avatar avatar;
 
