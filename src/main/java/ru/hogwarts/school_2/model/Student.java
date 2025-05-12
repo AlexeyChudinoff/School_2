@@ -27,8 +27,12 @@ public class Student {
   private String gender;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "faculty_id")//через что связаны студенты и факультеты
+  @JoinColumn(name = "faculty_id")//через что связаны студенты и факультеты мы активная сторона
    private Faculty faculty;
+  //mappedBy - это поле в другой стороне, мы пассивная сторона
+  @OneToOne(mappedBy = "student", cascade = CascadeType.REMOVE, orphanRemoval = true)
+  private Avatar avatar;
+
 
   public Student() {
   }
