@@ -49,6 +49,7 @@ dependencies {
 // Для корректной работы TestRestTemplate
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	runtimeOnly 'com.h2database:h2'// Встроенная база данных H2 для тестов
+	testImplementation 'com.h2database:h2' // Добавлено для тестов
 	runtimeOnly 'org.postgresql:postgresql'// Рабочая база данных PostgreSQL
 }
 test {
