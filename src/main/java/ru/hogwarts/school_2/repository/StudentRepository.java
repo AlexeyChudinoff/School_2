@@ -1,10 +1,11 @@
-
 package ru.hogwarts.school_2.repository;
 
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import ru.hogwarts.school_2.model.Student;
 
 public interface StudentRepository extends JpaRepository<Student, Long> {
@@ -13,8 +14,6 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
   Optional<Student> findById(Long id);
 
   Optional<Student> findByNameAndAge(String name, int age);
-
-  Optional<Student> deleteStudentById(Long id);
 
   // Для не уникальных запросов (возвращает List)
   List<Student> findByNameIgnoreCase(String name);
@@ -25,19 +24,20 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
   List<Student> findByNameContainingIgnoreCase(String name);
 
-  List<Student> deleteAllByFaculty_Id(Long facultyId);
+  @Modifying
+  @Query("DELETE FROM Student s WHERE s.faculty.id = :facultyId")
+  void deleteAllByFaculty_Id(@Param("facultyId") Long facultyId); // Здесь тоже ставим void
 
-  List<Student> findByGenderIgnoreCase (String gender);
+  List<Student> findByGenderIgnoreCase(String gender);
 
   List<Student> findAllByFaculty_Id(Long facultyId);
 
   @Query("SELECT AVG(s.age) FROM Student s")
-  Double findAverageAge();;// средний возраст студентов
+  Double findAverageAge(); // Средний возраст студентов
 
-  int countByFaculty_Id(Long facultyId);// количество студентов факультета
+  long countByFaculty_Id(Long facultyId); // Кол-во студентов по факультету (изменил на long)
 
-
-}//
+}
 
 // Стандартные методы JpaRepository:
 // save(), deleteById(), findAll() и другие уже включены автоматически
