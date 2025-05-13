@@ -15,9 +15,6 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
   Optional<Student> findByNameAndAge(String name, int age);
 
-  // ! Удаляю этот метод, так как он некорректен
-  // Optional<Student> deleteStudentById(Long id); <-- НЕТ, удаляем
-
   // Для не уникальных запросов (возвращает List)
   List<Student> findByNameIgnoreCase(String name);
 

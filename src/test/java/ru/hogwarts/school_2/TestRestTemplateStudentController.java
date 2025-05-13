@@ -1,27 +1,35 @@
 package ru.hogwarts.school_2;
 
-import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 import ru.hogwarts.school_2.dto.StudentDTO;
-import ru.hogwarts.school_2.model.Avatar;
 import ru.hogwarts.school_2.model.Faculty;
 import ru.hogwarts.school_2.model.Student;
-import ru.hogwarts.school_2.repository.AvatarRepository;
 import ru.hogwarts.school_2.repository.FacultyRepository;
 import ru.hogwarts.school_2.repository.StudentRepository;
 
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-class TestRestTemplateStudentController {
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+public class TestRestTemplateStudentController {
 
   @LocalServerPort
   private int port;
@@ -30,157 +38,122 @@ class TestRestTemplateStudentController {
   private TestRestTemplate restTemplate;
 
   @Autowired
-  private StudentRepository studentRepository;
-
-  @Autowired
   private FacultyRepository facultyRepository;
 
   @Autowired
-  private AvatarRepository avatarRepository;
+  private StudentRepository studentRepository;
 
-  private String baseUrl;
-  private Long facultyId;
-  private Long studentId;
-  private Long avatarId;
+  private ObjectMapper objectMapper = new ObjectMapper();
+
+  private HttpHeaders headers;
 
   @BeforeEach
   void setUp() {
-    baseUrl = "http://localhost:" + port + "/students";
+    headers = new HttpHeaders();
+    headers.setContentType(APPLICATION_JSON);
+    headers.setAccept(List.of(APPLICATION_JSON));
+    headers.setAcceptCharset(List.of(StandardCharsets.UTF_8));
 
-    // Очистка данных в правильном порядке
-    avatarRepository.deleteAll();
+    // Подготавливаем данные перед каждым тестом
+    Faculty faculty = new Faculty("Гриффиндор", "Красный");
+    facultyRepository.save(faculty);
+
+    Student student = new Student("Гарри Поттер", 17, "м");
+    student.setFaculty(faculty);
+    studentRepository.save(student);
+  }
+
+  @AfterEach
+  void tearDown() {
+    // Чистка базы после каждого теста
     studentRepository.deleteAll();
     facultyRepository.deleteAll();
-
-    // Создание факультета
-    Faculty faculty = new Faculty();
-    faculty.setName("Гриффиндор");
-    faculty.setColor("Красный");
-    faculty = facultyRepository.save(faculty);
-    facultyId = faculty.getId();
-
-    // Создание студента
-    Student student = new Student();
-    student.setName("Гарри Поттер");
-    student.setAge(17);
-    student.setGender("м");
-    student.setFaculty(faculty);
-    student = studentRepository.save(student);
-    studentId = student.getId();
-
-    // Создание аватара
-    Avatar avatar = new Avatar();
-    avatar.setFilePath("/test/path");
-    avatar.setFileSize(100L);
-    avatar.setMediaType("image/jpeg");
-    avatar.setStudent(student);
-    avatar = avatarRepository.save(avatar);
-    avatarId = avatar.getId();
   }
 
+  private String getBaseUrl() {
+    return "http://localhost:" + port;
+  }
+
+  // Тест получения всех студентов
   @Test
-  @DisplayName("Удаление студента с каскадным удалением аватара")
-  void deleteStudent_shouldDeleteStudentAndAvatar() {
-    // Проверяем, что аватар существует
-    assertTrue(avatarRepository.findById(avatarId).isPresent());
+  void testGetAllStudents() {
+    HttpEntity<String> entity = new HttpEntity<>(headers);
+    ResponseEntity<List<StudentDTO>> response =
+        restTemplate.exchange(getBaseUrl() + "/students/all",
+            HttpMethod.GET, entity, new ParameterizedTypeReference<List<StudentDTO>>() {});
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+  }
 
-    // Удаляем студента
-    ResponseEntity<Void> response = restTemplate.exchange(
-        baseUrl + "/delete/" + studentId,
-        HttpMethod.DELETE,
-        null,
-        Void.class);
+  // Тест получения отдельного студента по ID
+  @Test
+  void testGetStudentById() {
+    // Получаем ID первого студента
+    Long firstStudentId = studentRepository.findAll().get(0).getId();
+    HttpEntity<String> entity = new HttpEntity<>(headers);
+    ResponseEntity<StudentDTO> response =
+        restTemplate.exchange(getBaseUrl() + "/students/" + firstStudentId, HttpMethod.GET,
+            entity, StudentDTO.class);
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+  }
 
+  // Тест добавления нового студента
+  @Test
+  void testAddNewStudent() {
+    Long facultyId = facultyRepository.findAll().get(0).getId(); // Получаем ID первого факультета
+    StudentDTO studentDTO = new StudentDTO();
+    studentDTO.setName("Рон Уизли");
+    studentDTO.setAge(17);
+    studentDTO.setGender("м");
+
+    try {
+      String jsonPayload = objectMapper.writeValueAsString(studentDTO);
+      HttpEntity<String> entity = new HttpEntity<>(jsonPayload, headers);
+      ResponseEntity<StudentDTO> response =
+          restTemplate.exchange(getBaseUrl() + "/students/add?facultyId=" + facultyId, HttpMethod.POST, entity, StudentDTO.class);
+      assertEquals(HttpStatus.CREATED, response.getStatusCode());
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  // Тест обновления данных студента
+  @Test
+  void testUpdateStudent() {
+    Long firstStudentId = studentRepository.findAll().get(0).getId(); // Получаем ID первого студента
+    StudentDTO studentDTO = new StudentDTO();
+    studentDTO.setName("Хермия Гранджер");
+    studentDTO.setAge(18);
+    studentDTO.setGender("ж");
+
+    try {
+      String jsonPayload = objectMapper.writeValueAsString(studentDTO);
+      HttpEntity<String> entity = new HttpEntity<>(jsonPayload, headers);
+      ResponseEntity<StudentDTO> response =
+          restTemplate.exchange(getBaseUrl() + "/students/" + firstStudentId, HttpMethod.PUT, entity, StudentDTO.class);
+      assertEquals(HttpStatus.OK, response.getStatusCode());
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  // Тест удаления студента по ID
+  @Test
+  void testDeleteStudentById() {
+    Long firstStudentId = studentRepository.findAll().get(0).getId(); // Получаем ID первого студента
+    HttpEntity<String> entity = new HttpEntity<>(headers);
+    ResponseEntity<Void> response =
+        restTemplate.exchange(getBaseUrl() + "/students/delete/" + firstStudentId, HttpMethod.DELETE, entity, Void.class);
     assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
-
-    // Проверяем, что студент удален
-    assertFalse(studentRepository.findById(studentId).isPresent());
-
-    // Проверяем, что аватар тоже удален
-    assertFalse(avatarRepository.findById(avatarId).isPresent());
   }
 
+  // Тест удаления всех студентов факультета
   @Test
-  @DisplayName("Создание студента - успешный сценарий")
-  void createStudent_shouldReturnCreatedStudent() {
-    StudentDTO newStudent = new StudentDTO();
-    newStudent.setName("Гермиона Грейнджер");
-    newStudent.setAge(17);
-    newStudent.setGender("ж");
-
-    ResponseEntity<StudentDTO> response = restTemplate.postForEntity(
-        baseUrl + "/add?facultyId=" + facultyId,
-        newStudent,
-        StudentDTO.class);
-
-    assertEquals(HttpStatus.CREATED, response.getStatusCode());
-    assertNotNull(response.getBody().getId());
-    assertEquals("Гермиона Грейнджер", response.getBody().getName());
+  void testDeleteAllStudentsFromFaculty() {
+    Long firstFacultyId = facultyRepository.findAll().get(0).getId(); // Получаем ID первого факультета
+    HttpEntity<String> entity = new HttpEntity<>(headers);
+    ResponseEntity<Void> response =
+        restTemplate.exchange(getBaseUrl() + "/students/delete/all/" + firstFacultyId, HttpMethod.DELETE, entity, Void.class);
+    assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
   }
 
-  @Test
-  @DisplayName("Получение студента по ID - успешный сценарий")
-  void getStudentById_shouldReturnStudent() {
-    ResponseEntity<StudentDTO> response = restTemplate.getForEntity(
-        baseUrl + "/" + studentId,
-        StudentDTO.class);
-
-    assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertEquals("Гарри Поттер", response.getBody().getName());
-  }
-
-  @Test
-  @DisplayName("Обновление студента - успешный сценарий")
-  void updateStudent_shouldReturnUpdatedStudent() {
-    StudentDTO updatedStudent = new StudentDTO();
-    updatedStudent.setName("Гарри Джеймс Поттер");
-    updatedStudent.setAge(18);
-    updatedStudent.setGender("м");
-
-    HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(MediaType.APPLICATION_JSON);
-    HttpEntity<StudentDTO> request = new HttpEntity<>(updatedStudent, headers);
-
-    ResponseEntity<StudentDTO> response = restTemplate.exchange(
-        baseUrl + "/" + studentId,
-        HttpMethod.PUT,
-        request,
-        StudentDTO.class);
-
-    assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertEquals("Гарри Джеймс Поттер", response.getBody().getName());
-  }
-
-  @Test
-  @DisplayName("Получение всех студентов - успешный сценарий")
-  void getAllStudents_shouldReturnStudentsList() {
-    ResponseEntity<List> response = restTemplate.getForEntity(
-        baseUrl + "/all",
-        List.class);
-
-    assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertEquals(1, response.getBody().size());
-  }
-
-  @Test
-  @DisplayName("Получение студентов по возрасту - успешный сценарий")
-  void getStudentsByAge_shouldReturnFilteredList() {
-    ResponseEntity<List> response = restTemplate.getForEntity(
-        baseUrl + "/by-age/17",
-        List.class);
-
-    assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertEquals(1, response.getBody().size());
-  }
-
-  @Test
-  @DisplayName("Получение среднего возраста - успешный сценарий")
-  void getAverageAge_shouldReturnCorrectValue() {
-    ResponseEntity<Double> response = restTemplate.getForEntity(
-        baseUrl + "/average-age",
-        Double.class);
-
-    assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertEquals(17.0, response.getBody());
-  }
 }

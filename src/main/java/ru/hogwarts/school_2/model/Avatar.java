@@ -8,13 +8,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
-
+@Table(name = "avatar")
 public class Avatar {
 
   @Id
@@ -34,7 +35,7 @@ public class Avatar {
   private byte[] data;
 
   @OneToOne
-  @JoinColumn(name = "student_id")// Активная сторона, хранит внешний ключ
+  @JoinColumn(name = "student_id")// Мы активная сторона, храним внешний ключ
   private Student student;
 
 

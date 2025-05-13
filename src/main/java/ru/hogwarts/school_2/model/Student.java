@@ -1,16 +1,12 @@
 package ru.hogwarts.school_2.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.Objects;
-import ru.hogwarts.school_2.repository.FacultyRepository;
 
 @Entity
 @Getter
 @Setter
-
 public class Student {
 
   @Id
@@ -25,6 +21,7 @@ public class Student {
 
   @Column(nullable = false, length = 1)
   private String gender;
+
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "faculty_id")//через что связаны студенты и факультеты мы активная сторона
@@ -42,7 +39,7 @@ public class Student {
   public Student(String name, Integer age, String gender) {
     this.name = name;
     this.age = age;
-    this.gender = gender;
+    this.gender = gender.toUpperCase().substring(0, 1);//делаем нечувствительным к регистру
 
   }
 
