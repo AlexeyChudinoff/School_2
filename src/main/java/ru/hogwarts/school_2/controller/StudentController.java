@@ -88,7 +88,7 @@ public class StudentController {
   public ResponseEntity<List<StudentDTO>> getAllStudents() {
     List<StudentDTO> students = studentService.getAllStudents();
     return
-     ResponseEntity.ok(students); // всегда возврат HTTP-код 200 OK
+        ResponseEntity.ok(students); // всегда возврат HTTP-код 200 OK
   }
 
   @Operation(summary = "Получить студента по ID")

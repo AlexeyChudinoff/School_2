@@ -57,7 +57,6 @@ public class TestRestTemplateStudentController {
     headers.setAccept(List.of(APPLICATION_JSON));
     headers.setAcceptCharset(List.of(StandardCharsets.UTF_8));
 
-    // Подготавливаем данные перед каждым тестом
     Faculty faculty = new Faculty("Гриффиндор", "Красный");
     facultyRepository.save(faculty);
 
@@ -68,7 +67,6 @@ public class TestRestTemplateStudentController {
 
   @AfterEach
   void tearDown() {
-    // Чистка базы после каждого теста
     studentRepository.deleteAll();
     facultyRepository.deleteAll();
   }
