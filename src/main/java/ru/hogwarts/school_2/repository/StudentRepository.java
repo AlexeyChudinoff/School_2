@@ -15,6 +15,8 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
   Optional<Student> findByNameAndAge(String name, int age);
 
+  long countByFaculty_Id(Long facultyId);
+
   // Для не уникальных запросов (возвращает List)
   List<Student> findByNameIgnoreCase(String name);
 
@@ -24,20 +26,28 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
   List<Student> findByNameContainingIgnoreCase(String name);
 
-  @Modifying
-  @Query("DELETE FROM Student s WHERE s.faculty.id = :facultyId")
-  void deleteAllByFaculty_Id(@Param("facultyId") Long facultyId); // Здесь тоже ставим void
-
   List<Student> findByGenderIgnoreCase(String gender);
 
   List<Student> findAllByFaculty_Id(Long facultyId);
 
-  @Query("SELECT AVG(s.age) FROM Student s")
-  Double findAverageAge(); // Средний возраст студентов
+  //SQL запросы
 
-  long countByFaculty_Id(Long facultyId); // Кол-во студентов по факультету (изменил на long)
+  // Средний возраст студентов
+  @Query("SELECT AVG(age) AS average_age FROM Student")
+  Double findAverageAge();
 
-}
+  //Удалить всех студентов факультета
+  @Modifying//это про то что мы вносим изменения в базу
+  @Query(value = "DELETE FROM Student s WHERE s.faculty.id = :facultyId")
+  void deleteAllByFaculty_Id(
+      @Param("facultyId") Long facultyId); // Здесь ставим void тк после удаления возвращать нечего
 
-// Стандартные методы JpaRepository:
-// save(), deleteById(), findAll() и другие уже включены автоматически
+  // Получить количество всех студентов школы
+  @Query(value = "SELECT COUNT(*) FROM Student", nativeQuery = true)
+  long getCountByAllStudens();
+
+  //Получить 5 последних  по id
+  @Query(value = "SELECT * FROM Student ORDER BY id DESC LIMIT 5 ", nativeQuery = true)
+  List<Student> findTop5ByOrderByIdDesc();
+
+}//

@@ -24,7 +24,8 @@ repositories {
 }
 
 dependencies {
-	// JPA поддержка и работа с базой данных
+
+// JPA поддержка и работа с базой данных
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
 // Валидаторы полей

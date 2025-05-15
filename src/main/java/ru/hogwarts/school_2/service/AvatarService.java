@@ -1,5 +1,6 @@
 package ru.hogwarts.school_2.service;
 
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,8 +33,13 @@ public class AvatarService {
 
   @Transactional
   public void uploadAvatar(Long studentId, MultipartFile file) throws IOException {
-    Student student = studentService.getStudentById(studentId)
-        .orElseThrow(() -> new StudentNotFoundException(studentId));
+    // Проверяем существование студента по его ID
+    Optional<Student> studentOpt = studentService.getStudentById(studentId);
+    if (studentOpt.isEmpty()) {
+      throw new StudentNotFoundException("Студент с указанным ID не найден: " + studentId);
+    }
+
+    Student student = studentOpt.get();
 
     if (file.isEmpty()) {
       throw new AvatarProcessingException("Файл аватара не может быть пустым");

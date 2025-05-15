@@ -161,5 +161,15 @@ public class StudentService {
     return facultyRepository.findById(facultyId);
   }
 
+//получить число всех студентов
+  public long getCountByAllStudens() {
+    return studentRepository.getCountByAllStudens();
+  }
+
+//получаем 5 последних по айди студентов
+public List<Student> findTop5ByOrderByIdDesc(){
+    return studentRepository.findTop5ByOrderByIdDesc();
+  }
+
 
 }//

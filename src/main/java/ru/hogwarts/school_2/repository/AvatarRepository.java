@@ -11,4 +11,4 @@ public interface AvatarRepository extends JpaRepository<Avatar, Long> {
   Optional<Avatar> deleteByStudentId(Long studentId);
 
   boolean existsByStudentId(Long studentId);
-}
+}//

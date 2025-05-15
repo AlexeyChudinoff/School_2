@@ -35,7 +35,7 @@ public class Avatar {
   private byte[] data;
 
   @OneToOne
-  @JoinColumn(name = "student_id")// Мы активная сторона, храним внешний ключ
+  @JoinColumn(name = "student_id", nullable = false)// Мы активная сторона, храним внешний ключ
   private Student student;
 
 

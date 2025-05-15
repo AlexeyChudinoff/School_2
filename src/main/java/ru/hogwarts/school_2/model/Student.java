@@ -1,5 +1,8 @@
 package ru.hogwarts.school_2.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.Objects;
@@ -7,10 +10,13 @@ import java.util.Objects;
 @Entity
 @Getter
 @Setter
+@Table(name = "students")
+//@JsonIgnoreProperties({"faculty"}) // Исключаем поле faculty из сериализации
 public class Student {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Schema(hidden = true)
   private Long id;
 
   @Column(nullable = false)
@@ -25,7 +31,10 @@ public class Student {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "faculty_id")//через что связаны студенты и факультеты мы активная сторона
-   private Faculty faculty;
+  @JsonIgnore // Пропускаем данное поле при сериализации
+  private Faculty faculty;
+
+
   //mappedBy - это поле в другой стороне, мы пассивная сторона
   //Используя cascade = CascadeType.REMOVE, мы гарантируем, что
   // при удалении студента соответствующий аватар будет удалён автоматически.
