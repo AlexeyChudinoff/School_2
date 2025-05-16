@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.hogwarts.school_2.dto.StudentDTO;
@@ -50,30 +51,23 @@ public class StudentService {
   }
 
   @Transactional
-  public Student updateStudent(Long id, StudentDTO studentDTO) {
-    Student student = studentRepository.findById(id).orElse(null);
-    if (student != null) {
-      student.setName(studentDTO.getName());
-      student.setAge(studentDTO.getAge());
-      student.setGender(studentDTO.getGender());
-      if (studentDTO.getFacultyId() != null) {
-        student.setFaculty(facultyRepository.findById(studentDTO.getFacultyId()).orElse(null));
-      }
-      return studentRepository.save(student);
-    }
-    return null; // Или выбросить исключение, если студент не найден
-  }
+  public Student updateStudent(Long id, StudentDTO studentDTO) throws NotFoundException {
+    Student student = studentRepository.findById(id)
+        .orElseThrow(() -> new NotFoundException());
 
-//  // Обновление студента
-//  @Transactional
-//  public Student updateStudent(StudentDTO studentDTO) {
-//    Student student = studentRepository.findById(studentDTO.getId()).orElse(null);
-//    student.setName(studentDTO.getName());
-//    student.setAge(studentDTO.getAge());
-//    student.setGender(studentDTO.getGender());
-//    student.setFaculty(facultyRepository.findById(studentDTO.getFacultyId()).orElse(null));
-//    return studentRepository.save(student);
-//  }
+    student.setName(studentDTO.getName());
+    student.setAge(studentDTO.getAge());
+    student.setGender(studentDTO.getGender());
+
+    // Определяем новую принадлежность к факультету
+    if (studentDTO.getFacultyId() != null) {
+      Faculty faculty = facultyRepository.findById(studentDTO.getFacultyId())
+          .orElseThrow(() -> new NotFoundException());
+      student.setFaculty(faculty);
+    }
+
+    return studentRepository.save(student);
+  }
 
   // Получение всех студентов
   public List<StudentDTO> getAllStudents() {
@@ -113,11 +107,6 @@ public class StudentService {
     return studentRepository.findByAgeBetween(minAge, maxAge);
   }
 
-  // Получить средний возраст студентов
-  public Double findAverageAge() {
-    return studentRepository.findAverageAge();
-  }
-
   //Получить количество студентов по ID факультета
   public long getCountStudents(Long facultyId) {
     return studentRepository.countByFaculty_Id(facultyId);
@@ -144,6 +133,13 @@ public class StudentService {
     return true; // Студент успешно удалён
   }
 
+  //получить факультет по ID
+  public Optional<Faculty> getFacultyById(Long facultyId) {
+    return facultyRepository.findById(facultyId);
+  }
+
+  //sql
+
   //удалить всех студентов факультета
   @Transactional
   public void deleteAllStudentsFromFaculty(Long facultyId) {
@@ -156,17 +152,17 @@ public class StudentService {
     }
   }
 
-  //получить факультет по ID
-  public Optional<Faculty> getFacultyById(Long facultyId) {
-    return facultyRepository.findById(facultyId);
-  }
-
-//получить число всех студентов
+//получить количество всех студентов
   public long getCountByAllStudens() {
     return studentRepository.getCountByAllStudens();
   }
 
-//получаем 5 последних по айди студентов
+  // Получить средний возраст студентов
+  public Double findAverageAge() {
+    return studentRepository.findAverageAge();
+  }
+
+  //получаем 5 последних по айди студентов
 public List<Student> findTop5ByOrderByIdDesc(){
     return studentRepository.findTop5ByOrderByIdDesc();
   }

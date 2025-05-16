@@ -19,8 +19,11 @@ configurations {
 	}
 }
 
-repositories {
+
+
+ repositories {
 	mavenCentral()
+	maven { url 'https://repo.eclipse.org/content/groups/release/' }
 }
 
 dependencies {
@@ -37,6 +40,11 @@ dependencies {
 // OpenAPI документация API
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
 
+// Добавляем Jakarta EE API для поддержки современных аннотаций
+	//compileOnly 'jakarta.platform:jakartaee-api:9.1.0'
+	//compileOnly 'jakarta.platform:jakartaee-api:9.0.0'
+	//compileOnly 'jakarta.platform:jakartaee-api:9.0.0' // Более ранняя версия
+
 // Автоматическая генерация геттеров/сеттеров
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
@@ -49,8 +57,8 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 // Для корректной работы TestRestTemplate
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	runtimeOnly 'com.h2database:h2'// Встроенная база данных H2 для тестов
 	testImplementation 'com.h2database:h2' // Добавлено для тестов
+
 	runtimeOnly 'org.postgresql:postgresql'// Рабочая база данных PostgreSQL
 }
 test {
@@ -60,4 +68,8 @@ test {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile) {
+	options.compilerArgs << '-Xlint:deprecation'
 }

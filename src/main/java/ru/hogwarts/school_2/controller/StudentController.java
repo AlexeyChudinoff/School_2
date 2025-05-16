@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +31,7 @@ import ru.hogwarts.school_2.service.StudentService;
 @RequestMapping("/students")
 @Tag(name = "Student API", description = "Управление студентами")
 @Validated
-@Transactional
+
 public class StudentController {
 
   private final StudentService studentService;
@@ -39,6 +40,7 @@ public class StudentController {
     this.studentService = studentService;
   }
 
+  @Transactional
   @Operation(summary = "Добавить нового студента")
   @PostMapping("/add")
   public ResponseEntity<StudentDTO> addStudent(
@@ -66,10 +68,11 @@ public class StudentController {
     }
   }
 
+  @Transactional
   @Operation(summary = "Обновить данные студента")
   @PutMapping("/{id}")
   public ResponseEntity<StudentDTO> updateStudent(
-      @PathVariable Long id, @Valid @RequestBody StudentDTO studentDTO) {
+      @PathVariable Long id, @Valid @RequestBody StudentDTO studentDTO) throws NotFoundException {
     if (studentService.getStudentById(id).isEmpty()) {
       return ResponseEntity.notFound().build(); // "Студент с таким ID не найден."
     }
@@ -170,13 +173,6 @@ public class StudentController {
     }
   }
 
-  @Operation(summary = "Получить средний возраст студентов")
-  @GetMapping("/average-age")
-  public ResponseEntity<Double> getAverageAge() {
-    Double averageAge = studentService.findAverageAge();
-    return ResponseEntity.ok(averageAge);
-  }
-
   @Operation(summary = "Получить количество студентов факультета по ID факультета")
   @GetMapping("/count/{facultyId}")
   public ResponseEntity<Long> getCountStudents
@@ -207,6 +203,7 @@ public class StudentController {
     }
   }
 
+  @Transactional
   @Operation(summary = "Удалить студента по ID")
   @DeleteMapping("/delete/{id}")
   public ResponseEntity<Void> deleteStudentById(@PathVariable Long id) {
@@ -219,6 +216,9 @@ public class StudentController {
     }
   }
 
+//sql
+
+  @Transactional
   @Operation(summary = "удалить всех студентов факультета")
   @DeleteMapping("/delete/all/{facultyId}")
   public ResponseEntity<Void> deleteStudentsByFacultyId(@PathVariable Long facultyId) {
@@ -229,5 +229,36 @@ public class StudentController {
     return ResponseEntity.noContent().build();
   }
 
+  @Operation(summary = "Получить средний возраст студентов")
+  @GetMapping("/average-age")
+  public ResponseEntity<Double> getAverageAge() {
+    Double averageAge = studentService.findAverageAge();
+    return ResponseEntity.ok(averageAge);
+  }
+
+  @Operation(summary = "Получить количество всех студентов")
+  @GetMapping("/all-students")
+  public ResponseEntity<Long> getCountByAllStudens() {
+    if (studentService.getCountByAllStudens() == 0) {
+      return ResponseEntity.notFound().build();
+    } else {
+      Long count = studentService.getCountByAllStudens();
+      return ResponseEntity.ok(count);
+    }
+  }
+
+  @Operation(summary = "получаем 5 последних по айди студентов")
+  @GetMapping("/last-five")
+  public ResponseEntity<List<StudentDTO>> getLastFiveStudents() {
+    if (studentService.findTop5ByOrderByIdDesc().isEmpty()) {
+      return ResponseEntity.noContent().build();
+    } else {
+      List<Student> students = studentService.findTop5ByOrderByIdDesc();
+      List<StudentDTO> studentDTOS = students.stream()
+          .map(StudentDTO::fromStudent)
+          .collect(Collectors.toList());
+      return ResponseEntity.ok(studentDTOS);
+  }
+  }
 
 }//class

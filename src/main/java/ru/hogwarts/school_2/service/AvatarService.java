@@ -1,5 +1,6 @@
 package ru.hogwarts.school_2.service;
 
+import io.swagger.v3.oas.annotations.Operation;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -92,4 +93,12 @@ public class AvatarService {
       throw new AvatarProcessingException("Ошибка при чтении файла аватара с диска", e);
     }
   }
+
+
+  @Operation(summary = "Получить аватары по 4 на странице")
+  public Iterable<Avatar> getAvatarsByPage04(int pageNumber) {
+          return avatarRepository.findAllByPage04(pageNumber -1);
+
+  }
+
 }//class

@@ -1,5 +1,6 @@
 package ru.hogwarts.school_2.repository;
 
+import io.micrometer.common.lang.Nullable;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -33,7 +34,8 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
   //SQL запросы
 
   // Средний возраст студентов
-  @Query("SELECT AVG(age) AS average_age FROM Student")
+  @Query(value = "SELECT AVG(age) AS average_age FROM Student" , nativeQuery = true)
+  @Nullable //Теперь служба автоматически обработает случай, когда среднее значение отсутствует (NULL)
   Double findAverageAge();
 
   //Удалить всех студентов факультета

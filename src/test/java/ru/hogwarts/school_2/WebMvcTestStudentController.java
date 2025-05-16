@@ -1,5 +1,6 @@
 package ru.hogwarts.school_2;
 
+import static com.jayway.jsonpath.internal.path.PathCompiler.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -8,6 +9,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,6 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -88,35 +91,42 @@ public class WebMvcTestStudentController {
    * Тестирование успешной модификации данных студента.
    */
   @Test
-  void updateStudent_shouldReturnUpdatedStudent() {
+  void updateStudent_shouldReturnUpdatedStudent() throws Exception { // Добавляем объявление исключения
     Long id = 1L;
     StudentDTO inputDTO = new StudentDTO(id, "Гарри Поттер", 12, "М", 1L);
     Student updatedStudent = new Student("Гарри Поттер", 12, "М");
     updatedStudent.setId(id);
 
-    when(studentService.getStudentById(id)).thenReturn(Optional.of(updatedStudent));
-    when(studentService.updateStudent(id, inputDTO)).thenReturn(updatedStudent);
+    // Ожидаемое поведение сервисов
+    when(studentService.getStudentById(id)).thenReturn(Optional.of(updatedStudent)); // Проверяем наличие студента
+    when(studentService.updateStudent(id, inputDTO)).thenReturn(updatedStudent); // Обновление студента
 
+    // Вызываем контроллер
     ResponseEntity<StudentDTO> response = studentController.updateStudent(id, inputDTO);
 
-    assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertEquals(StudentDTO.fromStudent(updatedStudent), response.getBody());
-    assertEquals("М", response.getBody().getGender());
+    // Проверка результатов
+    assertEquals(HttpStatus.OK, response.getStatusCode()); // Статус OK
+    assertEquals(StudentDTO.fromStudent(updatedStudent), response.getBody()); // Проверка тела ответа
+    assertEquals("М", Objects.requireNonNull(response.getBody()).getGender()); // Пол студента
   }
 
   /**
    * Тестирование неудачного обновления несуществующего студента.
    */
   @Test
-  void updateStudent_shouldReturnNotFoundWhenStudentNotExists() {
+  public void updateStudent_shouldReturnNotFoundWhenStudentNotExists() {
     Long id = 999L;
     StudentDTO inputDTO = new StudentDTO(id, "Несуществующий", 12, "М", 1L);
 
     when(studentService.getStudentById(id)).thenReturn(Optional.empty());
 
-    ResponseEntity<StudentDTO> response = studentController.updateStudent(id, inputDTO);
-
-    assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    try {
+      studentController.updateStudent(id, inputDTO);
+      fail("Ожидалось исключение NotFoundException");
+      // Если исключение не было брошено, тест провалится
+    } catch (NotFoundException e) {
+      // Успешно поймали исключение, ничего дополнительно проверять не надо
+    }
   }
 
   /**

@@ -52,7 +52,8 @@ public class FacultyController {
    * @return объект созданного факультета
    */
   @Operation(summary = "Добавление/Создание факультета")
-  @PostMapping(value = "/addFaculty", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @PostMapping(value = "/addFaculty", consumes = MediaType.APPLICATION_JSON_VALUE,
+      produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Faculty> createFaculty(@Valid @RequestBody Faculty faculty) {
     logger.info("Запрос на добавление факультета: {}", faculty.getName());
     Faculty createdFaculty = facultyService.addFaculty(faculty);
@@ -68,7 +69,8 @@ public class FacultyController {
    * @return объект обновленного факультета
    */
   @Operation(summary = "Обновление факультета по ID")
-  @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE,
+      produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Faculty> updateFaculty(@PathVariable Long id,
       @Valid @RequestBody Faculty faculty) {
     logger.info("Запрос на обновление факультета с ID: {}", id);
@@ -84,7 +86,7 @@ public class FacultyController {
    * @return найденный факультет
    */
   @Operation(summary = "Получение факультета по цвету")
-  @GetMapping(value = "/getFacultyByColor", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @GetMapping(value = "/getFacultyByColor", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Optional<Faculty>> getFacultyByColor(
       @RequestParam("color") @NotBlank String color) {
     logger.info("Запрос на получение факультета по цвету: {}", color);
@@ -103,7 +105,7 @@ public class FacultyController {
    * @return найденный факультет
    */
   @Operation(summary = "Получение факультета по имени")
-  @GetMapping(value = "/getFacultyByName", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @GetMapping(value = "/getFacultyByName", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Optional<Faculty>> getFacultyByName(
       @RequestParam("name") @NotBlank String name) {
     logger.info("Запрос на получение факультета по имени: {}", name);
@@ -122,7 +124,7 @@ public class FacultyController {
    * @return найденный факультет
    */
   @Operation(summary = "Получение факультета по ID")
-  @GetMapping(value = "/getFacultyById", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @GetMapping(value = "/getFacultyById", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Optional<Faculty>> getFacultyById(@RequestParam @NotNull Long id) {
     logger.info("Запрос на получение факультета по ID: {}", id);
     Optional<Faculty> faculty = facultyService.getFacultyById(id);
@@ -141,7 +143,7 @@ public class FacultyController {
    * @return список соответствующих факультетов
    */
   @Operation(summary = "Получение списка факультетов по имени или цвету")
-  @GetMapping(value = "/searchByNameOrColor", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @GetMapping(value = "/searchByNameOrColor", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<List<Faculty>> searchFaculties(@RequestParam(required = false) String name,
       @RequestParam(required = false) String color) {
     logger.info("Запрос на поиск факультетов по имени: {} или цвету: {}", name, color);
@@ -160,7 +162,7 @@ public class FacultyController {
    * @return найденный факультет
    */
   @Operation(summary = "Получение факультета по ID студента")
-  @GetMapping(value = "/getFacultyByStudentId", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @GetMapping(value = "/getFacultyByStudentId", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<FacultyDTO> getFacultyByStudentId(@RequestParam @NotNull Long id) {
     logger.info("Запрос на получение факультета по ID студента: {}", id);
     try {
@@ -182,7 +184,7 @@ public class FacultyController {
    * @return список всех существующих факультетов
    */
   @Operation(summary = "Получение всех факультетов")
-  @GetMapping(value = "/getAllFaculties", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @GetMapping(value = "/getAllFaculties", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<List<Faculty>> getAllFaculties() {
     logger.info("Запрос на получение всех факультетов");
     List<Faculty> allFaculties = facultyService.getAllFaculties();

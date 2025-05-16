@@ -1,5 +1,6 @@
 package ru.hogwarts.school_2.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.IOException;
@@ -70,6 +71,22 @@ public class AvatarController {
         .headers(headers)
         .body(data);
   }
+
+  @Operation(summary = "Получить список аватаров по 4 на странице")
+  @GetMapping("/page/{pageNumber}")
+  public ResponseEntity<Iterable<Avatar>> getAvatarsByPage(
+      @PathVariable int pageNumber) {
+
+    if (pageNumber <= 0) {
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // возвращаем ошибку 400, если страница некорректная
+    }
+
+    // получение нужного набора аватаров из сервиса
+    Iterable<Avatar> avatars = avatarService.getAvatarsByPage04(pageNumber);
+
+    return new ResponseEntity<>(avatars, HttpStatus.OK); // 200 успешный возврат результата
+  }
+
 
 
 }//
