@@ -1,5 +1,6 @@
 package ru.hogwarts.school_2.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -38,16 +39,23 @@ public class StudentService {
   }
 
   // Создание студента
+
   @Transactional
   public Student addStudent(StudentDTO studentDTO, Long facultyId) {
-    if (studentRepository.findByNameIgnoreCase(studentDTO.getName()).isEmpty()) {
-      Student student = new Student(studentDTO.getName(), studentDTO.getAge(),
-          studentDTO.getGender());
-      // Используем facultyId из параметра метода, а не из DTO
-      facultyRepository.findById(facultyId).ifPresent(student::setFaculty);
-      return studentRepository.save(student);
+    if (!studentRepository.findByNameIgnoreCase(studentDTO.getName()).isEmpty()) {
+      throw new IllegalStateException("Студент с таким именем уже существует!");
     }
-    throw new IllegalStateException("Студент с таким именем уже существует!");
+
+    // Проверяем существование факультета
+    Faculty faculty = facultyRepository.findById(facultyId)
+        .orElseThrow(() -> new EntityNotFoundException("Факультет с ID " + facultyId + " не найден"));
+
+    // Создаем студента и устанавливаем связь с факультетом
+    Student student = new Student(studentDTO.getName(), studentDTO.getAge(), studentDTO.getGender());
+    student.setFaculty(faculty);
+
+    // Сохраняем студента
+    return studentRepository.save(student);
   }
 
   @Transactional
