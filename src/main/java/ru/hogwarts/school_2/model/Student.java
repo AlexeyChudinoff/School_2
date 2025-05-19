@@ -10,7 +10,7 @@ import java.util.Objects;
 @Entity
 @Getter
 @Setter
-@Table(name = "students")
+@Table
 //@JsonIgnoreProperties({"faculty"}) // Исключаем поле faculty из сериализации
 public class Student {
 

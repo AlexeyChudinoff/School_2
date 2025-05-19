@@ -56,6 +56,13 @@ dependencies {
 	testImplementation 'com.h2database:h2' // Добавлено для тестов
 
 	runtimeOnly 'org.postgresql:postgresql'// Рабочая база данных PostgreSQL
+
+// Добавил логгирование
+	implementation 'org.apache.logging.log4j:log4j-core:2.24.3'
+
+// liguibase
+	implementation group: 'org.liquibase', name: 'liquibase-core', version: '4.31.1'
+
 }
 test {
 	useJUnitPlatform()
