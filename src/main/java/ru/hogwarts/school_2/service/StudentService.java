@@ -1,14 +1,17 @@
 package ru.hogwarts.school_2.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.hogwarts.school_2.dto.StudentDTO;
 import ru.hogwarts.school_2.model.Faculty;
 import ru.hogwarts.school_2.model.Student;
+import ru.hogwarts.school_2.repository.AvatarRepository;
 import ru.hogwarts.school_2.repository.FacultyRepository;
 import ru.hogwarts.school_2.repository.StudentRepository;
 
@@ -18,58 +21,61 @@ public class StudentService {
 
   private FacultyRepository facultyRepository;
   private StudentRepository studentRepository;
+  private AvatarRepository avatarRepository;
   // private StudentDTO studentDTO;
 
   public StudentService() {
   }
 
   @Autowired
-  public StudentService(StudentRepository studentRepository, FacultyRepository facultyRepository) {
+  public StudentService(
+      StudentRepository studentRepository,
+      FacultyRepository facultyRepository,
+      AvatarRepository avatarRepository) {
     this.studentRepository = studentRepository;
     this.facultyRepository = facultyRepository;
+    this.avatarRepository = avatarRepository;
 
   }
 
   // Создание студента
+
   @Transactional
   public Student addStudent(StudentDTO studentDTO, Long facultyId) {
-    if (studentRepository.findByNameIgnoreCase(studentDTO.getName()).isEmpty()) {
-      Student student = new Student(studentDTO.getName(), studentDTO.getAge(),
-          studentDTO.getGender());
-      // Используем facultyId из параметра метода, а не из DTO
-      facultyRepository.findById(facultyId).ifPresent(student::setFaculty);
-      return studentRepository.save(student);
+    if (!studentRepository.findByNameIgnoreCase(studentDTO.getName()).isEmpty()) {
+      throw new IllegalStateException("Студент с таким именем уже существует!");
     }
-    throw new IllegalStateException("Студент с таким именем уже существует!");
+
+    // Проверяем существование факультета
+    Faculty faculty = facultyRepository.findById(facultyId)
+        .orElseThrow(() -> new EntityNotFoundException("Факультет с ID " + facultyId + " не найден"));
+
+    // Создаем студента и устанавливаем связь с факультетом
+    Student student = new Student(studentDTO.getName(), studentDTO.getAge(), studentDTO.getGender());
+    student.setFaculty(faculty);
+
+    // Сохраняем студента
+    return studentRepository.save(student);
   }
 
   @Transactional
-  public Student updateStudent(Long id, StudentDTO studentDTO) {
-    Student student = studentRepository.findById(id).orElse(null);
-    if (student != null) {
-      student.setName(studentDTO.getName());
-      student.setAge(studentDTO.getAge());
-      student.setGender(studentDTO.getGender());
-      if(studentDTO.getFacultyId() != null) {
-        student.setFaculty(facultyRepository.findById(studentDTO.getFacultyId()).orElse(null));
-      }
-      return studentRepository.save(student);
+  public Student updateStudent(Long id, StudentDTO studentDTO) throws NotFoundException {
+    Student student = studentRepository.findById(id)
+        .orElseThrow(() -> new NotFoundException());
+
+    student.setName(studentDTO.getName());
+    student.setAge(studentDTO.getAge());
+    student.setGender(studentDTO.getGender());
+
+    // Определяем новую принадлежность к факультету
+    if (studentDTO.getFacultyId() != null) {
+      Faculty faculty = facultyRepository.findById(studentDTO.getFacultyId())
+          .orElseThrow(() -> new NotFoundException());
+      student.setFaculty(faculty);
     }
-    return null; // Или выбросить исключение, если студент не найден
+
+    return studentRepository.save(student);
   }
-
-
-
-//  // Обновление студента
-//  @Transactional
-//  public Student updateStudent(StudentDTO studentDTO) {
-//    Student student = studentRepository.findById(studentDTO.getId()).orElse(null);
-//    student.setName(studentDTO.getName());
-//    student.setAge(studentDTO.getAge());
-//    student.setGender(studentDTO.getGender());
-//    student.setFaculty(facultyRepository.findById(studentDTO.getFacultyId()).orElse(null));
-//    return studentRepository.save(student);
-//  }
 
   // Получение всех студентов
   public List<StudentDTO> getAllStudents() {
@@ -109,13 +115,8 @@ public class StudentService {
     return studentRepository.findByAgeBetween(minAge, maxAge);
   }
 
-  // Получить средний возраст студентов
-  public Double findAverageAge() {
-    return studentRepository.findAverageAge();
-  }
-
   //Получить количество студентов по ID факультета
-  public int getCountStudents(Long facultyId) {
+  public long getCountStudents(Long facultyId) {
     return studentRepository.countByFaculty_Id(facultyId);
   }
 
@@ -124,22 +125,54 @@ public class StudentService {
     return studentRepository.findAllByFaculty_Id(facultyId);
   }
 
-  //удалить студента по ID
-  public Optional<Student> deleteStudentById(Long id) {
-    return studentRepository.deleteStudentById(id);
-  }
-
-  //удалить всех студентов факультета
-  public List<Student> deleteAllStudentsFromFaculty(Long facultyId) {
-    if (facultyRepository.existsById(facultyId)) {
-      studentRepository.deleteAllByFaculty_Id(facultyId);
+  // Удалить студента по ID
+   @Transactional
+  public boolean deleteStudentById(Long id) {
+    if (!studentRepository.existsById(id)) {
+      return false; // Студент не найден
     }
-    return studentRepository.findAllByFaculty_Id(facultyId);
+
+    // Удаляем связанный аватар
+    avatarRepository.deleteByStudentId(id);
+
+    // Удаляем студента
+    studentRepository.deleteById(id);
+
+    return true; // Студент успешно удалён
   }
 
   //получить факультет по ID
   public Optional<Faculty> getFacultyById(Long facultyId) {
     return facultyRepository.findById(facultyId);
+  }
+
+  //sql
+
+  //удалить всех студентов факультета
+  @Transactional
+  public void deleteAllStudentsFromFaculty(Long facultyId) {
+    List<Student> students = studentRepository.findAllByFaculty_Id(facultyId);
+    if (!students.isEmpty()) {
+      for (Student student : students) {
+        avatarRepository.deleteByStudentId(student.getId());
+      }
+      studentRepository.deleteAllByFaculty_Id(facultyId);
+    }
+  }
+
+//получить количество всех студентов
+  public long getCountByAllStudens() {
+    return studentRepository.getCountByAllStudens();
+  }
+
+  // Получить средний возраст студентов
+  public Double findAverageAge() {
+    return studentRepository.findAverageAge();
+  }
+
+  //получаем 5 последних по айди студентов
+public List<Student> findTop5ByOrderByIdDesc(){
+    return studentRepository.findTop5ByOrderByIdDesc();
   }
 
 

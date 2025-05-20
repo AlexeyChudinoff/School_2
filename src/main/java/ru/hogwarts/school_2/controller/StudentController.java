@@ -4,24 +4,34 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.net.URI;
-import java.util.Optional;
+import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.hogwarts.school_2.dto.StudentDTO;
 import ru.hogwarts.school_2.model.Student;
 import ru.hogwarts.school_2.service.StudentService;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/students")
 @Tag(name = "Student API", description = "Управление студентами")
 @Validated
-@Transactional
+
 public class StudentController {
 
   private final StudentService studentService;
@@ -30,6 +40,7 @@ public class StudentController {
     this.studentService = studentService;
   }
 
+  @Transactional
   @Operation(summary = "Добавить нового студента")
   @PostMapping("/add")
   public ResponseEntity<StudentDTO> addStudent(
@@ -40,28 +51,36 @@ public class StudentController {
       return ResponseEntity.notFound().build(); // 404 NOT FOUND, если факультет не найден
     }
 
-    StudentDTO savedStudent = StudentDTO.fromStudent(studentService.addStudent(studentDTO, facultyId));
+    StudentDTO savedStudent = StudentDTO.fromStudent(
+        studentService.addStudent(studentDTO, facultyId));
 
-    // Устанавливаем статус 201 CREATED и формируем Location для новой сущности
-    URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-        .path("/{id}")
-        .buildAndExpand(savedStudent.getId())
-        .toUri();
-
-    return ResponseEntity.created(location).body(savedStudent); // возвращает 201 CREATED
+    // Формируем URL только в продуктивной среде
+    if (RequestContextHolder.currentRequestAttributes() instanceof ServletRequestAttributes &&
+        ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest()
+            != null) {
+      URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+          .path("/{id}")
+          .buildAndExpand(savedStudent.getId())
+          .toUri();
+      return ResponseEntity.created(location).body(savedStudent);
+    } else {
+      return ResponseEntity.status(HttpStatus.CREATED).body(savedStudent);
+    }
   }
 
+  @Transactional
   @Operation(summary = "Обновить данные студента")
   @PutMapping("/{id}")
   public ResponseEntity<StudentDTO> updateStudent(
-      @PathVariable Long id, @Valid @RequestBody StudentDTO studentDTO) {
+      @PathVariable Long id, @Valid @RequestBody StudentDTO studentDTO) throws NotFoundException {
     if (studentService.getStudentById(id).isEmpty()) {
       return ResponseEntity.notFound().build(); // "Студент с таким ID не найден."
     }
     studentDTO.setId(id); // Устанавливаем ID в DTO из PathVariable
     Student updatedStudent = studentService.updateStudent(id, studentDTO);
     if (updatedStudent == null) {
-      return ResponseEntity.notFound().build(); // Или вернуть другой ответ, если обновление не удалось
+      return ResponseEntity.notFound()
+          .build(); // Или вернуть другой ответ, если обновление не удалось
     }
     StudentDTO updateStudentDTO = StudentDTO.fromStudent(updatedStudent);
     return ResponseEntity.ok(updateStudentDTO);
@@ -71,9 +90,8 @@ public class StudentController {
   @GetMapping("/all")
   public ResponseEntity<List<StudentDTO>> getAllStudents() {
     List<StudentDTO> students = studentService.getAllStudents();
-    return students.isEmpty() ?
-        ResponseEntity.noContent().build() : // если студентов нет, возврат HTTP-код 204 (NO CONTENT)
-        ResponseEntity.ok(students); // если есть студенты, возврат HTTP-код 200 OK
+    return
+        ResponseEntity.ok(students); // всегда возврат HTTP-код 200 OK
   }
 
   @Operation(summary = "Получить студента по ID")
@@ -91,14 +109,11 @@ public class StudentController {
   @GetMapping("/by-name/{name}")
   public ResponseEntity<List<StudentDTO>> getStudentsByName(@PathVariable String name) {
     List<Student> students = studentService.findByNameContainingIgnoreCase(name);
-    if (students.isEmpty()) {
-      return ResponseEntity.noContent().build(); // Нет студентов с указанным именем
-    }
     List<StudentDTO> studentDTOS = students.stream()
         .map(StudentDTO::fromStudent)
         .collect(Collectors.toList());
 
-    return ResponseEntity.ok(studentDTOS); // Возвращаем список студентов
+    return ResponseEntity.ok(studentDTOS); // Всегда возвращаем 200 OK
   }
 
   @Operation(summary = "Получить студентов одного пола")
@@ -113,9 +128,9 @@ public class StudentController {
         .map(StudentDTO::fromStudent)
         .collect(Collectors.toList());
     return ResponseEntity.ok(studentDTOS);// Возвращаем список студентов
-    }
+  }
 
-    @Operation(summary = "Получить студентов в возрастном диапазоне от и до")
+  @Operation(summary = "Получить студентов в возрастном диапазоне от и до")
   @GetMapping("/age-range")
   public ResponseEntity<List<StudentDTO>> getStudentsByAgeRange(
       @RequestParam int minAge,
@@ -158,21 +173,14 @@ public class StudentController {
     }
   }
 
-  @Operation(summary = "Получить средний возраст студентов")
-  @GetMapping("/average-age")
-  public ResponseEntity<Double> getAverageAge() {
-    Double averageAge = studentService.findAverageAge();
-    return ResponseEntity.ok(averageAge);
-  }
-
   @Operation(summary = "Получить количество студентов факультета по ID факультета")
   @GetMapping("/count/{facultyId}")
-  public ResponseEntity<Integer> getCountStudents
+  public ResponseEntity<Long> getCountStudents
       (@PathVariable Long facultyId) {
     if (studentService.getFacultyById(facultyId).isEmpty()) {
       return ResponseEntity.notFound().build();//"Факультет с таким ID не найден."
     }
-    Integer countStudents = studentService.getCountStudents(facultyId);
+    Long countStudents = studentService.getCountStudents(facultyId);
     return ResponseEntity.ok(countStudents);
 
   }
@@ -195,25 +203,62 @@ public class StudentController {
     }
   }
 
+  @Transactional
   @Operation(summary = "Удалить студента по ID")
   @DeleteMapping("/delete/{id}")
-  public ResponseEntity<Optional<Student>> deleteStudentById
-      (@PathVariable Long id) {
-    if (studentService.getStudentById(id).isEmpty()) {
-      return ResponseEntity.notFound().build();//"Студент с таким ID не найден."
+  public ResponseEntity<Void> deleteStudentById(@PathVariable Long id) {
+    boolean deleted = studentService.deleteStudentById(id);
+
+    if (deleted) {
+      return ResponseEntity.noContent().build(); // 204 NO CONTENT — удаление прошло успешно
+    } else {
+      return ResponseEntity.notFound().build(); // 404 NOT FOUND — студента с таким ID не существует
     }
-return ResponseEntity.ok(studentService.deleteStudentById(id));
   }
 
+//sql
+
+  @Transactional
   @Operation(summary = "удалить всех студентов факультета")
   @DeleteMapping("/delete/all/{facultyId}")
-  public ResponseEntity<List<Student>> deleteStudentsByFacultyId(@PathVariable Long facultyId) {
+  public ResponseEntity<Void> deleteStudentsByFacultyId(@PathVariable Long facultyId) {
     if (studentService.getFacultyById(facultyId).isEmpty()) {
-      return ResponseEntity.notFound().build();//"Факультет с таким ID не найден."
-    } else {
-      return ResponseEntity.ok(studentService.deleteAllStudentsFromFaculty(facultyId));
-
+      return ResponseEntity.notFound().build();
     }
+    studentService.deleteAllStudentsFromFaculty(facultyId);
+    return ResponseEntity.noContent().build();
+  }
+
+  @Operation(summary = "Получить средний возраст студентов")
+  @GetMapping("/average-age")
+  public ResponseEntity<Double> getAverageAge() {
+    Double averageAge = studentService.findAverageAge();
+    return ResponseEntity.ok(averageAge);
+  }
+
+  @Operation(summary = "Получить количество всех студентов")
+  @GetMapping("/all-students")
+  public ResponseEntity<Long> getCountByAllStudens() {
+    if (studentService.getCountByAllStudens() == 0) {
+      return ResponseEntity.notFound().build();
+    } else {
+      Long count = studentService.getCountByAllStudens();
+      return ResponseEntity.ok(count);
+    }
+  }
+
+  @Operation(summary = "получаем 5 последних по айди студентов")
+  @GetMapping("/last-five")
+  public ResponseEntity<List<StudentDTO>> getLastFiveStudents() {
+    if (studentService.findTop5ByOrderByIdDesc().isEmpty()) {
+      return ResponseEntity.noContent().build();
+    } else {
+      List<Student> students = studentService.findTop5ByOrderByIdDesc();
+      List<StudentDTO> studentDTOS = students.stream()
+          .map(StudentDTO::fromStudent)
+          .collect(Collectors.toList());
+      return ResponseEntity.ok(studentDTOS);
+  }
   }
 
 }//class

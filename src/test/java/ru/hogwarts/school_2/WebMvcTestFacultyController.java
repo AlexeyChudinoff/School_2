@@ -1,6 +1,15 @@
 package ru.hogwarts.school_2;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -12,12 +21,6 @@ import ru.hogwarts.school_2.controller.FacultyController;
 import ru.hogwarts.school_2.dto.FacultyDTO;
 import ru.hogwarts.school_2.model.Faculty;
 import ru.hogwarts.school_2.service.FacultyService;
-
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class WebMvcTestFacultyController {

@@ -19,12 +19,16 @@ configurations {
 	}
 }
 
-repositories {
+
+
+ repositories {
 	mavenCentral()
+	maven { url 'https://repo.eclipse.org/content/groups/release/' }
 }
 
 dependencies {
-	// JPA поддержка и работа с базой данных
+
+// JPA поддержка и работа с базой данных
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
 // Валидаторы полей
@@ -36,6 +40,7 @@ dependencies {
 // OpenAPI документация API
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
 
+
 // Автоматическая генерация геттеров/сеттеров
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
@@ -44,27 +49,23 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	testImplementation 'org.springframework.boot:spring-boot-configuration-processor'
+	testImplementation 'org.springframework.boot:spring-boot-starter-webflux'
 	testImplementation 'org.springframework.security:spring-security-test'
+// Для корректной работы TestRestTemplate
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	testImplementation 'com.h2database:h2' // Добавлено для тестов
 
-	runtimeOnly 'com.h2database:h2'// Встроенная база данных H2 для тестов
-	runtimeOnly 'org.postgresql:postgresql'// Продуктивная база данных PostgreSQL
+	runtimeOnly 'org.postgresql:postgresql'// Рабочая база данных PostgreSQL
 }
-
-//dependencies {
-//	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-//	implementation 'org.springframework.boot:spring-boot-starter-validation'
-//	implementation 'org.springframework.boot:spring-boot-starter-web'
-//	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
-//	compileOnly 'org.projectlombok:lombok'
-//	annotationProcessor 'org.projectlombok:lombok'
-//	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-//	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-//	testImplementation 'org.springframework.boot:spring-boot-configuration-processor'
-//	testImplementation 'org.springframework.security:spring-security-test'
-//	runtimeOnly 'com.h2database:h2'
-//	runtimeOnly 'org.postgresql:postgresql'
-//}
+test {
+	useJUnitPlatform()
+	systemProperty "spring.profiles.active", "test" // Важно: форсируем test-профиль
+}
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile) {
+	options.compilerArgs << '-Xlint:deprecation'
 }
