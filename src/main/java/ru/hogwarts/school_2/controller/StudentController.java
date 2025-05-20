@@ -72,19 +72,23 @@ public class StudentController {
   @Operation(summary = "Обновить данные студента")
   @PutMapping("/{id}")
   public ResponseEntity<StudentDTO> updateStudent(
-      @PathVariable Long id, @Valid @RequestBody StudentDTO studentDTO) throws NotFoundException {
+      @PathVariable Long id, @Valid @RequestBody StudentDTO studentDTO) {
     if (studentService.getStudentById(id).isEmpty()) {
-      return ResponseEntity.notFound().build(); // "Студент с таким ID не найден."
+      return ResponseEntity.notFound().build();
     }
-    studentDTO.setId(id); // Устанавливаем ID в DTO из PathVariable
-    Student updatedStudent = studentService.updateStudent(id, studentDTO);
-    if (updatedStudent == null) {
-      return ResponseEntity.notFound()
-          .build(); // Или вернуть другой ответ, если обновление не удалось
+    studentDTO.setId(id);
+    try {
+      Student updatedStudent = studentService.updateStudent(id, studentDTO);
+      if (updatedStudent == null) {
+        return ResponseEntity.notFound().build();
+      }
+      StudentDTO updateStudentDTO = StudentDTO.fromStudent(updatedStudent);
+      return ResponseEntity.ok(updateStudentDTO);
+    } catch (NotFoundException e) {
+      return ResponseEntity.notFound().build();
     }
-    StudentDTO updateStudentDTO = StudentDTO.fromStudent(updatedStudent);
-    return ResponseEntity.ok(updateStudentDTO);
   }
+
 
   @Operation(summary = "Получить всех студентов")
   @GetMapping("/all")

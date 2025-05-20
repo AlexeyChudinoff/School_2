@@ -52,6 +52,9 @@ public class TestRestTemplateStudentController {
 
   @BeforeEach
   void setUp() {
+    studentRepository.deleteAll();
+    facultyRepository.deleteAll();
+
     headers = new HttpHeaders();
     headers.setContentType(APPLICATION_JSON);
     headers.setAccept(List.of(APPLICATION_JSON));

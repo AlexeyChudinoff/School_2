@@ -14,10 +14,15 @@ import ru.hogwarts.school_2.model.Student;
 import ru.hogwarts.school_2.repository.AvatarRepository;
 import ru.hogwarts.school_2.repository.FacultyRepository;
 import ru.hogwarts.school_2.repository.StudentRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 @Service
 //@Transactional(readOnly = true)
 public class StudentService {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(StudentService.class);
 
   private FacultyRepository facultyRepository;
   private StudentRepository studentRepository;
