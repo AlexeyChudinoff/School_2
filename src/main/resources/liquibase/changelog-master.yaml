@@ -3,5 +3,3 @@ databaseChangeLog:
     file: liquibase/scripts/work_on_faculties.sql
   - include:
     file: liquibase/scripts/work_on_students.sql
-
-    
