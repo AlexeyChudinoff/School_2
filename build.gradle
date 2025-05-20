@@ -39,6 +39,7 @@ dependencies {
 
 // Веб-сервисы и REST API
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'com.github.spotbugs:spotbugs-annotations:4.7.3'
 
 // OpenAPI документация API
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
@@ -69,8 +70,8 @@ dependencies {
 // Добавил логгирование
 	implementation 'org.apache.logging.log4j:log4j-core:2.24.3'
 
-// liguibase
-//	implementation 'org.liquibase:liquibase-core:4.31.1'
+// liguibase  спринг бут сам знает про версии, можно версию удалить
+	implementation 'org.liquibase:liquibase-core'
 
 }
 test {
