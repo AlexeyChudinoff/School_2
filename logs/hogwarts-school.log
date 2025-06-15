@@ -1,0 +1,640 @@
+2025-06-16 00:06:45.119 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2025-06-16 00:06:45.163 [main] INFO  r.h.school_2.School2Application - Starting School2Application using Java 17.0.12 with PID 15388 (C:\Users\Alex\IdeaProjects\SCHOOL_2\build\classes\java\main started by Alex in C:\Users\Alex\IdeaProjects\SCHOOL_2)
+2025-06-16 00:06:45.163 [main] DEBUG r.h.school_2.School2Application - Running with Spring Boot v3.2.2, Spring v6.1.3
+2025-06-16 00:06:45.164 [main] INFO  r.h.school_2.School2Application - The following 1 profile is active: "dev"
+2025-06-16 00:06:45.942 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-16 00:06:45.991 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 41 ms. Found 3 JPA repository interfaces.
+2025-06-16 00:06:46.474 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-16 00:06:46.483 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-06-16 00:06:46.545 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1345 ms
+2025-06-16 00:06:46.642 [main] DEBUG liquibase.servicelocator - Loaded liquibase.configuration.AutoloadedConfigurations instance liquibase.GlobalConfiguration
+2025-06-16 00:06:46.643 [main] DEBUG liquibase.servicelocator - Loaded liquibase.configuration.AutoloadedConfigurations instance liquibase.integration.commandline.LiquibaseCommandLineConfiguration
+2025-06-16 00:06:46.644 [main] DEBUG liquibase.servicelocator - Loaded liquibase.configuration.AutoloadedConfigurations instance liquibase.logging.core.DefaultLoggerConfiguration
+2025-06-16 00:06:46.644 [main] DEBUG liquibase.servicelocator - Loaded liquibase.configuration.AutoloadedConfigurations instance liquibase.sql.SqlConfiguration
+2025-06-16 00:06:46.645 [main] DEBUG liquibase.servicelocator - Loaded liquibase.configuration.AutoloadedConfigurations instance liquibase.parser.ChangeLogParserConfiguration
+2025-06-16 00:06:46.646 [main] DEBUG liquibase.configuration - Found ConfigurationDefinitions in liquibase.GlobalConfiguration
+2025-06-16 00:06:46.646 [main] DEBUG liquibase.configuration - Found ConfigurationDefinitions in liquibase.integration.commandline.LiquibaseCommandLineConfiguration
+2025-06-16 00:06:46.649 [main] DEBUG liquibase.configuration - Found ConfigurationDefinitions in liquibase.logging.core.DefaultLoggerConfiguration
+2025-06-16 00:06:46.649 [main] DEBUG liquibase.configuration - Found ConfigurationDefinitions in liquibase.sql.SqlConfiguration
+2025-06-16 00:06:46.649 [main] DEBUG liquibase.configuration - Found ConfigurationDefinitions in liquibase.parser.ChangeLogParserConfiguration
+2025-06-16 00:06:46.651 [main] DEBUG liquibase.servicelocator - Loaded liquibase.configuration.ConfigurationValueProvider instance liquibase.configuration.core.DeprecatedConfigurationValueProvider
+2025-06-16 00:06:46.652 [main] DEBUG liquibase.servicelocator - Loaded liquibase.configuration.ConfigurationValueProvider instance liquibase.configuration.core.SystemPropertyValueProvider
+2025-06-16 00:06:46.652 [main] DEBUG liquibase.servicelocator - Loaded liquibase.configuration.ConfigurationValueProvider instance liquibase.configuration.core.ScopeValueProvider
+2025-06-16 00:06:46.653 [main] DEBUG liquibase.servicelocator - Loaded liquibase.configuration.ConfigurationValueProvider instance liquibase.configuration.core.EnvironmentValueProvider
+2025-06-16 00:06:46.655 [main] DEBUG liquibase.servicelocator - Loaded liquibase.logging.LogService instance liquibase.logging.core.BufferedLogService
+2025-06-16 00:06:46.655 [main] DEBUG liquibase.servicelocator - Loaded liquibase.logging.LogService instance liquibase.logging.core.CompositeLogService
+2025-06-16 00:06:46.655 [main] DEBUG liquibase.servicelocator - Loaded liquibase.logging.LogService instance liquibase.logging.core.JavaLogService
+2025-06-16 00:06:46.656 [main] DEBUG liquibase.servicelocator - Loaded liquibase.servicelocator.ServiceLocator instance liquibase.servicelocator.StandardServiceLocator
+2025-06-16 00:06:46.663 [main] DEBUG liquibase.configuration - No configuration value for liquibase.shouldRun aka should.run found
+2025-06-16 00:06:46.664 [main] DEBUG liquibase.configuration - Configuration liquibase.shouldRun is using the default value of true
+2025-06-16 00:06:46.665 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-06-16 00:06:46.845 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@1d2fb82
+2025-06-16 00:06:46.847 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-06-16 00:06:46.854 [main] DEBUG liquibase.servicelocator - Loaded liquibase.database.jvm.ConnectionPatterns instance liquibase.database.jvm.JdbcConnectionPatterns
+2025-06-16 00:06:46.861 [main] DEBUG liquibase.servicelocator - Loaded liquibase.database.Database instance liquibase.database.core.CockroachDatabase
+2025-06-16 00:06:46.862 [main] DEBUG liquibase.servicelocator - Loaded liquibase.database.Database instance liquibase.database.core.DB2Database
+2025-06-16 00:06:46.862 [main] DEBUG liquibase.servicelocator - Loaded liquibase.database.Database instance liquibase.database.core.Db2zDatabase
+2025-06-16 00:06:46.863 [main] DEBUG liquibase.servicelocator - Loaded liquibase.database.Database instance liquibase.database.core.DerbyDatabase
+2025-06-16 00:06:46.864 [main] DEBUG liquibase.servicelocator - Loaded liquibase.database.Database instance liquibase.database.core.EnterpriseDBDatabase
+2025-06-16 00:06:46.864 [main] DEBUG liquibase.servicelocator - Loaded liquibase.database.Database instance liquibase.database.core.FirebirdDatabase
+2025-06-16 00:06:46.865 [main] DEBUG liquibase.servicelocator - Loaded liquibase.database.Database instance liquibase.database.core.H2Database
+2025-06-16 00:06:46.866 [main] DEBUG liquibase.servicelocator - Loaded liquibase.database.Database instance liquibase.database.core.HsqlDatabase
+2025-06-16 00:06:46.867 [main] DEBUG liquibase.servicelocator - Loaded liquibase.database.Database instance liquibase.database.core.InformixDatabase
+2025-06-16 00:06:46.868 [main] DEBUG liquibase.servicelocator - Loaded liquibase.database.Database instance liquibase.database.core.Ingres9Database
+2025-06-16 00:06:46.870 [main] DEBUG liquibase.servicelocator - Loaded liquibase.database.Database instance liquibase.database.core.MSSQLDatabase
+2025-06-16 00:06:46.871 [main] DEBUG liquibase.servicelocator - Loaded liquibase.database.Database instance liquibase.database.core.MariaDBDatabase
+2025-06-16 00:06:46.873 [main] DEBUG liquibase.servicelocator - Loaded liquibase.database.Database instance liquibase.database.core.MockDatabase
+2025-06-16 00:06:46.873 [main] DEBUG liquibase.servicelocator - Loaded liquibase.database.Database instance liquibase.database.core.MySQLDatabase
+2025-06-16 00:06:46.874 [main] DEBUG liquibase.servicelocator - Loaded liquibase.database.Database instance liquibase.database.core.OracleDatabase
+2025-06-16 00:06:46.874 [main] DEBUG liquibase.servicelocator - Loaded liquibase.database.Database instance liquibase.database.core.PostgresDatabase
+2025-06-16 00:06:46.875 [main] DEBUG liquibase.servicelocator - Loaded liquibase.database.Database instance liquibase.database.core.SQLiteDatabase
+2025-06-16 00:06:46.876 [main] DEBUG liquibase.servicelocator - Loaded liquibase.database.Database instance liquibase.database.core.SybaseASADatabase
+2025-06-16 00:06:46.876 [main] DEBUG liquibase.servicelocator - Loaded liquibase.database.Database instance liquibase.database.core.SybaseDatabase
+2025-06-16 00:06:46.877 [main] DEBUG liquibase.servicelocator - Loaded liquibase.database.Database instance liquibase.database.core.UnsupportedDatabase
+2025-06-16 00:06:46.878 [main] DEBUG liquibase.servicelocator - Loaded liquibase.database.Database instance liquibase.database.core.SnowflakeDatabase
+2025-06-16 00:06:46.888 [main] DEBUG liquibase.database - Connected to student@jdbc:postgresql://localhost:5432/hogwarts
+2025-06-16 00:06:46.888 [main] DEBUG liquibase.database - Setting auto commit to false from true
+2025-06-16 00:06:46.909 [main] DEBUG liquibase.servicelocator - Loaded liquibase.executor.Executor instance liquibase.executor.jvm.JdbcExecutor
+2025-06-16 00:06:46.910 [main] DEBUG liquibase.servicelocator - Loaded liquibase.executor.Executor instance liquibase.executor.jvm.SnowflakeJdbcExecutor
+2025-06-16 00:06:46.914 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.AddAutoIncrementGenerator
+2025-06-16 00:06:46.914 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.AddAutoIncrementGeneratorDB2
+2025-06-16 00:06:46.915 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.AddAutoIncrementGeneratorHsqlH2
+2025-06-16 00:06:46.915 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.AddAutoIncrementGeneratorInformix
+2025-06-16 00:06:46.915 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.AddAutoIncrementGeneratorMySQL
+2025-06-16 00:06:46.916 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.AddAutoIncrementGeneratorSQLite
+2025-06-16 00:06:46.917 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.AddColumnGenerator
+2025-06-16 00:06:46.917 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.AddColumnGeneratorDefaultClauseBeforeNotNull
+2025-06-16 00:06:46.917 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.AddColumnGeneratorSQLite
+2025-06-16 00:06:46.918 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.AddDefaultValueGenerator
+2025-06-16 00:06:46.918 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.AddDefaultValueGeneratorDerby
+2025-06-16 00:06:46.918 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.AddDefaultValueGeneratorInformix
+2025-06-16 00:06:46.919 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.AddDefaultValueGeneratorMSSQL
+2025-06-16 00:06:46.919 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.AddDefaultValueGeneratorMySQL
+2025-06-16 00:06:46.920 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.AddDefaultValueGeneratorOracle
+2025-06-16 00:06:46.920 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.AddDefaultValueGeneratorPostgres
+2025-06-16 00:06:46.920 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.AddDefaultValueGeneratorSQLite
+2025-06-16 00:06:46.921 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.AddDefaultValueGeneratorSybase
+2025-06-16 00:06:46.921 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.AddDefaultValueGeneratorSybaseASA
+2025-06-16 00:06:46.922 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.AddForeignKeyConstraintGenerator
+2025-06-16 00:06:46.922 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.AddPrimaryKeyGenerator
+2025-06-16 00:06:46.922 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.AddPrimaryKeyGeneratorInformix
+2025-06-16 00:06:46.923 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.AddUniqueConstraintGenerator
+2025-06-16 00:06:46.923 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.AddUniqueConstraintGeneratorInformix
+2025-06-16 00:06:46.923 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.AddUniqueConstraintGeneratorTDS
+2025-06-16 00:06:46.924 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.AlterSequenceGenerator
+2025-06-16 00:06:46.924 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.BatchDmlExecutablePreparedStatementGenerator
+2025-06-16 00:06:46.924 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.ClearDatabaseChangeLogTableGenerator
+2025-06-16 00:06:46.925 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.CommentGenerator
+2025-06-16 00:06:46.925 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.CopyRowsGenerator
+2025-06-16 00:06:46.925 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.CreateDatabaseChangeLogLockTableGenerator
+2025-06-16 00:06:46.926 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.CreateDatabaseChangeLogTableGenerator
+2025-06-16 00:06:46.926 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.CreateDatabaseChangeLogTableGeneratorSybase
+2025-06-16 00:06:46.927 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.CreateIndexGenerator
+2025-06-16 00:06:46.928 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.CreateIndexGeneratorFirebird
+2025-06-16 00:06:46.929 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.CreateIndexGeneratorPostgres
+2025-06-16 00:06:46.929 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.CreateProcedureGenerator
+2025-06-16 00:06:46.930 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.CreateSequenceGenerator
+2025-06-16 00:06:46.931 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.CreateTableGenerator
+2025-06-16 00:06:46.931 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.CreateTableGeneratorInformix
+2025-06-16 00:06:46.932 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.CreateViewGenerator
+2025-06-16 00:06:46.932 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.CreateViewGeneratorInformix
+2025-06-16 00:06:46.932 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.DeleteGenerator
+2025-06-16 00:06:46.933 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.DropColumnGenerator
+2025-06-16 00:06:46.933 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.DropDefaultValueGenerator
+2025-06-16 00:06:46.934 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.DropForeignKeyConstraintGenerator
+2025-06-16 00:06:46.934 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.DropIndexGenerator
+2025-06-16 00:06:46.935 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.DropPrimaryKeyGenerator
+2025-06-16 00:06:46.935 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.DropProcedureGenerator
+2025-06-16 00:06:46.935 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.DropSequenceGenerator
+2025-06-16 00:06:46.936 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.DropTableGenerator
+2025-06-16 00:06:46.936 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.DropUniqueConstraintGenerator
+2025-06-16 00:06:46.936 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.DropViewGenerator
+2025-06-16 00:06:46.937 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.GetNextChangeSetSequenceValueGenerator
+2025-06-16 00:06:46.937 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.GetViewDefinitionGenerator
+2025-06-16 00:06:46.937 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.GetViewDefinitionGeneratorDB2
+2025-06-16 00:06:46.938 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.GetViewDefinitionGeneratorDerby
+2025-06-16 00:06:46.938 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.GetViewDefinitionGeneratorFirebird
+2025-06-16 00:06:46.938 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.GetViewDefinitionGeneratorHsql
+2025-06-16 00:06:46.938 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.GetViewDefinitionGeneratorInformix
+2025-06-16 00:06:46.939 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.GetViewDefinitionGeneratorMSSQL
+2025-06-16 00:06:46.939 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.GetViewDefinitionGeneratorOracle
+2025-06-16 00:06:46.939 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.GetViewDefinitionGeneratorPostgres
+2025-06-16 00:06:46.940 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.GetViewDefinitionGeneratorSybase
+2025-06-16 00:06:46.940 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.GetViewDefinitionGeneratorSybaseASA
+2025-06-16 00:06:46.940 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.InitializeDatabaseChangeLogLockTableGenerator
+2025-06-16 00:06:46.940 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.InsertDataChangeGenerator
+2025-06-16 00:06:46.941 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.InsertGenerator
+2025-06-16 00:06:46.942 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.InsertOrUpdateGeneratorDB2
+2025-06-16 00:06:46.942 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.InsertOrUpdateGeneratorH2
+2025-06-16 00:06:46.943 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.InsertOrUpdateGeneratorHsql
+2025-06-16 00:06:46.943 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.InsertOrUpdateGeneratorInformix
+2025-06-16 00:06:46.944 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.InsertOrUpdateGeneratorMSSQL
+2025-06-16 00:06:46.944 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.InsertOrUpdateGeneratorMySQL
+2025-06-16 00:06:46.945 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.InsertOrUpdateGeneratorOracle
+2025-06-16 00:06:46.945 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.InsertOrUpdateGeneratorPostgres
+2025-06-16 00:06:46.945 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.InsertOrUpdateGeneratorSQLite
+2025-06-16 00:06:46.946 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.InsertOrUpdateGeneratorSybaseASA
+2025-06-16 00:06:46.946 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.InsertSetGenerator
+2025-06-16 00:06:46.950 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.LockDatabaseChangeLogGenerator
+2025-06-16 00:06:46.951 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.MarkChangeSetRanGenerator
+2025-06-16 00:06:46.951 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.ModifyDataTypeGenerator
+2025-06-16 00:06:46.952 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.RawParameterizedSqlGenerator
+2025-06-16 00:06:46.952 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.RawSqlGenerator
+2025-06-16 00:06:46.952 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.ReindexGeneratorSQLite
+2025-06-16 00:06:46.953 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.RemoveChangeSetRanStatusGenerator
+2025-06-16 00:06:46.953 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.RenameColumnGenerator
+2025-06-16 00:06:46.953 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.RenameSequenceGenerator
+2025-06-16 00:06:46.954 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.RenameTableGenerator
+2025-06-16 00:06:46.954 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.RenameViewGenerator
+2025-06-16 00:06:46.955 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.ReorganizeTableGeneratorDB2
+2025-06-16 00:06:46.955 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.RuntimeGenerator
+2025-06-16 00:06:46.955 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.SelectFromDatabaseChangeLogGenerator
+2025-06-16 00:06:46.956 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.SelectFromDatabaseChangeLogLockGenerator
+2025-06-16 00:06:46.956 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.SetColumnRemarksGenerator
+2025-06-16 00:06:46.957 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.SetNullableGenerator
+2025-06-16 00:06:46.957 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.SetTableRemarksGenerator
+2025-06-16 00:06:46.958 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.SetViewRemarksGenerator
+2025-06-16 00:06:46.958 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.StoredProcedureGenerator
+2025-06-16 00:06:46.958 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.TableIsEmptyGenerator
+2025-06-16 00:06:46.959 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.TableRowCountGenerator
+2025-06-16 00:06:46.959 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.TagDatabaseGenerator
+2025-06-16 00:06:46.959 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.UnlockDatabaseChangeLogGenerator
+2025-06-16 00:06:46.960 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.UpdateChangeSetChecksumGenerator
+2025-06-16 00:06:46.960 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.UpdateDataChangeGenerator
+2025-06-16 00:06:46.960 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.UpdateGenerator
+2025-06-16 00:06:46.961 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.CreateSequenceGeneratorSnowflake
+2025-06-16 00:06:46.962 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.DropDefaultValueGeneratorSnowflake
+2025-06-16 00:06:46.962 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.DropProcedureGeneratorSnowflake
+2025-06-16 00:06:46.963 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.InsertOrUpdateGeneratorSnowflake
+2025-06-16 00:06:46.963 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.RenameTableGeneratorSnowflake
+2025-06-16 00:06:46.963 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.RenameViewGeneratorSnowflake
+2025-06-16 00:06:46.964 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.SetColumnRemarksGeneratorSnowflake
+2025-06-16 00:06:46.964 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.SetTableRemarksGeneratorSnowflake
+2025-06-16 00:06:46.965 [main] DEBUG liquibase.servicelocator - Loaded liquibase.sqlgenerator.SqlGenerator instance liquibase.sqlgenerator.core.GetViewDefinitionGeneratorSnowflake
+2025-06-16 00:06:46.987 [main] INFO  liquibase.database - Set default schema name to public
+2025-06-16 00:06:46.987 [main] DEBUG liquibase.configuration - No configuration value for liquibase.liquibaseSchemaName aka liquibase.schemaName found
+2025-06-16 00:06:46.989 [main] DEBUG liquibase.configuration - No configuration value for liquibase.supportPropertyEscaping aka enableEscaping found
+2025-06-16 00:06:46.989 [main] DEBUG liquibase.configuration - Configuration liquibase.supportPropertyEscaping is using the default value of false
+2025-06-16 00:06:47.002 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.CalculateChecksumCommandStep
+2025-06-16 00:06:47.002 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.ChangelogSyncCommandStep
+2025-06-16 00:06:47.003 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.ChangelogSyncSqlCommandStep
+2025-06-16 00:06:47.003 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.ChangelogSyncToTagCommandStep
+2025-06-16 00:06:47.004 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.ChangelogSyncToTagSqlCommandStep
+2025-06-16 00:06:47.004 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.ClearChecksumsCommandStep
+2025-06-16 00:06:47.005 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.DbDocCommandStep
+2025-06-16 00:06:47.006 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.DiffChangelogCommandStep
+2025-06-16 00:06:47.008 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.DiffCommandStep
+2025-06-16 00:06:47.009 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.DropAllCommandStep
+2025-06-16 00:06:47.010 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.ExecuteSqlCommandStep
+2025-06-16 00:06:47.011 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.FutureRollbackCountSqlCommandStep
+2025-06-16 00:06:47.011 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.FutureRollbackFromTagSqlCommandStep
+2025-06-16 00:06:47.011 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.FutureRollbackSqlCommandStep
+2025-06-16 00:06:47.013 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.GenerateChangelogCommandStep
+2025-06-16 00:06:47.014 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.HistoryCommandStep
+2025-06-16 00:06:47.016 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.InternalHistoryCommandStep
+2025-06-16 00:06:47.016 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.InternalSnapshotCommandStep
+2025-06-16 00:06:47.017 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.ListLocksCommandStep
+2025-06-16 00:06:47.017 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.MarkNextChangesetRanCommandStep
+2025-06-16 00:06:47.017 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.MarkNextChangesetRanSqlCommandStep
+2025-06-16 00:06:47.017 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.ReleaseLocksCommandStep
+2025-06-16 00:06:47.019 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.RollbackCommandStep
+2025-06-16 00:06:47.020 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.RollbackCountCommandStep
+2025-06-16 00:06:47.020 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.RollbackCountSqlCommandStep
+2025-06-16 00:06:47.021 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.RollbackSqlCommandStep
+2025-06-16 00:06:47.021 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.RollbackToDateCommandStep
+2025-06-16 00:06:47.021 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.RollbackToDateSqlCommandStep
+2025-06-16 00:06:47.022 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.SnapshotCommandStep
+2025-06-16 00:06:47.022 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.SnapshotReferenceCommandStep
+2025-06-16 00:06:47.023 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.StartH2CommandStep
+2025-06-16 00:06:47.024 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.StatusCommandStep
+2025-06-16 00:06:47.024 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.TagCommandStep
+2025-06-16 00:06:47.025 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.TagExistsCommandStep
+2025-06-16 00:06:47.026 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.UnexpectedChangesetsCommandStep
+2025-06-16 00:06:47.026 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.UpdateCommandStep
+2025-06-16 00:06:47.027 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.UpdateCountCommandStep
+2025-06-16 00:06:47.028 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.UpdateCountSqlCommandStep
+2025-06-16 00:06:47.028 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.UpdateSqlCommandStep
+2025-06-16 00:06:47.029 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.UpdateTestingRollbackCommandStep
+2025-06-16 00:06:47.029 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.UpdateToTagCommandStep
+2025-06-16 00:06:47.030 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.UpdateToTagSqlCommandStep
+2025-06-16 00:06:47.031 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.ValidateCommandStep
+2025-06-16 00:06:47.032 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.helpers.ChangeExecListenerCommandStep
+2025-06-16 00:06:47.033 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.helpers.DatabaseChangelogCommandStep
+2025-06-16 00:06:47.035 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.helpers.DbUrlConnectionCommandStep
+2025-06-16 00:06:47.036 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.helpers.DiffOutputControlCommandStep
+2025-06-16 00:06:47.037 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.helpers.LockServiceCommandStep
+2025-06-16 00:06:47.037 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.helpers.OutputWriterCommandStep
+2025-06-16 00:06:47.039 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.helpers.PreCompareCommandStep
+2025-06-16 00:06:47.039 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.helpers.ReferenceDatabaseOutputWriterCommandStep
+2025-06-16 00:06:47.039 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.helpers.ReferenceDbUrlConnectionCommandStep
+2025-06-16 00:06:47.040 [main] DEBUG liquibase.servicelocator - Loaded liquibase.command.CommandStep instance liquibase.command.core.helpers.ShowSummaryArgument
+2025-06-16 00:06:47.046 [main] DEBUG liquibase.servicelocator - Loaded liquibase.logging.mdc.MdcManager instance liquibase.logging.mdc.NoOpMdcManager
+2025-06-16 00:06:47.047 [main] DEBUG liquibase.configuration - No configuration value for liquibase.strict found
+2025-06-16 00:06:47.048 [main] DEBUG liquibase.configuration - Configuration liquibase.strict is using the default value of false
+2025-06-16 00:06:47.053 [main] DEBUG liquibase.configuration - No configuration value for liquibase.command.update.changeExecListener found
+2025-06-16 00:06:47.054 [main] DEBUG liquibase.configuration - No configuration value for liquibase.command.changeExecListener found
+2025-06-16 00:06:47.054 [main] DEBUG liquibase.configuration - No configuration value for liquibase.command.update.changeExecListenerClass found
+2025-06-16 00:06:47.055 [main] DEBUG liquibase.configuration - No configuration value for liquibase.command.changeExecListenerClass found
+2025-06-16 00:06:47.055 [main] DEBUG liquibase.configuration - No configuration value for liquibase.command.update.changeExecListenerPropertiesFile found
+2025-06-16 00:06:47.056 [main] DEBUG liquibase.configuration - No configuration value for liquibase.command.changeExecListenerPropertiesFile found
+2025-06-16 00:06:47.056 [main] DEBUG liquibase.configuration - Found 'liquibase.command.update.changelogFile' configuration of 'classpath:/liquibase/changelog-master.yaml'
+    command argument 'changelogFile' of 'classpath:/liquibase/changelog-master.yaml'
+2025-06-16 00:06:47.057 [main] DEBUG liquibase.configuration - Found 'liquibase.command.update.changelogParameters' configuration of 'liquibase.changelog.ChangeLogParameters@4d7cac24'
+    command argument 'changelogParameters' of 'liquibase.changelog.ChangeLogParameters@4d7cac24'
+2025-06-16 00:06:47.057 [main] DEBUG liquibase.configuration - No configuration value for liquibase.command.update.contextFilter aka liquibase.command.update.contexts found
+2025-06-16 00:06:47.058 [main] DEBUG liquibase.configuration - No configuration value for liquibase.command.contextFilter aka liquibase.command.contexts found
+2025-06-16 00:06:47.059 [main] DEBUG liquibase.configuration - Found 'liquibase.command.update.database' configuration of 'student @ jdbc:postgresql://localhost:5432/hogwarts (Default Schema: public)'
+    command argument 'database' of 'student @ jdbc:postgresql://localhost:5432/hogwarts (Default Schema: public)'
+2025-06-16 00:06:47.059 [main] DEBUG liquibase.configuration - No configuration value for liquibase.command.update.databaseChangelog found
+2025-06-16 00:06:47.060 [main] DEBUG liquibase.configuration - No configuration value for liquibase.command.databaseChangelog found
+2025-06-16 00:06:47.060 [main] DEBUG liquibase.configuration - No configuration value for liquibase.command.update.defaultCatalogName found
+2025-06-16 00:06:47.061 [main] DEBUG liquibase.configuration - No configuration value for liquibase.command.defaultCatalogName found
+2025-06-16 00:06:47.061 [main] DEBUG liquibase.configuration - No configuration value for liquibase.command.update.defaultSchemaName found
+2025-06-16 00:06:47.062 [main] DEBUG liquibase.configuration - No configuration value for liquibase.command.defaultSchemaName found
+2025-06-16 00:06:47.062 [main] DEBUG liquibase.configuration - No configuration value for liquibase.command.update.driver found
+2025-06-16 00:06:47.063 [main] DEBUG liquibase.configuration - No configuration value for liquibase.command.driver found
+2025-06-16 00:06:47.063 [main] DEBUG liquibase.configuration - No configuration value for liquibase.command.update.driverPropertiesFile found
+2025-06-16 00:06:47.063 [main] DEBUG liquibase.configuration - No configuration value for liquibase.command.driverPropertiesFile found
+2025-06-16 00:06:47.064 [main] DEBUG liquibase.configuration - No configuration value for liquibase.command.update.labelFilter aka liquibase.command.update.labels found
+2025-06-16 00:06:47.065 [main] DEBUG liquibase.configuration - No configuration value for liquibase.command.labelFilter aka liquibase.command.labels found
+2025-06-16 00:06:47.065 [main] DEBUG liquibase.configuration - No configuration value for liquibase.command.update.password found
+2025-06-16 00:06:47.065 [main] DEBUG liquibase.configuration - No configuration value for liquibase.command.password found
+2025-06-16 00:06:47.066 [main] DEBUG liquibase.configuration - No configuration value for liquibase.command.update.showSummary found
+2025-06-16 00:06:47.066 [main] DEBUG liquibase.configuration - Configuration liquibase.command.update.showSummary is using the default value of SUMMARY
+2025-06-16 00:06:47.066 [main] DEBUG liquibase.configuration - No configuration value for liquibase.command.showSummary found
+2025-06-16 00:06:47.066 [main] DEBUG liquibase.configuration - Configuration liquibase.command.showSummary is using the default value of SUMMARY
+2025-06-16 00:06:47.066 [main] DEBUG liquibase.configuration - Found 'liquibase.command.update.showSummaryOutput' configuration of 'LOG'
+    command argument 'showSummaryOutput' of 'LOG'
+2025-06-16 00:06:47.067 [main] DEBUG liquibase.configuration - No configuration value for liquibase.command.update.skipDatabaseStep found
+2025-06-16 00:06:47.067 [main] DEBUG liquibase.configuration - Configuration liquibase.command.update.skipDatabaseStep is using the default value of false
+2025-06-16 00:06:47.067 [main] DEBUG liquibase.configuration - No configuration value for liquibase.command.skipDatabaseStep found
+2025-06-16 00:06:47.067 [main] DEBUG liquibase.configuration - Configuration liquibase.command.skipDatabaseStep is using the default value of false
+2025-06-16 00:06:47.068 [main] DEBUG liquibase.configuration - No configuration value for liquibase.command.update.updateNullChecksums found
+2025-06-16 00:06:47.068 [main] DEBUG liquibase.configuration - Configuration liquibase.command.update.updateNullChecksums is using the default value of false
+2025-06-16 00:06:47.068 [main] DEBUG liquibase.configuration - No configuration value for liquibase.command.updateNullChecksums found
+2025-06-16 00:06:47.068 [main] DEBUG liquibase.configuration - Configuration liquibase.command.updateNullChecksums is using the default value of false
+2025-06-16 00:06:47.068 [main] DEBUG liquibase.configuration - No configuration value for liquibase.command.update.url found
+2025-06-16 00:06:47.069 [main] DEBUG liquibase.configuration - No configuration value for liquibase.command.url found
+2025-06-16 00:06:47.069 [main] DEBUG liquibase.configuration - No configuration value for liquibase.command.update.username found
+2025-06-16 00:06:47.069 [main] DEBUG liquibase.configuration - No configuration value for liquibase.command.username found
+2025-06-16 00:06:47.070 [main] DEBUG liquibase.command - Pipeline for command 'update: liquibase.command.core.helpers.DbUrlConnectionCommandStep then liquibase.command.core.helpers.ShowSummaryArgument then liquibase.command.core.helpers.DatabaseChangelogCommandStep then liquibase.command.core.helpers.ChangeExecListenerCommandStep then liquibase.command.core.UpdateCommandStep
+2025-06-16 00:06:47.070 [main] DEBUG liquibase.configuration - No configuration value for liquibase.outputFile found
+2025-06-16 00:06:47.071 [main] DEBUG liquibase.configuration - No configuration value for liquibase.outputFileEncoding found
+2025-06-16 00:06:47.071 [main] DEBUG liquibase.configuration - Configuration liquibase.outputFileEncoding is using the default value of UTF-8
+2025-06-16 00:06:47.071 [main] DEBUG liquibase.command - Writing output with encoding 'UTF-8'
+2025-06-16 00:06:47.071 [main] DEBUG liquibase.command - Executing internal command dbUrlConnectionCommandStep
+2025-06-16 00:06:47.071 [main] DEBUG liquibase.configuration - Configuration liquibase.command.update.skipDatabaseStep is using the default value of false
+2025-06-16 00:06:47.072 [main] DEBUG liquibase.configuration - Configuration liquibase.command.skipDatabaseStep is using the default value of false
+2025-06-16 00:06:47.072 [main] DEBUG liquibase.command - Executing internal command showSummary
+2025-06-16 00:06:47.072 [main] DEBUG liquibase.configuration - Configuration liquibase.command.update.showSummary is using the default value of SUMMARY
+2025-06-16 00:06:47.072 [main] DEBUG liquibase.configuration - Configuration liquibase.command.showSummary is using the default value of SUMMARY
+2025-06-16 00:06:47.072 [main] DEBUG liquibase.command - Executing internal command changelogCommandStep
+2025-06-16 00:06:47.079 [main] DEBUG liquibase.servicelocator - Loaded liquibase.parser.ChangeLogParser instance liquibase.parser.core.formattedsql.FormattedSqlChangeLogParser
+2025-06-16 00:06:47.082 [main] DEBUG liquibase.servicelocator - Loaded liquibase.parser.ChangeLogParser instance liquibase.parser.core.json.JsonChangeLogParser
+2025-06-16 00:06:47.082 [main] DEBUG liquibase.servicelocator - Loaded liquibase.parser.ChangeLogParser instance liquibase.parser.core.sql.SqlChangeLogParser
+2025-06-16 00:06:47.085 [main] DEBUG liquibase.configuration - No configuration value for liquibase.validateXmlChangelogFiles found
+2025-06-16 00:06:47.085 [main] DEBUG liquibase.configuration - Configuration liquibase.validateXmlChangelogFiles is using the default value of true
+2025-06-16 00:06:47.086 [main] DEBUG liquibase.configuration - No configuration value for liquibase.secureParsing found
+2025-06-16 00:06:47.086 [main] DEBUG liquibase.configuration - Configuration liquibase.secureParsing is using the default value of true
+2025-06-16 00:06:47.086 [main] DEBUG liquibase.servicelocator - Loaded liquibase.parser.ChangeLogParser instance liquibase.parser.core.xml.XMLChangeLogSAXParser
+2025-06-16 00:06:47.086 [main] DEBUG liquibase.servicelocator - Loaded liquibase.parser.ChangeLogParser instance liquibase.parser.core.yaml.YamlChangeLogParser
+2025-06-16 00:06:47.086 [main] DEBUG liquibase.parser - Matched file 'classpath:/liquibase/changelog-master.yaml' to parser 'YamlChangeLogParser'
+2025-06-16 00:06:47.135 [main] DEBUG liquibase.configuration - No configuration value for liquibase.fileEncoding found
+2025-06-16 00:06:47.135 [main] DEBUG liquibase.configuration - Configuration liquibase.fileEncoding is using the default value of UTF-8
+2025-06-16 00:06:47.135 [main] DEBUG liquibase.parser - Matched file 'classpath:/liquibase/scripts/work_on_faculties.sql' to parser 'FormattedSqlChangeLogParser'
+2025-06-16 00:06:47.143 [main] DEBUG liquibase.parser - Matched file 'classpath:/liquibase/scripts/work_on_students.sql' to parser 'FormattedSqlChangeLogParser'
+2025-06-16 00:06:47.145 [main] DEBUG liquibase.configuration - Found 'liquibase.command.update.updateNullChecksums' configuration of 'true'
+    command argument 'updateNullChecksums' of 'true'
+2025-06-16 00:06:47.147 [main] DEBUG liquibase.servicelocator - Loaded liquibase.changelog.ChangeLogHistoryService instance liquibase.changelog.MockChangeLogHistoryService
+2025-06-16 00:06:47.149 [main] DEBUG liquibase.servicelocator - Loaded liquibase.changelog.ChangeLogHistoryService instance liquibase.changelog.StandardChangeLogHistoryService
+2025-06-16 00:06:47.151 [main] DEBUG liquibase.servicelocator - Loaded liquibase.snapshot.SnapshotGenerator instance liquibase.snapshot.jvm.CatalogSnapshotGenerator
+2025-06-16 00:06:47.154 [main] DEBUG liquibase.servicelocator - Loaded liquibase.snapshot.SnapshotGenerator instance liquibase.snapshot.jvm.ColumnSnapshotGenerator
+2025-06-16 00:06:47.154 [main] DEBUG liquibase.servicelocator - Loaded liquibase.snapshot.SnapshotGenerator instance liquibase.snapshot.jvm.ColumnSnapshotGeneratorH2
+2025-06-16 00:06:47.154 [main] DEBUG liquibase.servicelocator - Loaded liquibase.snapshot.SnapshotGenerator instance liquibase.snapshot.jvm.ColumnSnapshotGeneratorInformix
+2025-06-16 00:06:47.155 [main] DEBUG liquibase.servicelocator - Loaded liquibase.snapshot.SnapshotGenerator instance liquibase.snapshot.jvm.ColumnSnapshotGeneratorOracle
+2025-06-16 00:06:47.155 [main] DEBUG liquibase.servicelocator - Loaded liquibase.snapshot.SnapshotGenerator instance liquibase.snapshot.jvm.DataSnapshotGenerator
+2025-06-16 00:06:47.155 [main] DEBUG liquibase.servicelocator - Loaded liquibase.snapshot.SnapshotGenerator instance liquibase.snapshot.jvm.ForeignKeySnapshotGenerator
+2025-06-16 00:06:47.157 [main] DEBUG liquibase.servicelocator - Loaded liquibase.snapshot.SnapshotGenerator instance liquibase.snapshot.jvm.IndexSnapshotGenerator
+2025-06-16 00:06:47.158 [main] DEBUG liquibase.servicelocator - Loaded liquibase.snapshot.SnapshotGenerator instance liquibase.snapshot.jvm.PrimaryKeySnapshotGenerator
+2025-06-16 00:06:47.158 [main] DEBUG liquibase.servicelocator - Loaded liquibase.snapshot.SnapshotGenerator instance liquibase.snapshot.jvm.SchemaSnapshotGenerator
+2025-06-16 00:06:47.159 [main] DEBUG liquibase.servicelocator - Loaded liquibase.snapshot.SnapshotGenerator instance liquibase.snapshot.jvm.SequenceSnapshotGenerator
+2025-06-16 00:06:47.159 [main] DEBUG liquibase.servicelocator - Loaded liquibase.snapshot.SnapshotGenerator instance liquibase.snapshot.jvm.TableSnapshotGenerator
+2025-06-16 00:06:47.160 [main] DEBUG liquibase.servicelocator - Loaded liquibase.snapshot.SnapshotGenerator instance liquibase.snapshot.jvm.UniqueConstraintSnapshotGenerator
+2025-06-16 00:06:47.161 [main] DEBUG liquibase.servicelocator - Loaded liquibase.snapshot.SnapshotGenerator instance liquibase.snapshot.jvm.ViewSnapshotGenerator
+2025-06-16 00:06:47.161 [main] DEBUG liquibase.servicelocator - Loaded liquibase.snapshot.SnapshotGenerator instance liquibase.snapshot.jvm.SchemaSnapshotGeneratorSnowflake
+2025-06-16 00:06:47.161 [main] DEBUG liquibase.servicelocator - Loaded liquibase.snapshot.SnapshotGenerator instance liquibase.snapshot.jvm.SequenceSnapshotGeneratorSnowflake
+2025-06-16 00:06:47.162 [main] DEBUG liquibase.servicelocator - Loaded liquibase.snapshot.SnapshotGenerator instance liquibase.snapshot.jvm.UniqueConstraintSnapshotGeneratorSnowflake
+2025-06-16 00:06:47.162 [main] DEBUG liquibase.configuration - No configuration value for liquibase.liquibaseCatalogName aka liquibase.catalogName found
+2025-06-16 00:06:47.165 [main] DEBUG liquibase.util - Computed checksum for 1750007207164 as 2929b9a6b5825ce980d01ff41bae178a
+2025-06-16 00:06:47.170 [main] DEBUG liquibase.configuration - No configuration value for liquibase.preserveSchemaCase found
+2025-06-16 00:06:47.170 [main] DEBUG liquibase.configuration - Configuration liquibase.preserveSchemaCase is using the default value of false
+2025-06-16 00:06:47.193 [main] DEBUG liquibase.servicelocator - Loaded liquibase.diff.compare.DatabaseObjectComparator instance liquibase.diff.compare.core.CatalogComparator
+2025-06-16 00:06:47.194 [main] DEBUG liquibase.servicelocator - Loaded liquibase.diff.compare.DatabaseObjectComparator instance liquibase.diff.compare.core.ColumnComparator
+2025-06-16 00:06:47.194 [main] DEBUG liquibase.servicelocator - Loaded liquibase.diff.compare.DatabaseObjectComparator instance liquibase.diff.compare.core.DefaultDatabaseObjectComparator
+2025-06-16 00:06:47.195 [main] DEBUG liquibase.servicelocator - Loaded liquibase.diff.compare.DatabaseObjectComparator instance liquibase.diff.compare.core.ForeignKeyComparator
+2025-06-16 00:06:47.195 [main] DEBUG liquibase.servicelocator - Loaded liquibase.diff.compare.DatabaseObjectComparator instance liquibase.diff.compare.core.IndexComparator
+2025-06-16 00:06:47.195 [main] DEBUG liquibase.servicelocator - Loaded liquibase.diff.compare.DatabaseObjectComparator instance liquibase.diff.compare.core.PrimaryKeyComparator
+2025-06-16 00:06:47.196 [main] DEBUG liquibase.servicelocator - Loaded liquibase.diff.compare.DatabaseObjectComparator instance liquibase.diff.compare.core.SchemaComparator
+2025-06-16 00:06:47.196 [main] DEBUG liquibase.servicelocator - Loaded liquibase.diff.compare.DatabaseObjectComparator instance liquibase.diff.compare.core.TableComparator
+2025-06-16 00:06:47.197 [main] DEBUG liquibase.servicelocator - Loaded liquibase.diff.compare.DatabaseObjectComparator instance liquibase.diff.compare.core.UniqueConstraintComparator
+2025-06-16 00:06:47.199 [main] DEBUG liquibase.configuration - No configuration value for liquibase.includeCatalogInSpecification found
+2025-06-16 00:06:47.199 [main] DEBUG liquibase.configuration - Configuration liquibase.includeCatalogInSpecification is using the default value of false
+2025-06-16 00:06:47.204 [main] DEBUG liquibase.executor - Changelog query completed.
+2025-06-16 00:06:47.206 [main] INFO  liquibase.changelog - Reading from public.databasechangelog
+2025-06-16 00:06:47.208 [main] DEBUG liquibase.executor - Changelog query completed.
+2025-06-16 00:06:47.211 [main] DEBUG liquibase.servicelocator - Loaded liquibase.lockservice.LockService instance liquibase.lockservice.LockServiceImpl
+2025-06-16 00:06:47.211 [main] DEBUG liquibase.servicelocator - Loaded liquibase.lockservice.LockService instance liquibase.lockservice.MockLockService
+2025-06-16 00:06:47.211 [main] DEBUG liquibase.servicelocator - Loaded liquibase.lockservice.LockService instance liquibase.lockservice.OfflineLockService
+2025-06-16 00:06:47.211 [main] DEBUG liquibase.servicelocator - Loaded liquibase.lockservice.LockService instance liquibase.lockservice.StandardLockService
+2025-06-16 00:06:47.215 [main] DEBUG liquibase.executor - Changelog query completed.
+2025-06-16 00:06:47.219 [main] DEBUG liquibase.configuration - No configuration value for liquibase.sql.logLevel found
+2025-06-16 00:06:47.220 [main] DEBUG liquibase.configuration - Configuration liquibase.sql.logLevel is using the default value of FINE
+2025-06-16 00:06:47.220 [main] DEBUG liquibase.executor - SET SEARCH_PATH TO public, "$user","public"
+2025-06-16 00:06:47.220 [main] DEBUG liquibase.executor - 0 row(s) affected
+2025-06-16 00:06:47.224 [main] DEBUG liquibase.util - Computed checksum for inputStream as 386fbd2ceead1cb2a1daa091e37ebfab
+2025-06-16 00:06:47.224 [main] DEBUG liquibase.util - Computed checksum for 9:386fbd2ceead1cb2a1daa091e37ebfab: as 8b02350a4ef1315a8086290a5d1d07bc
+2025-06-16 00:06:47.225 [main] DEBUG liquibase.util - Computed checksum for inputStream as 45acda1aaa4889cbfbc9089563919d77
+2025-06-16 00:06:47.225 [main] DEBUG liquibase.util - Computed checksum for 9:45acda1aaa4889cbfbc9089563919d77: as e6c665469f60620e772111c613a99e96
+2025-06-16 00:06:47.225 [main] DEBUG liquibase.command - Executing internal command changeExecListener
+2025-06-16 00:06:47.226 [main] DEBUG liquibase.command - Executing internal command update migrate
+2025-06-16 00:06:47.231 [main] DEBUG liquibase.executor - SET SEARCH_PATH TO public, "$user","public"
+2025-06-16 00:06:47.232 [main] DEBUG liquibase.executor - 0 row(s) affected
+2025-06-16 00:06:47.233 [main] DEBUG liquibase.command - Fast check found no un-run changesets
+2025-06-16 00:06:47.235 [main] INFO  liquibase.changelog - Reading from public.databasechangelog
+2025-06-16 00:06:47.237 [main] DEBUG liquibase.executor - Changelog query completed.
+2025-06-16 00:06:47.257 [main] INFO  liquibase.util - UPDATE SUMMARY
+2025-06-16 00:06:47.257 [main] INFO  liquibase.util - Run:                          0
+2025-06-16 00:06:47.257 [main] INFO  liquibase.util - Previously run:               2
+2025-06-16 00:06:47.257 [main] INFO  liquibase.util - Filtered out:                 0
+2025-06-16 00:06:47.257 [main] INFO  liquibase.util - -------------------------------
+2025-06-16 00:06:47.257 [main] INFO  liquibase.util - Total change sets:            2
+2025-06-16 00:06:47.257 [main] INFO  liquibase.util - Update summary generated
+2025-06-16 00:06:47.257 [main] DEBUG liquibase.executor - Release Database Lock
+2025-06-16 00:06:47.258 [main] DEBUG liquibase.executor - SET SEARCH_PATH TO public, "$user","public"
+2025-06-16 00:06:47.258 [main] DEBUG liquibase.executor - 0 row(s) affected
+2025-06-16 00:06:47.264 [main] DEBUG liquibase.servicelocator - Loaded liquibase.datatype.LiquibaseDataType instance liquibase.datatype.core.BigIntType
+2025-06-16 00:06:47.265 [main] DEBUG liquibase.servicelocator - Loaded liquibase.datatype.LiquibaseDataType instance liquibase.datatype.core.BlobType
+2025-06-16 00:06:47.266 [main] DEBUG liquibase.servicelocator - Loaded liquibase.datatype.LiquibaseDataType instance liquibase.datatype.core.BooleanType
+2025-06-16 00:06:47.266 [main] DEBUG liquibase.servicelocator - Loaded liquibase.datatype.LiquibaseDataType instance liquibase.datatype.core.CharType
+2025-06-16 00:06:47.266 [main] DEBUG liquibase.servicelocator - Loaded liquibase.datatype.LiquibaseDataType instance liquibase.datatype.core.ClobType
+2025-06-16 00:06:47.267 [main] DEBUG liquibase.servicelocator - Loaded liquibase.datatype.LiquibaseDataType instance liquibase.datatype.core.CurrencyType
+2025-06-16 00:06:47.267 [main] DEBUG liquibase.servicelocator - Loaded liquibase.datatype.LiquibaseDataType instance liquibase.datatype.core.DatabaseFunctionType
+2025-06-16 00:06:47.268 [main] DEBUG liquibase.servicelocator - Loaded liquibase.datatype.LiquibaseDataType instance liquibase.datatype.core.DateTimeType
+2025-06-16 00:06:47.268 [main] DEBUG liquibase.servicelocator - Loaded liquibase.datatype.LiquibaseDataType instance liquibase.datatype.core.DateType
+2025-06-16 00:06:47.268 [main] DEBUG liquibase.servicelocator - Loaded liquibase.datatype.LiquibaseDataType instance liquibase.datatype.core.DecimalType
+2025-06-16 00:06:47.269 [main] DEBUG liquibase.servicelocator - Loaded liquibase.datatype.LiquibaseDataType instance liquibase.datatype.core.DoubleType
+2025-06-16 00:06:47.269 [main] DEBUG liquibase.servicelocator - Loaded liquibase.datatype.LiquibaseDataType instance liquibase.datatype.core.FloatType
+2025-06-16 00:06:47.269 [main] DEBUG liquibase.servicelocator - Loaded liquibase.datatype.LiquibaseDataType instance liquibase.datatype.core.IntType
+2025-06-16 00:06:47.270 [main] DEBUG liquibase.servicelocator - Loaded liquibase.datatype.LiquibaseDataType instance liquibase.datatype.core.MediumIntType
+2025-06-16 00:06:47.270 [main] DEBUG liquibase.servicelocator - Loaded liquibase.datatype.LiquibaseDataType instance liquibase.datatype.core.NCharType
+2025-06-16 00:06:47.271 [main] DEBUG liquibase.servicelocator - Loaded liquibase.datatype.LiquibaseDataType instance liquibase.datatype.core.NVarcharType
+2025-06-16 00:06:47.271 [main] DEBUG liquibase.servicelocator - Loaded liquibase.datatype.LiquibaseDataType instance liquibase.datatype.core.NumberType
+2025-06-16 00:06:47.271 [main] DEBUG liquibase.servicelocator - Loaded liquibase.datatype.LiquibaseDataType instance liquibase.datatype.core.SmallIntType
+2025-06-16 00:06:47.272 [main] DEBUG liquibase.servicelocator - Loaded liquibase.datatype.LiquibaseDataType instance liquibase.datatype.core.TimeType
+2025-06-16 00:06:47.273 [main] DEBUG liquibase.servicelocator - Loaded liquibase.datatype.LiquibaseDataType instance liquibase.datatype.core.TimestampType
+2025-06-16 00:06:47.273 [main] DEBUG liquibase.servicelocator - Loaded liquibase.datatype.LiquibaseDataType instance liquibase.datatype.core.TinyIntType
+2025-06-16 00:06:47.273 [main] DEBUG liquibase.servicelocator - Loaded liquibase.datatype.LiquibaseDataType instance liquibase.datatype.core.UUIDType
+2025-06-16 00:06:47.273 [main] DEBUG liquibase.servicelocator - Loaded liquibase.datatype.LiquibaseDataType instance liquibase.datatype.core.UnknownType
+2025-06-16 00:06:47.274 [main] DEBUG liquibase.servicelocator - Loaded liquibase.datatype.LiquibaseDataType instance liquibase.datatype.core.VarcharType
+2025-06-16 00:06:47.274 [main] DEBUG liquibase.servicelocator - Loaded liquibase.datatype.LiquibaseDataType instance liquibase.datatype.core.XMLType
+2025-06-16 00:06:47.275 [main] DEBUG liquibase.servicelocator - Loaded liquibase.datatype.LiquibaseDataType instance liquibase.datatype.core.TextDataTypeSnowflake
+2025-06-16 00:06:47.275 [main] DEBUG liquibase.servicelocator - Loaded liquibase.datatype.LiquibaseDataType instance liquibase.datatype.core.TimestampNTZTypeSnowflake
+2025-06-16 00:06:47.275 [main] DEBUG liquibase.servicelocator - Loaded liquibase.datatype.LiquibaseDataType instance liquibase.datatype.core.DoubleDataTypeSnowflake
+2025-06-16 00:06:47.276 [main] DEBUG liquibase.servicelocator - Loaded liquibase.datatype.LiquibaseDataType instance liquibase.datatype.core.BinaryTypeSnowflake
+2025-06-16 00:06:47.278 [main] DEBUG liquibase.executor - Changelog query completed.
+2025-06-16 00:06:47.280 [main] INFO  liquibase.lockservice - Successfully released change log lock
+2025-06-16 00:06:47.281 [main] INFO  liquibase.command - Command execution complete
+2025-06-16 00:06:47.350 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-16 00:06:47.405 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.1.Final
+2025-06-16 00:06:47.436 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-06-16 00:06:47.646 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-16 00:06:48.489 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-16 00:06:48.519 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-16 00:06:48.875 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-06-16 00:06:49.353 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-16 00:06:49.678 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-06-16 00:06:49.693 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2025-06-16 00:06:49.703 [main] INFO  r.h.school_2.School2Application - Started School2Application in 4.861 seconds (process running for 5.391)
+2025-06-16 00:07:27.289 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-06-16 00:07:27.290 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-06-16 00:07:27.483 [http-nio-8080-exec-2] ERROR r.h.s.e.GlobalExceptionHandler - Внутренняя ошибка сервера: No static resource favicon.ico.
+org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.
+	at org.springframework.web.servlet.resource.ResourceHttpRequestHandler.handleRequest(ResourceHttpRequestHandler.java:585)
+	at org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter.handle(HttpRequestHandlerAdapter.java:52)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:340)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-06-16 00:07:43.671 [http-nio-8080-exec-3] ERROR r.h.s.e.GlobalExceptionHandler - Внутренняя ошибка сервера: No static resource .
+org.springframework.web.servlet.resource.NoResourceFoundException: No static resource .
+	at org.springframework.web.servlet.resource.ResourceHttpRequestHandler.handleRequest(ResourceHttpRequestHandler.java:585)
+	at org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter.handle(HttpRequestHandlerAdapter.java:52)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:340)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-06-16 00:07:43.715 [http-nio-8080-exec-4] ERROR r.h.s.e.GlobalExceptionHandler - Внутренняя ошибка сервера: No static resource favicon.ico.
+org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.
+	at org.springframework.web.servlet.resource.ResourceHttpRequestHandler.handleRequest(ResourceHttpRequestHandler.java:585)
+	at org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter.handle(HttpRequestHandlerAdapter.java:52)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:340)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-06-16 00:07:48.934 [http-nio-8080-exec-5] ERROR r.h.s.e.GlobalExceptionHandler - Внутренняя ошибка сервера: No static resource .
+org.springframework.web.servlet.resource.NoResourceFoundException: No static resource .
+	at org.springframework.web.servlet.resource.ResourceHttpRequestHandler.handleRequest(ResourceHttpRequestHandler.java:585)
+	at org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter.handle(HttpRequestHandlerAdapter.java:52)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:340)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-06-16 00:07:48.971 [http-nio-8080-exec-6] ERROR r.h.s.e.GlobalExceptionHandler - Внутренняя ошибка сервера: No static resource favicon.ico.
+org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.
+	at org.springframework.web.servlet.resource.ResourceHttpRequestHandler.handleRequest(ResourceHttpRequestHandler.java:585)
+	at org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter.handle(HttpRequestHandlerAdapter.java:52)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:340)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-06-16 00:07:57.159 [http-nio-8080-exec-9] INFO  o.s.api.AbstractOpenApiResource - Init duration for springdoc-openapi is: 332 ms
