@@ -10,9 +10,18 @@ public class InfoController {
   @Value("${server.port}") // Получаем значение порта из application.properties
   private int serverPort;
 
+  @Value("${spring.datasource.url}")
+  private String dbUrl;
+
   @GetMapping("/port")
   public int getPort() {
     return serverPort;
   }
+
+  @GetMapping("/db-info")
+  public String getDbInfo() {
+    return "DB URL: " + dbUrl;
+  }
+
 
 }//class
