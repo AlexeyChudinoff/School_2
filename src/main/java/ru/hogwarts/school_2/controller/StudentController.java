@@ -262,7 +262,72 @@ public class StudentController {
           .map(StudentDTO::fromStudent)
           .collect(Collectors.toList());
       return ResponseEntity.ok(studentDTOS);
+    }
   }
+
+  //parallel stream
+
+  private void printFormatted(Long id, String threadType) {
+    String name = studentService.getStudentById(id)
+        .map(Student::getName)
+        .orElse("Не найден");
+    System.out.println("Поток " + threadType + ", студент " + id + ": " + name);
   }
+
+  @Operation(summary = "Выводит имена студентов в параллельных потоках",
+      description = "Первые два имени — в основном потоке, остальные — в параллельных")
+  @GetMapping("/students/print-parallel")
+  public ResponseEntity<Void> printStudentNamesParallel() {
+    // Основной поток
+    printFormatted(1L, "основной");
+    printFormatted(2L, "основной");
+
+    // Параллельный поток 1
+    new Thread(() -> {
+      printFormatted(3L, "параллельный 1");
+      printFormatted(4L, "параллельный 1");
+    }).start();
+
+    // Параллельный поток 2
+    new Thread(() -> {
+      printFormatted(5L, "параллельный 2");
+      printFormatted(6L, "параллельный 2");
+    }).start();
+
+    return ResponseEntity.ok().build();
+  }
+
+
+  // Синхронизированный метод для вывода имени студента
+  private synchronized void printStudentName(Long id) {
+    String name = studentService.getStudentById(id)
+        .map(Student::getName)
+        .orElse("Студент не найден");
+    System.out.println(Thread.currentThread().getName() + ", студент " + id + ": " + name);
+  }
+
+  @Operation(summary = "Выводит имена студентов в синхронизированном режиме",
+      description = "Выводит имена студентов в синхронизированном режиме")
+  @GetMapping("/students/print-synchronized")
+  public ResponseEntity<Void> printStudentNamesSynchronized() {
+    // Основной поток (студенты 1 и 2)
+    printStudentName(1L);
+    printStudentName(2L);
+
+    // Параллельный поток 1 (студенты 3 и 4)
+    new Thread(() -> {
+      printStudentName(3L);
+      printStudentName(4L);
+    }).start();
+
+    // Параллельный поток 2 (студенты 5 и 6)
+    new Thread(() -> {
+      printStudentName(5L);
+      printStudentName(6L);
+    }).start();
+
+    return ResponseEntity.ok().build();
+  }
+
 
 }//class
