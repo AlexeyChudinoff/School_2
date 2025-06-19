@@ -9,7 +9,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,7 +21,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
 import ru.hogwarts.school_2.controller.StudentController;
 import ru.hogwarts.school_2.dto.StudentDTO;
 import ru.hogwarts.school_2.model.Faculty;
@@ -201,7 +199,8 @@ public class WebMvcTestStudentController {
 
     when(studentService.getStudentsByAgeRange(minAge, maxAge)).thenReturn(List.of(student));
 
-    ResponseEntity<List<StudentDTO>> response = studentController.getStudentsByAgeRange(minAge, maxAge);
+    ResponseEntity<List<StudentDTO>> response = studentController.getStudentsByAgeRange(minAge,
+        maxAge);
 
     assertEquals(HttpStatus.OK, response.getStatusCode());
     assertEquals(1, response.getBody().size());
@@ -285,4 +284,62 @@ public class WebMvcTestStudentController {
 
     assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
   }
-}
+
+  @Test
+  void printStudentNamesParallel_shouldPrintStudentsToConsole() {
+    Student student1 = new Student("Иван Иванов", 20, "М");
+    student1.setId(1L);
+    Student student2 = new Student("Сергей Сергеев", 21, "М");
+    student2.setId(2L);
+    Student student3 = new Student("Михаил Мишин", 22, "М");
+    student3.setId(3L);
+    Student student4 = new Student("Иван Александров", 23, "М");
+    student4.setId(4L);
+    Student student5 = new Student("Света Светина", 24, "Ж");
+    student5.setId(5L);
+    Student student6 = new Student("Галя Галина", 25, "Ж");
+    student6.setId(6L);
+
+    when(studentService.getStudentById(1L)).thenReturn(Optional.of(student1));
+    when(studentService.getStudentById(2L)).thenReturn(Optional.of(student2));
+    when(studentService.getStudentById(3L)).thenReturn(Optional.of(student3));
+    when(studentService.getStudentById(4L)).thenReturn(Optional.of(student4));
+    when(studentService.getStudentById(5L)).thenReturn(Optional.of(student5));
+    when(studentService.getStudentById(6L)).thenReturn(Optional.of(student6));
+
+    ResponseEntity<Void> response = studentController.printStudentNamesParallel();
+
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+  }
+
+  @Test
+  void printStudentNamesSynchronized_shouldPrintStudentsToConsole() {
+    // Arrange
+    Student student1 = new Student("Иван Иванов", 20, "М");
+    student1.setId(1L);
+    Student student2 = new Student("Сергей Сергеев", 21, "М");
+    student2.setId(2L);
+    Student student3 = new Student("Михаил Мишин", 22, "М");
+    student3.setId(3L);
+    Student student4 = new Student("Иван Александров", 23, "М");
+    student4.setId(4L);
+    Student student5 = new Student("Света Светина", 24, "Ж");
+    student5.setId(5L);
+    Student student6 = new Student("Галя Галина", 25, "Ж");
+    student6.setId(6L);
+
+    when(studentService.getStudentById(1L)).thenReturn(Optional.of(student1));
+    when(studentService.getStudentById(2L)).thenReturn(Optional.of(student2));
+    when(studentService.getStudentById(3L)).thenReturn(Optional.of(student3));
+    when(studentService.getStudentById(4L)).thenReturn(Optional.of(student4));
+    when(studentService.getStudentById(5L)).thenReturn(Optional.of(student5));
+    when(studentService.getStudentById(6L)).thenReturn(Optional.of(student6));
+
+    // Act
+    ResponseEntity<Void> response = studentController.printStudentNamesSynchronized();
+
+    // Assert
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+  }
+
+}//class
