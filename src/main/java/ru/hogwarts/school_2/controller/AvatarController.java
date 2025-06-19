@@ -45,6 +45,7 @@ public class AvatarController {
     }
   }
 
+  @Operation(summary = "Получить аватара по id из базы данных")
   @GetMapping("/{studentId}/from-db")
   public ResponseEntity<byte[]> getAvatarFromDb(@PathVariable Long studentId) {
     Avatar avatar = avatarService.findAvatar(studentId);
@@ -58,6 +59,7 @@ public class AvatarController {
         .body(avatar.getData());
   }
 
+  @Operation(summary = "Получить аватара по id из файла")
   @GetMapping("/{studentId}/from-file")
   public ResponseEntity<byte[]> getAvatarFromFile(@PathVariable Long studentId) {
     byte[] data = avatarService.getAvatarFileData(studentId);

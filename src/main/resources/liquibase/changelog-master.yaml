@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: classpath:/liquibase/scripts/work_on_faculties.sql
+      relativeToChangelogFile: false
+  - include:
+      file: classpath:/liquibase/scripts/work_on_students.sql
+      relativeToChangelogFile: false

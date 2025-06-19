@@ -14,15 +14,17 @@ import ru.hogwarts.school_2.model.Student;
 import ru.hogwarts.school_2.repository.AvatarRepository;
 import ru.hogwarts.school_2.repository.FacultyRepository;
 import ru.hogwarts.school_2.repository.StudentRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
-//@Transactional(readOnly = true)
 public class StudentService {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(StudentService.class);
 
   private FacultyRepository facultyRepository;
   private StudentRepository studentRepository;
   private AvatarRepository avatarRepository;
-  // private StudentDTO studentDTO;
 
   public StudentService() {
   }
@@ -35,50 +37,63 @@ public class StudentService {
     this.studentRepository = studentRepository;
     this.facultyRepository = facultyRepository;
     this.avatarRepository = avatarRepository;
-
   }
-
-  // Создание студента
 
   @Transactional
   public Student addStudent(StudentDTO studentDTO, Long facultyId) {
+    LOGGER.info("Was invoked method for add student");
+
     if (!studentRepository.findByNameIgnoreCase(studentDTO.getName()).isEmpty()) {
+      LOGGER.warn("Attempt to create student with existing name: {}", studentDTO.getName());
       throw new IllegalStateException("Студент с таким именем уже существует!");
     }
 
-    // Проверяем существование факультета
     Faculty faculty = facultyRepository.findById(facultyId)
-        .orElseThrow(() -> new EntityNotFoundException("Факультет с ID " + facultyId + " не найден"));
+        .orElseThrow(() -> {
+          LOGGER.error("Faculty with ID {} not found", facultyId);
+          return new EntityNotFoundException("Факультет с ID " + facultyId + " не найден");
+        });
 
-    // Создаем студента и устанавливаем связь с факультетом
     Student student = new Student(studentDTO.getName(), studentDTO.getAge(), studentDTO.getGender());
     student.setFaculty(faculty);
 
-    // Сохраняем студента
+    LOGGER.debug("Creating student: name={}, age={}, gender={}, facultyId={}",
+        studentDTO.getName(), studentDTO.getAge(), studentDTO.getGender(), facultyId);
     return studentRepository.save(student);
   }
 
   @Transactional
   public Student updateStudent(Long id, StudentDTO studentDTO) throws NotFoundException {
+    LOGGER.info("Was invoked method for update student with id: {}", id);
+
     Student student = studentRepository.findById(id)
-        .orElseThrow(() -> new NotFoundException());
+        .orElseThrow(() -> {
+          LOGGER.error("Student with ID {} not found for update", id);
+          return new NotFoundException();
+        });
+
+    LOGGER.debug("Updating student with id: {}. New data: name={}, age={}, gender={}",
+        id, studentDTO.getName(), studentDTO.getAge(), studentDTO.getGender());
 
     student.setName(studentDTO.getName());
     student.setAge(studentDTO.getAge());
     student.setGender(studentDTO.getGender());
 
-    // Определяем новую принадлежность к факультету
     if (studentDTO.getFacultyId() != null) {
       Faculty faculty = facultyRepository.findById(studentDTO.getFacultyId())
-          .orElseThrow(() -> new NotFoundException());
+          .orElseThrow(() -> {
+            LOGGER.error("Faculty with ID {} not found during student update", studentDTO.getFacultyId());
+            return new NotFoundException();
+          });
       student.setFaculty(faculty);
     }
 
     return studentRepository.save(student);
   }
 
-  // Получение всех студентов
   public List<StudentDTO> getAllStudents() {
+    LOGGER.info("Was invoked method for get all students");
+    LOGGER.debug("Fetching all students from database");
     return studentRepository.findAll().stream()
         .map(student -> new StudentDTO(
             student.getId(),
@@ -90,90 +105,117 @@ public class StudentService {
         .collect(Collectors.toList());
   }
 
-  // Получение студента по id
   public Optional<Student> getStudentById(Long id) {
-    return studentRepository.findById(id);
+    LOGGER.info("Was invoked method for get student by id: {}", id);
+    Optional<Student> student = studentRepository.findById(id);
+    if (student.isEmpty()) {
+      LOGGER.warn("Student with ID {} not found", id);
+    }
+    return student;
   }
 
-  //Поиск студента по части имени игнорируя регистр
   public List<Student> findByNameContainingIgnoreCase(String name) {
+    LOGGER.info("Was invoked method for find students by name containing: {}", name);
+    LOGGER.debug("Searching students with name containing: {}", name);
     return studentRepository.findByNameContainingIgnoreCase(name);
   }
 
-  // Получение студентов одного пола
   public List<Student> findByGender(String gender) {
+    LOGGER.info("Was invoked method for find students by gender: {}", gender);
+    LOGGER.debug("Searching students with gender: {}", gender);
     return studentRepository.findByGenderIgnoreCase(gender);
   }
 
-  // Получение студентов одного возраста
   public List<Student> getStudentByAge(int age) {
+    LOGGER.info("Was invoked method for get students by age: {}", age);
+    LOGGER.debug("Searching students with age: {}", age);
     return studentRepository.findByAge(age);
   }
 
-  // Получение студентов по возрастному диапазону
   public List<Student> getStudentsByAgeRange(int minAge, int maxAge) {
+    LOGGER.info("Was invoked method for get students by age range: {} - {}", minAge, maxAge);
+    LOGGER.debug("Searching students with age between {} and {}", minAge, maxAge);
     return studentRepository.findByAgeBetween(minAge, maxAge);
   }
 
-  //Получить количество студентов по ID факультета
   public long getCountStudents(Long facultyId) {
-    return studentRepository.countByFaculty_Id(facultyId);
+    LOGGER.info("Was invoked method for get count of students by faculty id: {}", facultyId);
+    long count = studentRepository.countByFaculty_Id(facultyId);
+    LOGGER.debug("Found {} students for faculty with ID {}", count, facultyId);
+    return count;
   }
 
-  //получение всех студентов по ID факульта
   public List<Student> findAllByFaculty_Id(Long facultyId) {
-    return studentRepository.findAllByFaculty_Id(facultyId);
+    LOGGER.info("Was invoked method for find all students by faculty id: {}", facultyId);
+    List<Student> students = studentRepository.findAllByFaculty_Id(facultyId);
+    LOGGER.debug("Found {} students for faculty with ID {}", students.size(), facultyId);
+    return students;
   }
 
-  // Удалить студента по ID
-   @Transactional
+  @Transactional
   public boolean deleteStudentById(Long id) {
+    LOGGER.info("Was invoked method for delete student by id: {}", id);
+
     if (!studentRepository.existsById(id)) {
-      return false; // Студент не найден
+      LOGGER.warn("Attempt to delete non-existing student with ID: {}", id);
+      return false;
     }
 
-    // Удаляем связанный аватар
+    LOGGER.debug("Deleting avatar for student with ID: {}", id);
     avatarRepository.deleteByStudentId(id);
 
-    // Удаляем студента
+    LOGGER.debug("Deleting student with ID: {}", id);
     studentRepository.deleteById(id);
 
-    return true; // Студент успешно удалён
+    return true;
   }
 
-  //получить факультет по ID
   public Optional<Faculty> getFacultyById(Long facultyId) {
-    return facultyRepository.findById(facultyId);
+    LOGGER.info("Was invoked method for get faculty by id: {}", facultyId);
+    Optional<Faculty> faculty = facultyRepository.findById(facultyId);
+    if (faculty.isEmpty()) {
+      LOGGER.warn("Faculty with ID {} not found", facultyId);
+    }
+    return faculty;
   }
 
-  //sql
-
-  //удалить всех студентов факультета
   @Transactional
   public void deleteAllStudentsFromFaculty(Long facultyId) {
+    LOGGER.info("Was invoked method for delete all students from faculty with id: {}", facultyId);
+
     List<Student> students = studentRepository.findAllByFaculty_Id(facultyId);
-    if (!students.isEmpty()) {
-      for (Student student : students) {
-        avatarRepository.deleteByStudentId(student.getId());
-      }
-      studentRepository.deleteAllByFaculty_Id(facultyId);
+    if (students.isEmpty()) {
+      LOGGER.warn("No students found for faculty with ID: {}", facultyId);
+      return;
     }
+
+    LOGGER.debug("Deleting avatars for {} students from faculty with ID: {}", students.size(), facultyId);
+    for (Student student : students) {
+      avatarRepository.deleteByStudentId(student.getId());
+    }
+
+    LOGGER.debug("Deleting all students from faculty with ID: {}", facultyId);
+    studentRepository.deleteAllByFaculty_Id(facultyId);
   }
 
-//получить количество всех студентов
   public long getCountByAllStudens() {
-    return studentRepository.getCountByAllStudens();
+    LOGGER.info("Was invoked method for get count of all students");
+    long count = studentRepository.getCountByAllStudens();
+    LOGGER.debug("Total students count: {}", count);
+    return count;
   }
 
-  // Получить средний возраст студентов
   public Double findAverageAge() {
-    return studentRepository.findAverageAge();
+    LOGGER.info("Was invoked method for find average age of students");
+    Double averageAge = studentRepository.findAverageAge();
+    LOGGER.debug("Average age of students: {}", averageAge);
+    return averageAge;
   }
 
-  //получаем 5 последних по айди студентов
-public List<Student> findTop5ByOrderByIdDesc(){
-    return studentRepository.findTop5ByOrderByIdDesc();
+  public List<Student> findTop5ByOrderByIdDesc() {
+    LOGGER.info("Was invoked method for find top 5 students ordered by ID desc");
+    List<Student> students = studentRepository.findTop5ByOrderByIdDesc();
+    LOGGER.debug("Found {} latest students", students.size());
+    return students;
   }
-
-
-}//
+}

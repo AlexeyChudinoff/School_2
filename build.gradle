@@ -23,7 +23,7 @@ configurations {
 
  repositories {
 	mavenCentral()
-	maven { url 'https://repo.eclipse.org/content/groups/release/' }
+	//maven { url 'https://repo.eclipse.org/content/repositories/releases/' }
 }
 
 dependencies {
@@ -34,8 +34,12 @@ dependencies {
 // Валидаторы полей
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+	implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
+	//implementation 'javax.validation:validation-api:2.x.y'
+
 // Веб-сервисы и REST API
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'com.github.spotbugs:spotbugs-annotations:4.7.3'
 
 // OpenAPI документация API
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
@@ -51,11 +55,24 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-configuration-processor'
 	testImplementation 'org.springframework.boot:spring-boot-starter-webflux'
 	testImplementation 'org.springframework.security:spring-security-test'
+
+// Для работы WebMvcTests
+	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.3'
+	testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.9.3'
+	testImplementation 'org.mockito:mockito-core:5.4.0'
+
+
 // Для корректной работы TestRestTemplate
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	testImplementation 'com.h2database:h2' // Добавлено для тестов
-
+	testImplementation 'com.h2database:h2:2.2.224' // Добавлено для тестов
 	runtimeOnly 'org.postgresql:postgresql'// Рабочая база данных PostgreSQL
+
+// Добавил логгирование
+	implementation 'org.apache.logging.log4j:log4j-core:2.24.3'
+
+// liguibase  спринг бут сам знает про версии, можно версию удалить
+	implementation 'org.liquibase:liquibase-core'
+
 }
 test {
 	useJUnitPlatform()
