@@ -4,3 +4,16 @@
 Тестируем двумя видами
 
 Порт : 8080
+
+СТЕК проекта :
+Java
+Maven
+Lombok
+Spring Boot
+Spring Data JPA
+PostgreSQL
+Hibernate
+Liquibase
+RestTemplate
+Мониторинг
+Логирование
