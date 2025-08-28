@@ -1,6 +1,0 @@
-профиль prod запускаем через GitBash
-проверить где мы сейчас pwd
-собрать проект из корня , в корень cd /c/Users/Alex/IdeaProjects/SCHOOL_2
-потом ./gradlew clean build
-потом переходим в либс cd /c/Users/Alex/IdeaProjects/SCHOOL_2/build/libs
-потом java -jar School_2-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod
